@@ -122,12 +122,12 @@ class UserModel extends BaseModel
       ];
       
       try {
-         $sql = "SELECT * FROM usuarios WHERE usuario =:usuario and password =: password";
+         $sql = "SELECT * FROM usuarios WHERE usuario =:usuario and password =:password";
          $query = $this->db->prepare($sql);
          echo"0";
          $query->execute([
-               'usuario' => $datos["usuario"],
-               'password' => $datos["password"]
+            'usuario' => $datos["usuario"],
+            'password' => $datos["password"]
          ]);
 
          echo"1";
