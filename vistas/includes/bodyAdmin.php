@@ -1,4 +1,4 @@
-<div class="container my-5">
+<div class="container my-5" style="height: 60vh;">
 
 
   <!-- Section: Block Content -->

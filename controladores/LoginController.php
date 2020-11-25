@@ -51,7 +51,13 @@ class LoginController extends BaseController
          if ($resultado['correcto'] == TRUE) {
             $this->view->show("paginaUsuario");
          } else {
-            $this->view->show("Login");
+            $this->mensajes[] = [
+               "tipo" => "success",
+               "mensaje" => "Usuario o contraseña incorrectos"
+            ];
+            $parametros["mensajes"] = $this->mensajes;
+
+            $this->view->show("Login",$parametros);
             //TODO: Poner alerta usuario o contraseña incorrectos
          }
          

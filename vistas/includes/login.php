@@ -1,11 +1,16 @@
   <!-- Start your project here-->
   <div class="d-flex justify-content-center unique-color-dark mb-n4" style="height: 100vh" >
 
-  <!-- ALERTAS-->
-
-
  <!-- Default form login -->
-<form class="text-center border border-light p-5 w-50 bg-white rounded-lg" action="?controller=Login&accion=inUser" id="login" method="post">
+
+    <!-- ALERTAS-->
+    <form class="text-center border border-light p-5 w-50 bg-white rounded-lg" action="?controller=Login&accion=inUser" id="login" method="post">
+    <?php if (isset($mensajes)) {
+          foreach ($mensajes as $mensaje) : ?> 
+            <div class="alert alert-<?= $mensaje["tipo"] ?>"><?= $mensaje["mensaje"] ?></div>
+        <?php endforeach;
+    }?>
+    <!-- ALERTAS-->
 
     <p class="h4 mb-4">Iniciar sesion</p>
 
