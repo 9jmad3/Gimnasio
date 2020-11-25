@@ -6,10 +6,8 @@
 </head>
 
 <body>
-  <?php require 'includes/nav.php';?>
-  <div style="background-color: aqua;">
-  <p>PAGINA INICIO USUARIO</p>
-  </div>
+  <?php require 'includes/navAdmin.php';?>
+  <?php require 'includes/bodyAdmin.php';?>
   <?php require 'includes/scriptsBody.php';?>
   <?php require 'includes/footer.php';?>
   

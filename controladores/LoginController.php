@@ -33,7 +33,7 @@ class LoginController extends BaseController
 
 
       if (isset($_POST['submit'])) {
-         if (empty($_POST['txtusuario']) || empty($_POST['txtpassword'])) {
+         if (empty( $_POST['txtusuario']) || empty($_POST['txtpassword'])) {
             $this->view->show("Login");
             //TODO: Poner alerta de campos vacios.
          }
