@@ -1,4 +1,5 @@
 <!-- SCRIPTS -->
+  <script type="text/javascript" src="js/main.js"></script>
   <!-- JQuery -->
   <script type="text/javascript" src="js/jquery-3.4.1.min.js"></script>
   <!-- Bootstrap tooltips -->

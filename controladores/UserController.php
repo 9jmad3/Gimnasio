@@ -315,4 +315,13 @@ class UserController extends BaseController
       $this->view->show("ActUser",$parametros);
    }
 
+   public function listaUsuarios()
+   {
+      $parametros = [
+         "tituloventana" => "Listar usuarios"
+      ];
+      $this->view->show("ListarUsuarios", $parametros);
+   }
+   
+
 }
