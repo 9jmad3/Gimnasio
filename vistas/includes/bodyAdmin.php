@@ -22,7 +22,7 @@
         <div class="card classic-admin-card light-blue lighten-1">
           <div class="card-body py-3">
             <i class="fas fa-chart-pie"></i>
-            <p class="small">Usuarios pendientes de alta</p>
+            <p class="small">Usuarios pendientes de validacion</p>
             <h4>20000</h4>
           </div>
          
