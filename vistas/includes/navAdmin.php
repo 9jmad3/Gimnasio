@@ -29,22 +29,17 @@
               aria-haspopup="true" aria-expanded="false">Operaciones con usuarios</a>
             <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink">
               <a class="dropdown-item" href="?controller=User&accion=listaUsuarios">Listar</a>
-              <a class="dropdown-item" href="#">No validados</a>
+              <a class="dropdown-item" href="?controller=User&accion=listaUsuariosNoValidados">No validados</a>
               <a class="dropdown-item disabled" href="#">Disabled</a>
             </div>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#location">Validacion de usuarios</a>
+            <a class="nav-link" href="#location">Mensajes</a>
           </li>
         </ul>
 
         <!-- Right -->
         <ul class="navbar-nav nav-flex-icons">
-          <!-- <li class="nav-item">
-            <a href="https://twitter.com/MDBootstrap" class="nav-link" target="_blank">
-              <i class="fab fa-twitter"></i>
-            </a>
-          </li> -->
           <li class="nav-item">
             <a class="nav-link disabled" href="#location">Nombre De Usuario</a>
           </li>
@@ -56,7 +51,7 @@
         </a>
         <div class="dropdown-menu dropdown-menu-lg-right dropdown-secondary"
           aria-labelledby="navbarDropdownMenuLink-55">
-          <a class="dropdown-item" href="#">Editar perfil</a>
+          <a class="dropdown-item" href="?controller=User&accion=editPerfilAdmin">Editar perfil</a>
           <a class="dropdown-item" href="#">Cerrar sesion</a>
         </div>
       </li>
