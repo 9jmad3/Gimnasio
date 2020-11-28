@@ -6,7 +6,7 @@
 </head>
 
 <body>
-  <?php require 'includes/navUsuario.php';?>
+  <?php require 'includes/navAdmin.php';?>
   <?php require 'includes/bodyAdmin.php';?>
   <?php require 'includes/scriptsBody.php';?>
   <?php require 'includes/footer.php';?>
