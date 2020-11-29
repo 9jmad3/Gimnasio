@@ -23,7 +23,9 @@
           <div class="card-body py-3">
             <i class="fas fa-chart-pie"></i>
             <p class="small">Usuarios pendientes de validacion</p>
-            <h4>20000</h4>
+            
+            <h4><?php /*var_dump($pendientesActivacion);*/ 
+            if($pendientesActivacion){echo"".$pendientesActivacion["count(*)"]."";}?></h4>
           </div>
          
         </div>

@@ -106,6 +106,85 @@ class UserModel extends BaseModel
       return $return;
    }
 
+
+   /**
+    * Función que realiza el listado de todos los usuarios registrados
+    * Devuelve un array asociativo con tres campos:
+    * -'correcto': indica si el listado se realizó correctamente o no.
+    * -'datos': almacena todos los datos obtenidos de la consulta.
+    * -'error': almacena el mensaje asociado a una situación errónea (excepción) 
+    * @return type
+    */
+    public function listadoNoValidados()
+    {
+       $return = [
+          "correcto" => FALSE,
+          "datos" => NULL,
+          "error" => NULL
+       ];
+       //Realizamos la consulta...
+       try {  //Definimos la instrucción SQL  
+          $sql = "SELECT * FROM usuarios WHERE rol_id = 2";
+          // Hacemos directamente la consulta al no tener parámetros
+          $resultsquery = $this->db->query($sql);
+          //Supervisamos si la inserción se realizó correctamente... 
+          if ($resultsquery) :
+             $return["correcto"] = TRUE;
+             $return["datos"] = $resultsquery->fetchAll(PDO::FETCH_ASSOC);
+          endif; // o no :(
+       } catch (PDOException $ex) {
+          $return["error"] = $ex->getMessage();
+       }
+ 
+       return $return;
+    }
+
+    public function actualizaruser($datos)
+    {
+         $return = [
+            "correcto" => FALSE,
+            "error" => NULL
+         ];
+   
+         try {
+            //Inicializamos la transacción
+            $this->db->beginTransaction();
+            //Definimos la instrucción SQL parametrizada 
+            $sql = "UPDATE usuarios SET rol_id= :rol_id WHERE id=:id";
+            $query = $this->db->prepare($sql);
+            $query->execute([
+               'id' => $datos["id"],
+               'rol_id' => $datos["rol_id"]
+            ]);
+            //Supervisamos si la inserción se realizó correctamente... 
+            if ($query) {
+               $this->db->commit();  // commit() confirma los cambios realizados durante la transacción
+               $return["correcto"] = TRUE;
+            } // o no :(
+         } catch (PDOException $ex) {
+            $this->db->rollback(); // rollback() se revierten los cambios realizados durante la transacción
+            $return["error"] = $ex->getMessage();
+            //die();
+         }
+   
+         return $return;
+      
+    }
+
+    public function pendientesActivacion()
+    {
+       //Realizamos la consulta...
+          $sql = "SELECT count(*) FROM usuarios WHERE rol_id = 2";
+          // Hacemos directamente la consulta al no tener parámetros
+          $resultsquery = $this->db->query($sql);
+          //Supervisamos si la inserción se realizó correctamente... 
+          if ($resultsquery) :
+             $return = $resultsquery->fetch();;
+          endif; // o no :(
+ 
+       return $return;
+    }
+   
    /**
     * Función que comprueba que el usuario y contraseña son correctos
     * Devuelve un array asociativo con tres campos:
@@ -233,13 +312,16 @@ class UserModel extends BaseModel
          //Inicializamos la transacción
          $this->db->beginTransaction();
          //Definimos la instrucción SQL parametrizada 
-         $sql = "UPDATE usuarios SET nombre= :nombre, email= :email, imagen= :imagen WHERE id=:id";
+         $sql = "UPDATE usuarios SET nombre= :nombre, apellido1= :apellido1, apellido2= :apellido2, nif= :nif WHERE usuario=:usuario";
          $query = $this->db->prepare($sql);
          $query->execute([
             'id' => $datos["id"],
             'nombre' => $datos["nombre"],
             'email' => $datos["email"],
-            'imagen' => $datos["imagen"]
+            'imagen' => $datos["imagen"],
+            'nif' => $datos['dni'],
+            'telefono' => $datos['telefono'],
+            'direccion' => $datos['direccion']
          ]);
          //Supervisamos si la inserción se realizó correctamente... 
          if ($query) {

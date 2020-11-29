@@ -68,6 +68,25 @@ class UserController extends BaseController
       $this->view->show("ListadoUser", $parametros);
    }
 
+   public function actualizaruser()
+   {
+      $parametros = [
+         "tituloventana" => "Base de Datos con PHP y PDO",
+         "datos" => NULL,
+         "mensajes" => []
+      ];
+
+      $datos = [];
+      $datos['id'] = $_GET['id'];
+      $datos['rol_id'] = $_GET['rol_id'];
+
+      
+      $this->modelo->actualizaruser($datos);
+
+      
+      $this->listaUsuariosNoValidados();
+   }
+
    /**
     * Método de la clase controlador que realiza la eliminación de un usuario a 
     * través del campo id
@@ -99,7 +118,7 @@ class UserController extends BaseController
          ];
       }
       //Realizamos el listado de los usuarios
-      $this->listado();
+      $this->listaUsuariosNoValidados();
    }
 
    public function adduser()
@@ -359,7 +378,7 @@ class UserController extends BaseController
          "mensajes" => []
       ];
       // Realizamos la consulta y almacenamos los resultados en la variable $resultModelo
-      $resultModelo = $this->modelo->listado();
+      $resultModelo = $this->modelo->listadoNoValidados();
       // Si la consulta se realizó correctamente transferimos los datos obtenidos
       // de la consulta del modelo ($resultModelo["datos"]) a nuestro array parámetros
       // ($parametros["datos"]), que será el que le pasaremos a la vista para visualizarlos
@@ -368,7 +387,7 @@ class UserController extends BaseController
          //Definimos el mensaje para el alert de la vista de que todo fue correctamente
          $this->mensajes[] = [
             "tipo" => "success",
-            "mensaje" => "El listado se realizó correctamente"
+            "mensaje" => "Operación realizada correctamente"
          ];
       else :
          //Definimos el mensaje para el alert de la vista de que se produjeron errores al realizar el listado

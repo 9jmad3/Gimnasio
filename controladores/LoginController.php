@@ -52,6 +52,8 @@ class LoginController extends BaseController
 
 
             if ($parametros['datos'][0]['rol_id'] == 0) {
+               $parametros['pendientesActivacion']= $this->modelo->pendientesActivacion();
+
                session_start();
                $_SESSION['nombre'] = $parametros['datos'][0]['nombre'];
                

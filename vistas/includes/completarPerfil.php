@@ -1,6 +1,6 @@
 <div class="container" style="margin-top: 100px !important;">
     <!-- Default form register -->
-    <form class="text-center border border-light p-5" action="#!">
+    <form class="text-center border border-light p-5" action="?controller=Index&accion=register">
 
         <p class="h4 mb-4">Completa tu perfil!</p>
 
@@ -10,11 +10,11 @@
         <div class="form-row mb-4">
             <div class="col">
                 <!-- Apellido uno -->
-                <input type="text" id="defaultRegisterFormFirstName" class="form-control" placeholder="Primer apellido" name="txtApellido1">
+                <input type="text" id="defaultRegisterFormFirstName" class="form-control" placeholder="Primer apellido" name="txtapellido1">
             </div>
             <div class="col">
                 <!-- Apellido dos -->
-                <input type="text" id="defaultRegisterFormLastName" class="form-control" placeholder="Segundo apellido" name="txtApellido2">
+                <input type="text" id="defaultRegisterFormLastName" class="form-control" placeholder="Segundo apellido" name="txtapellido2">
             </div>
         </div>
 
@@ -29,7 +29,7 @@
 
 
         <!-- Sign up button -->
-        <button class="btn btn-info my-4 btn-block" type="submit">Actualizar</button>
+        <button class="btn btn-info my-4 btn-block" type="submit" name="submit">Actualizar</button>
 
         <hr>
 

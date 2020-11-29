@@ -67,7 +67,10 @@
                   <div class="text-center">
                     <button class="btn btn-indigo" type="submit"  name="submit">Enviar</button>
                   </div>
-
+                  <?php
+                  session_start();
+                  $_SESSION['usuario'] = $_POST['txtusuario'];
+                  ?>
                 </form>
                 <!-- Form -->
 
