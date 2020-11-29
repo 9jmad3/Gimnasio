@@ -30,12 +30,18 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `usuarios` (
   `id` int(11) NOT NULL,
-  `nombre` varchar(50) NOT NULL,
+  `nif` varchar(9) NULL,
+  `nombre` varchar(50) NULL,
+  `apellido1` varchar(50) NULL,
+  `apellido2` varchar(50) NULL,
+  `usuario` varchar(50) NOT NULL,
   `password` varchar(100) NOT NULL,
-  `email` varchar(100) DEFAULT NULL,
-  `imagen` varchar(150) DEFAULT NULL
+  `email` varchar(100) NOT NULL,
+  `imagen` varchar(150) NULL,
+  `telefono` int(12) NULL,
+  `direccion` varchar(100) NULL,
+  `rol_id` int(2) NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
 --
 -- Índices para tablas volcadas
 --
@@ -54,7 +60,7 @@ ALTER TABLE `usuarios`
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

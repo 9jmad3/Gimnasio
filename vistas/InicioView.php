@@ -8,8 +8,8 @@
 <body>
   <?php require 'includes/nav.php';?>
   <?php require 'includes/bodyInicio.php';?>
-  <?php require 'includes/footer.php';?>
   <?php require 'includes/scriptsBody.php';?>
+  <?php require 'includes/footer.php';?>
 </body>
 
 </html>

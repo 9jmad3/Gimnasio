@@ -29,8 +29,6 @@ class LoginController extends BaseController
    {
       // Array asociativo que almacenará los mensajes de error que se generen por cada campo
       $errores = array();
-      
-
 
       if (isset($_POST['submit'])) {
          if (empty( $_POST['txtusuario']) || empty($_POST['txtpassword'])) {
@@ -49,7 +47,24 @@ class LoginController extends BaseController
          }
 
          if ($resultado['correcto'] == TRUE) {
-            $this->view->show("paginaUsuario");
+
+            $parametros['datos'] = $resultado['datos'];
+
+
+            if ($parametros['datos'][0]['rol_id'] == 0) {
+               session_start();
+               $_SESSION['nombre'] = $parametros['datos'][0]['nombre'];
+               
+               $this->view->show("paginaAdmin",$parametros);
+            } 
+            if($parametros['datos'][0]['rol_id'] == 1 || $parametros['datos'][0]['rol_id'] == null){
+               session_start();
+               $_SESSION['nombre'] = $parametros['datos'][0]['nombre'];
+
+               $this->view->show("paginaUsuario",$parametros);
+            }
+
+            
          } else {
             $this->mensajes[] = [
                "tipo" => "success",

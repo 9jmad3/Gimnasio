@@ -122,7 +122,7 @@ class UserModel extends BaseModel
       ];
       
       try {
-         $sql = "SELECT * FROM usuarios WHERE nombre =:usuario and password =:password";
+         $sql = "SELECT * FROM usuarios WHERE usuario =:usuario and password =:password";
          $query = $this->db->prepare($sql);
          $query->execute(['usuario'=>$datos["usuario"],'password'=>$datos["password"]]);
 
@@ -131,6 +131,7 @@ class UserModel extends BaseModel
 
             if (count($usuarioDatos)>0) {
                $return["correcto"] = TRUE;
+               $return["datos"] = $usuarioDatos;
             }
            
          }

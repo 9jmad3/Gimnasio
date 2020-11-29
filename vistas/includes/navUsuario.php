@@ -41,7 +41,7 @@
         <!-- Right -->
         <ul class="navbar-nav nav-flex-icons">
           <li class="nav-item">
-            <a class="nav-link disabled" href="#location">Nombre De Usuario</a>
+            <a class="nav-link disabled" href="#location"><?php echo"".$_SESSION['nombre'].""?></a>
           </li>
           <li class="nav-item avatar dropdown">
         <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-55" data-toggle="dropdown"
