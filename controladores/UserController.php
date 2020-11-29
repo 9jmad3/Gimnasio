@@ -108,8 +108,8 @@ class UserController extends BaseController
       $errores = array();
       // Si se ha pulsado el botón guardar...
       if (isset($_POST) && !empty($_POST) && isset($_POST['submit'])) { // y hemos recibido las variables del formulario y éstas no están vacías...
-         $nombre = $_POST['txtnombre'];
-         $password = sha1($_POST['txtpass']);
+         $usuario = $_POST['txtusuario'];
+         $password = $_POST['txtpassword']; //sha1();
          $email = $_POST['txtemail'];
          /* Realizamos la carga de la imagen en el servidor */
          //       Comprobamos que el campo tmp_name tiene un valor asignado para asegurar que hemos
@@ -146,10 +146,11 @@ class UserController extends BaseController
                }
             }
          }
+
          // Si no se han producido errores realizamos el registro del usuario
          if (count($errores) == 0) {
             $resultModelo = $this->modelo->adduser([
-               'nombre' => $nombre,
+               'usuario' => $usuario,
                "password" => $password,
                'email' => $email,
                'imagen' => $imagen
@@ -184,7 +185,7 @@ class UserController extends BaseController
          "mensajes" => $this->mensajes
       ];
       //Visualizamos la vista asociada al registro de usuarios
-      $this->view->show("AddUser",$parametros);
+      $this->view->show("completarPerfil",$parametros);
    }
 
    /**

@@ -40,7 +40,7 @@
               <div class="card-body">
 
                 <!-- Form -->
-                <form name="">
+                <form name="" action="?controller=User&accion=adduser" id="formRegistro" method="post">
                   <!-- Heading -->
                   <h3 class="dark-grey-text text-center">
                     <strong>Registro</strong>
@@ -49,28 +49,23 @@
 
                   <div class="md-form">
                     <i class="fas fa-user prefix grey-text"></i>
-                    <input type="text" id="form3" class="form-control">
+                    <input type="text" id="form3" class="form-control" name="txtusuario">
                     <label for="form3">Usuario</label>
                   </div>
                   <div class="md-form">
                     <i class="fas fa-envelope prefix grey-text"></i>
-                    <input type="text" id="form2" class="form-control">
+                    <input type="text" id="form2" class="form-control" name="txtemail">
                     <label for="form2">Email</label>
                   </div>
                   <div class="md-form">
                     <i class="fas fa-key prefix grey-text"></i>
-                    <input type="password" id="password" class="form-control">
+                    <input type="password" id="password" class="form-control" name="txtpassword">
                     <label for="password">Contraseña</label>
                   </div>
                   
 
                   <div class="text-center">
-                    <button class="btn btn-indigo">Enviar</button>
-                    <hr>
-                    <fieldset class="form-check">
-                      <input type="checkbox" class="form-check-input" id="checkbox1">
-                      <label for="checkbox1" class="form-check-label dark-grey-text">Acepto la politica de privacidad</label>
-                    </fieldset>
+                    <button class="btn btn-indigo" type="submit"  name="submit">Enviar</button>
                   </div>
 
                 </form>

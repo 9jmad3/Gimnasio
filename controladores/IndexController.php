@@ -24,16 +24,6 @@ class IndexController extends BaseController
    }
 
    /**
-    * Podemos implementar la acción login
-    *
-    * @return void
-    */
-   public function login()
-   {
-     
-   }
-
-   /**
     * Podemos implementar la acción registro de usuarios
     *
     * @return void

@@ -198,13 +198,13 @@ class UserModel extends BaseModel
          //Inicializamos la transacción
          $this->db->beginTransaction();
          //Definimos la instrucción SQL parametrizada 
-         $sql = "INSERT INTO usuarios(nombre,password,email,imagen)
-                         VALUES (:nombre,:password,:email , :imagen)";
+         $sql = "INSERT INTO usuarios(usuario,password,email,imagen)
+                         VALUES (:usuario,:password,:email , :imagen)";
          // Preparamos la consulta...
          $query = $this->db->prepare($sql);
          // y la ejecutamos indicando los valores que tendría cada parámetro
          $query->execute([
-            'nombre' => $datos["nombre"],
+            'usuario' => $datos["usuario"],
             'password' => $datos["password"],
             'email' => $datos["email"],
             'imagen' => $datos["imagen"]
