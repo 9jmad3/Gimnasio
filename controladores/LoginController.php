@@ -59,12 +59,9 @@ class LoginController extends BaseController
                
                $this->view->show("paginaAdmin",$parametros);
             } 
-            if($parametros['datos'][0]['rol_id'] == 1 || $parametros['datos'][0]['rol_id'] == null){
+            if($parametros['datos'][0]['rol_id'] == 1 || $parametros['datos'][0]['rol_id'] == 2){
                session_start();
-               $_SESSION['nombre'] = $parametros['datos'][0]['nombre'];
-
-               setcookie('usuario',$parametros['datos'][0]['usuario'],time() + (15 * 24 * 60 * 60));
-               //$_SESSION['usuario'] = $parametros['datos'][0]['usuario'];
+               $_SESSION['usuario'] = $usuario;
 
                $this->view->show("paginaUsuario",$parametros);
             }

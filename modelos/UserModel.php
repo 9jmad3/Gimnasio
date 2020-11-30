@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 /**
  *   Clase 'UserModel' que implementa el modelo de usuarios de nuestra aplicación en una
  * arquitectura MVC. Se encarga de gestionar el acceso a la tabla usuarios
@@ -322,7 +322,7 @@ class UserModel extends BaseModel
             'apellido2'=> $datos["apellido2"],
             'telefono' => $datos['telefono'],
             'direccion' => $datos['direccion'],
-            'usuario'=> $_COOKIE['usuario']
+            'usuario'=> $_SESSION['usuario']
          ]);
          //Supervisamos si la inserción se realizó correctamente... 
          if ($query) {
