@@ -416,4 +416,8 @@ class UserController extends BaseController
    }
    
 
+   public function completarPerfil()
+   {
+      $this->view->show("completarPerfil");
+   }
 }

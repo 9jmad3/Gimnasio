@@ -1,6 +1,6 @@
 <div class="container" style="margin-top: 100px !important;">
     <!-- Default form register -->
-    <form class="text-center border border-light p-5" action="?controller=Index&accion=register">
+    <form class="text-center border border-light p-5" action="?controller=Index&accion=register" method="post">
 
         <p class="h4 mb-4">Completa tu perfil!</p>
 

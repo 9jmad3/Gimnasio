@@ -51,7 +51,7 @@
         </a>
         <div class="dropdown-menu dropdown-menu-lg-right dropdown-secondary"
           aria-labelledby="navbarDropdownMenuLink-55">
-          <a class="dropdown-item" href="?controller=User&accion=editPerfilAdmin">Editar perfil</a>
+          <a class="dropdown-item" href="?controller=User&accion=completarPerfil">Editar perfil</a>
           <a class="dropdown-item" href="#">Cerrar sesion</a>
         </div>
       </li>

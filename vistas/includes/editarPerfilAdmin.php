@@ -1,4 +1,12 @@
 <div class="container py-5 my-5" style="margin-top: 100px !important; height: 75vh !important;">
+      <!-- ALERTAS-->
+      <form class="text-center border border-light p-5 w-50 bg-white rounded-lg" action="?controller=Login&accion=inUser" id="login" method="post">
+    <?php if (isset($mensajes)) {
+          foreach ($mensajes as $mensaje) : ?> 
+            <div class="alert alert-<?= $mensaje["tipo"] ?>"><?= $mensaje["mensaje"] ?></div>
+        <?php endforeach;
+    }?>
+    <!-- ALERTAS-->
   <section class="p-md-5 mx-md-5 text-center text-lg-left grey z-depth-1"
     style="background-image: url(https://mdbootstrap.com/img/Photos/Others/background2.jpg);">
     <div class="row d-flex justify-content-center">

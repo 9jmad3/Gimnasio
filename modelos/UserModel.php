@@ -310,26 +310,27 @@ class UserModel extends BaseModel
 
       try {
          //Inicializamos la transacción
-         $this->db->beginTransaction();
+         //$this->db->beginTransaction();
          //Definimos la instrucción SQL parametrizada 
-         $sql = "UPDATE usuarios SET nombre= :nombre, apellido1= :apellido1, apellido2= :apellido2, nif= :nif WHERE usuario=:usuario";
+         $sql = "UPDATE usuarios SET nif= :nif, nombre= :nombre, apellido1= :apellido1, apellido2= :apellido2, telefono= :telefono, direccion= :direccion  WHERE usuario= :usuario";
          $query = $this->db->prepare($sql);
+
          $query->execute([
-            'id' => $datos["id"],
-            'nombre' => $datos["nombre"],
-            'email' => $datos["email"],
-            'imagen' => $datos["imagen"],
             'nif' => $datos['dni'],
+            'nombre' => $datos["nombre"],
+            'apellido1'=> $datos["apellido1"],
+            'apellido2'=> $datos["apellido2"],
             'telefono' => $datos['telefono'],
-            'direccion' => $datos['direccion']
+            'direccion' => $datos['direccion'],
+            'usuario'=> $_COOKIE['usuario']
          ]);
          //Supervisamos si la inserción se realizó correctamente... 
          if ($query) {
-            $this->db->commit();  // commit() confirma los cambios realizados durante la transacción
+            //$this->db->commit();  // commit() confirma los cambios realizados durante la transacción
             $return["correcto"] = TRUE;
          } // o no :(
       } catch (PDOException $ex) {
-         $this->db->rollback(); // rollback() se revierten los cambios realizados durante la transacción
+         //$this->db->rollback(); // rollback() se revierten los cambios realizados durante la transacción
          $return["error"] = $ex->getMessage();
          //die();
       }

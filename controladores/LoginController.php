@@ -63,6 +63,9 @@ class LoginController extends BaseController
                session_start();
                $_SESSION['nombre'] = $parametros['datos'][0]['nombre'];
 
+               setcookie('usuario',$parametros['datos'][0]['usuario'],time() + (15 * 24 * 60 * 60));
+               //$_SESSION['usuario'] = $parametros['datos'][0]['usuario'];
+
                $this->view->show("paginaUsuario",$parametros);
             }
 
