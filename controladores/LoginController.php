@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 /**
  * Incluimos los modelos que necesite este controlador
  */
@@ -54,18 +54,31 @@ class LoginController extends BaseController
             if ($parametros['datos'][0]['rol_id'] == 0) {
                $parametros['pendientesActivacion']= $this->modelo->pendientesActivacion();
 
-               session_start();
+               
                $_SESSION['nombre'] = $parametros['datos'][0]['nombre'];
+               $_SESSION['perfilCompleto']=true;
                
                $this->view->show("paginaAdmin",$parametros);
             } 
             if($parametros['datos'][0]['rol_id'] == 1 || $parametros['datos'][0]['rol_id'] == 2){
-               session_start();
+
                $_SESSION['usuario'] = $usuario;
 
                $this->view->show("paginaUsuario",$parametros);
             }
 
+            $perfilCompleto = $this->modelo->perfilCompleto($_SESSION['usuario']);
+            if (is_null($perfilCompleto['datos']['nif']) || is_null($perfilCompleto['datos']['nombre']) || is_null($perfilCompleto['datos']['apellido1']) || is_null($perfilCompleto['datos']['apellido2']) || is_null($perfilCompleto['datos']['telefono']) || is_null($perfilCompleto['datos']['direccion'])) {
+               $_SESSION['perfilCompleto'] = false;
+               $_SESSION['nombre'] = $perfilCompleto['datos']['nombre'];
+               $_SESSION['apellido1'] = $perfilCompleto['datos']['apellido1'];
+               $_SESSION['apellido2'] = $perfilCompleto['datos']['apellido2'];
+               $_SESSION['dni'] = $perfilCompleto['datos']['nif'];
+               $_SESSION['telefono'] = $perfilCompleto['datos']['telefono'];
+               $_SESSION['direccion'] = $perfilCompleto['datos']['direccion'];
+            }else{
+               $_SESSION['perfilCompleto'] = true;
+            }
             
          } else {
             $this->mensajes[] = [

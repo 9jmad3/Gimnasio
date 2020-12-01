@@ -130,9 +130,9 @@ class UserController extends BaseController
       $errores = array();
       // Si se ha pulsado el botón guardar...
       if (isset($_POST) && !empty($_POST) && isset($_POST['submit'])) { // y hemos recibido las variables del formulario y éstas no están vacías...
-         $usuario = $_POST['txtusuario'];
+         $usuario = filter_var($_POST['txtusuario'],FILTER_SANITIZE_STRING);
          $password = $_POST['txtpassword']; //sha1();
-         $email = $_POST['txtemail'];
+         $email = filter_var($_POST['txtemail'],FILTER_SANITIZE_STRING);
 
          //Si no se cumple la expresión regular se genera un error especifico.
          if (!preg_match("/^[a-z0-9ü][a-z0-9ü_]{3,9}$/", $usuario)) {

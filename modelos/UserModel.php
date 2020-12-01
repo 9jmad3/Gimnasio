@@ -323,6 +323,7 @@ class UserModel extends BaseModel
             'direccion' => $datos['direccion'],
             'usuario'=> $_SESSION['usuario']
          ]);
+
          //Supervisamos si la inserción se realizó correctamente... 
          if ($query) {
             //$this->db->commit();  // commit() confirma los cambios realizados durante la transacción
@@ -360,6 +361,31 @@ class UserModel extends BaseModel
             //die();
          }
       }
+
+      return $return;
+   }
+
+   public function perfilCompleto()
+   {
+      $return = [
+         "correcto" => FALSE,
+         "datos" => NULL,
+         "error" => NULL
+      ];
+
+         try {
+            $sql = "SELECT * FROM usuarios WHERE usuario=:usuario";
+            $query = $this->db->prepare($sql);
+            $query->execute(['usuario' => $_SESSION['usuario']]);
+            //Supervisamos que la consulta se realizó correctamente... 
+            if ($query) {
+               $return["correcto"] = TRUE;
+               $return["datos"] = $query->fetch(PDO::FETCH_ASSOC);
+            } // o no :(
+         } catch (PDOException $ex) {
+            $return["error"] = $ex->getMessage();
+            //die();
+         }
 
       return $return;
    }

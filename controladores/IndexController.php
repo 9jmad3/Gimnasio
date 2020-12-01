@@ -1,4 +1,5 @@
 <?php
+session_start();
 /**
  * Controlador de la página index desde la que se puede hacer el login y el registro
  */
@@ -36,12 +37,12 @@ class IndexController extends BaseController
       $errores = array();
       // Si se ha pulsado el botón guardar...
       if (isset($_POST) && !empty($_POST) && isset($_POST['submit'])) { // y hemos recibido las variables del formulario y éstas no están vacías...
-         $nombre = $_POST['txtnombre'];
-         $apellido1 = $_POST['txtapellido1']; //sha1();
-         $apellido2 = $_POST['txtapellido2'];
-         $dni = $_POST['txtdni'];
-         $direccion = $_POST['txtdireccion'];
-         $telefono = $_POST['txttelefono'];
+         $nombre = filter_var($_POST['txtnombre'],FILTER_SANITIZE_STRING);
+         $apellido1 = filter_var($_POST['txtapellido1'],FILTER_SANITIZE_STRING); //sha1();
+         $apellido2 = filter_var($_POST['txtapellido2'],FILTER_SANITIZE_STRING);
+         $dni = filter_var($_POST['txtdni'],FILTER_SANITIZE_STRING);
+         $direccion = filter_var($_POST['txtdireccion'],FILTER_SANITIZE_STRING);
+         $telefono = filter_var($_POST['txttelefono'],FILTER_SANITIZE_STRING);
          /* Realizamos la carga de la imagen en el servidor */
          //       Comprobamos que el campo tmp_name tiene un valor asignado para asegurar que hemos
          //       recibido la imagen correctamente
@@ -77,6 +78,50 @@ class IndexController extends BaseController
                }
             }
          }
+
+         //Si no se cumple la expresión regular se genera un error especifico.
+         if (!preg_match("/^[a-zA-Z]{1,50}$/", $nombre)) {
+            $this->mensajes[] = [
+               "campo" => "nombre",
+               "tipo" => "danger",
+               "mensaje" => "Nombre no valido."
+            ];
+            $errores["nombre"] = "Error: No valido";
+            $parametros = ["mensajes" => $this->mensajes];
+         }
+
+         if (!preg_match("/^\d{8}[a-zA-Z]{1}$/", $dni)) {
+            $this->mensajes[] = [
+               "campo" => "dni",
+               "tipo" => "danger",
+               "mensaje" => "Nombre no valido."
+            ];
+            $errores["nombre"] = "Error: No valido";
+            $parametros = ["mensajes" => $this->mensajes];
+         }
+
+         if (!preg_match("/^[6-7]{1}[0-9]{8}$/", $telefono) && !preg_match("/^[8-9]{1}[0-9]{8}$/", $telefono)) {
+            $this->mensajes[] = [
+               "campo" => "telefono",
+               "tipo" => "danger",
+               "mensaje" => "Solo fijos nacionales o moviles."
+            ];
+            $errores["nombre"] = "Error: No valido";
+            $parametros = ["mensajes" => $this->mensajes];
+         }
+
+         if (!preg_match("/[a-zA-Z0-9_]{1,100}/", $direccion)) {
+            $this->mensajes[] = [
+               "campo" => "direccion",
+               "tipo" => "danger",
+               "mensaje" => "Nombre no valido."
+            ];
+            $errores["nombre"] = "Error: No valido";
+            $parametros = ["mensajes" => $this->mensajes];
+         }
+
+         if (count($errores) > 0) {$this->view->show("completarPerfil",$parametros);}
+
 
          // Si no se han producido errores realizamos el registro del usuario
          if (count($errores) == 0) {
@@ -118,10 +163,36 @@ class IndexController extends BaseController
          "mensajes" => $this->mensajes
       ];
       //Visualizamos la vista asociada al registro de usuarios
-      $this->view->show("completarPerfil",$parametros);
+      
+      $perfilCompleto = $this->modelo->perfilCompleto();
+
+      if (is_null($perfilCompleto['datos']['nif']) || is_null($perfilCompleto['datos']['nombre']) || is_null($perfilCompleto['datos']['apellido1']) || is_null($perfilCompleto['datos']['apellido2']) || is_null($perfilCompleto['datos']['telefono']) || is_null($perfilCompleto['datos']['direccion'])) {
+         $_SESSION['perfilCompleto'] = false;
+         $_SESSION['nombre'] = $perfilCompleto['datos']['nombre'];
+         $_SESSION['apellido1'] = $perfilCompleto['datos']['apellido1'];
+         $_SESSION['apellido2'] = $perfilCompleto['datos']['apellido2'];
+         $_SESSION['dni'] = $perfilCompleto['datos']['nif'];
+         $_SESSION['telefono'] = $perfilCompleto['datos']['telefono'];
+         $_SESSION['direccion'] = $perfilCompleto['datos']['direccion'];
+
+         $this->view->show("completarPerfil",$parametros);
+      }else{
+         $_SESSION['nombre'] = $perfilCompleto['datos']['nombre'];
+         $_SESSION['apellido1'] = $perfilCompleto['datos']['apellido1'];
+         $_SESSION['apellido2'] = $perfilCompleto['datos']['apellido2'];
+         $_SESSION['dni'] = $perfilCompleto['datos']['nif'];
+         $_SESSION['telefono'] = $perfilCompleto['datos']['telefono'];
+         $_SESSION['direccion'] = $perfilCompleto['datos']['direccion'];
+         $_SESSION['perfilCompleto'] = true;
+
+         $this->view->show("paginaUsuario",$parametros);
+      }
+      
+      
    }
 
    /**
     * Otras acciones que puedan ser necesarias
     */
+
 }
