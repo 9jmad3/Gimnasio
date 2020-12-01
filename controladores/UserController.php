@@ -121,6 +121,9 @@ class UserController extends BaseController
       $this->listaUsuariosNoValidados();
    }
 
+   /**
+    * Método de la clase controlador que realiza la inserción en la bdbb de un usuario con los tres campos basicos. usuario, password y email.
+    */
    public function adduser()
    {
       // Array asociativo que almacenará los mensajes de error que se generen por cada campo
@@ -131,6 +134,7 @@ class UserController extends BaseController
          $password = $_POST['txtpassword']; //sha1();
          $email = $_POST['txtemail'];
 
+         //Si no se cumple la expresión regular se genera un error especifico.
          if (!preg_match("/^[a-z0-9ü][a-z0-9ü_]{3,9}$/", $usuario)) {
             $this->mensajes[] = [
                "campo" => "usuario",
@@ -140,7 +144,7 @@ class UserController extends BaseController
             $errores["email"] = "Error: No valido";
             $parametros = ["mensajes" => $this->mensajes];
          }
-
+         //Si no se cumple la expresión regular se genera un error especifico.
          if (!preg_match("/^[^@]+@[^@]+\.[a-zA-Z]{2,}$/", $email)) {
             $this->mensajes[] = [
                "campo" => "email",
@@ -150,7 +154,7 @@ class UserController extends BaseController
             $errores["email"] = "Error: No valido";
             $parametros = ["mensajes" => $this->mensajes];
          }
-
+         //Si no se cumple la expresión regular se genera un error especifico.
          if (!preg_match("/^(?=\w*\d)(?=\w*[A-Z])(?=\w*[a-z])\S{8,16}$/", $password)) {
             $this->mensajes[] = [
                "campo" => "password",
@@ -160,92 +164,46 @@ class UserController extends BaseController
             $errores["password"] = "Error: No valido";
             $parametros = ["mensajes" => $this->mensajes];  
          }
-
-
-
+         //Si se ha generado algún error se retorna al inicio pasando el/los errores pertinentes.
          if (count($errores) > 0) {$this->view->show("inicio",$parametros);}
-
-         /* Realizamos la carga de la imagen en el servidor */
-         //       Comprobamos que el campo tmp_name tiene un valor asignado para asegurar que hemos
-         //       recibido la imagen correctamente
-         //       Definimos la variable $imagen que almacenará el nombre de imagen 
-         //       que almacenará la Base de Datos inicializada a NULL
-         $imagen = NULL;
-
-         if (isset($_FILES["imagen"]) && (!empty($_FILES["imagen"]["tmp_name"]))) {
-            // Verificamos la carga de la imagen
-            // Comprobamos si existe el directorio fotos, y si no, lo creamos
-            if (!is_dir("fotos")) {
-               $dir = mkdir("fotos", 0777, true);
-            } else {
-               $dir = true;
-            }
-            // Ya verificado que la carpeta uploads existe movemos el fichero seleccionado a dicha carpeta
-            if ($dir) {
-               //Para asegurarnos que el nombre va a ser único...
-               $nombrefichimg = time() . "-" . $_FILES["imagen"]["name"];
-               // Movemos el fichero de la carpeta temportal a la nuestra
-               $movfichimg = move_uploaded_file($_FILES["imagen"]["tmp_name"], "fotos/" . $nombrefichimg);
-               $imagen = $nombrefichimg;
-               // Verficamos que la carga se ha realizado correctamente
-               if ($movfichimg) {
-                  $imagencargada = true;
-               } else {
-                  $imagencargada = false;
-                  $this->mensajes[] = [
-                     "tipo" => "danger",
-                     "mensaje" => "Error: La imagen no se cargó correctamente! :("
-                  ];
-                  $errores["imagen"] = "Error: La imagen no se cargó correctamente! :(";
-               }
-            }
-         }
 
          // Si no se han producido errores realizamos el registro del usuario
          if (count($errores) == 0) {
             $resultModelo = $this->modelo->adduser([
                'usuario' => $usuario,
                "password" => $password,
-               'email' => $email,
-               'imagen' => $imagen
+               'email' => $email
             ]);
-            if ($resultModelo["correcto"]) :
-               $this->mensajes[] = [
-                  "tipo" => "success",
-                  "mensaje" => "El usuarios se registró correctamente!! :)"
-               ];
-            else :
-               if (strpos($resultModelo['error'], "email")) {
+               if ($resultModelo["correcto"]){
                   $this->mensajes[] = [
-                     "campo" => "email",
-                     "tipo" => "danger",
-                     "mensaje" => "Email asociado a cuenta existente"
+                     "tipo" => "success",
+                     "mensaje" => "El usuarios se registró correctamente!! :)"
                   ];
-                  $errores["email"] = "Error: Email ya existe";
-                  $parametros = ["mensajes" => $this->mensajes];
-               }
-               if (strpos($resultModelo['error'], "usuario")) {
-                  $this->mensajes[] = [
-                     "campo" => "usuario",
-                     "tipo" => "danger",
-                     "mensaje" => "Nombre de usuario en uso"
-                  ];
-                  $errores["usuario"] = "Error: Usuario ya existe";
-                  $parametros = ["mensajes" => $this->mensajes];
-               }
-               $this->view->show("inicio",$parametros);
-
-               // $this->mensajes[] = [
-               //    "tipo" => "danger",
-               //    "mensaje" => "El usuario no pudo registrarse!! :( <br />({$resultModelo["error"]})"
-               // ];
-            endif;
-         } else {
-            $this->mensajes[] = [
-               "tipo" => "danger",
-               "mensaje" => "Datos de registro de usuario erróneos!! :("
-            ];
-         }
+               }else{
+                     //Si se ha retornado un error con el campo email ya existente se genera el mensaje para mostrar al usuario.
+                     if (strpos($resultModelo['error'], "email")) {
+                        $this->mensajes[] = [
+                           "campo" => "email",
+                           "tipo" => "danger",
+                           "mensaje" => "Email asociado a cuenta existente"
+                        ];
+                        $errores["email"] = "Error: Email ya existe";
+                        $parametros = ["mensajes" => $this->mensajes];
+                     }
+                     //Si se ha retornado un error con el campo usuario ya existente se genera el mensaje para mostrar al usuario.
+                     if (strpos($resultModelo['error'], "usuario")) {
+                        $this->mensajes[] = [
+                           "campo" => "usuario",
+                           "tipo" => "danger",
+                           "mensaje" => "Nombre de usuario en uso"
+                        ];
+                        $errores["usuario"] = "Error: Usuario ya existe";
+                        $parametros = ["mensajes" => $this->mensajes];
+                     }
+                     //Retornamos errores a la vista principal.
+                     $this->view->show("inicio",$parametros);
+                  };
+         } 
       }
 
       if (count($errores) == 0){
@@ -254,10 +212,9 @@ class UserController extends BaseController
          $parametros = [
             "tituloventana" => "Base de Datos con PHP y PDO",
             "datos" => [
-               "txtnombre" => isset($nombre) ? $nombre : "",
+               "txtusuario" => isset($usuario) ? $usuario : "",
                "txtpass" => isset($password) ? $password : "",
-               "txtemail" => isset($email) ? $email : "",
-               "imagen" => isset($imagen) ? $imagen : ""
+               "txtemail" => isset($email) ? $email : ""
             ],
             "mensajes" => $this->mensajes
          ];
