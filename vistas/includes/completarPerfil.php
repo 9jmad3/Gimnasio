@@ -37,5 +37,7 @@
         <p>Al completar tu perfil un administrador verificará los datos y validará tu cuenta.
 
     </form>
+
+    <?php var_dump($_SESSION['usuario'])?>
     <!-- Default form register -->
 </div>

@@ -51,26 +51,45 @@
                     <i class="fas fa-user prefix grey-text"></i>
                     <input type="text" id="form3" class="form-control" name="txtusuario">
                     <label for="form3">Usuario</label>
+
+                    <?php if (isset($mensajes)) {
+                      foreach ($mensajes as $mensaje) : 
+                        if ($mensaje["campo"] == "usuario") {?>                         
+                          <div class="alert alert-<?= $mensaje["tipo"] ?>"><?= $mensaje["mensaje"] ?></div>
+                    <?php } endforeach;
+                    }?>
                   </div>
+
                   <div class="md-form">
                     <i class="fas fa-envelope prefix grey-text"></i>
                     <input type="text" id="form2" class="form-control" name="txtemail">
                     <label for="form2">Email</label>
+
+                    <?php if (isset($mensajes)) {
+                      foreach ($mensajes as $mensaje) : 
+                        if ($mensaje["campo"] == "email") {?>                         
+                          <div class="alert alert-<?= $mensaje["tipo"] ?>"><?= $mensaje["mensaje"] ?></div>
+                    <?php } endforeach;
+                    }?>
                   </div>
+
                   <div class="md-form">
                     <i class="fas fa-key prefix grey-text"></i>
                     <input type="password" id="password" class="form-control" name="txtpassword">
                     <label for="password">Contraseña</label>
+
+                    <?php if (isset($mensajes)) {
+                      foreach ($mensajes as $mensaje) : 
+                        if ($mensaje["campo"] == "password") {?>                         
+                          <div class="alert alert-<?= $mensaje["tipo"] ?>"><?= $mensaje["mensaje"] ?></div>
+                    <?php } endforeach;
+                    }?>
                   </div>
                   
 
                   <div class="text-center">
                     <button class="btn btn-indigo" type="submit"  name="submit">Enviar</button>
-                  </div>
-                  <?php
-                  session_start();
-                  $_SESSION['usuario'] = $_POST['txtusuario'];
-                  ?>
+                  </div>                    
                 </form>
                 <!-- Form -->
 

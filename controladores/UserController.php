@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 /**
  * Incluimos los modelos que necesite este controlador
  */
@@ -130,6 +130,41 @@ class UserController extends BaseController
          $usuario = $_POST['txtusuario'];
          $password = $_POST['txtpassword']; //sha1();
          $email = $_POST['txtemail'];
+
+         if (!preg_match("/^[a-z0-9ü][a-z0-9ü_]{3,9}$/", $usuario)) {
+            $this->mensajes[] = [
+               "campo" => "usuario",
+               "tipo" => "danger",
+               "mensaje" => "Usuario no valido. Caracteres alfanumericos de 3 a 9 veces."
+            ];
+            $errores["email"] = "Error: No valido";
+            $parametros = ["mensajes" => $this->mensajes];
+         }
+
+         if (!preg_match("/^[^@]+@[^@]+\.[a-zA-Z]{2,}$/", $email)) {
+            $this->mensajes[] = [
+               "campo" => "email",
+               "tipo" => "danger",
+               "mensaje" => "Email no valido"
+            ];
+            $errores["email"] = "Error: No valido";
+            $parametros = ["mensajes" => $this->mensajes];
+         }
+
+         if (!preg_match("/^(?=\w*\d)(?=\w*[A-Z])(?=\w*[a-z])\S{8,16}$/", $password)) {
+            $this->mensajes[] = [
+               "campo" => "password",
+               "tipo" => "danger",
+               "mensaje" => "Contraseña no valida Ej: 0aRaprueba"
+            ];
+            $errores["password"] = "Error: No valido";
+            $parametros = ["mensajes" => $this->mensajes];  
+         }
+
+
+
+         if (count($errores) > 0) {$this->view->show("inicio",$parametros);}
+
          /* Realizamos la carga de la imagen en el servidor */
          //       Comprobamos que el campo tmp_name tiene un valor asignado para asegurar que hemos
          //       recibido la imagen correctamente
@@ -180,10 +215,30 @@ class UserController extends BaseController
                   "mensaje" => "El usuarios se registró correctamente!! :)"
                ];
             else :
-               $this->mensajes[] = [
-                  "tipo" => "danger",
-                  "mensaje" => "El usuario no pudo registrarse!! :( <br />({$resultModelo["error"]})"
-               ];
+               if (strpos($resultModelo['error'], "email")) {
+                  $this->mensajes[] = [
+                     "campo" => "email",
+                     "tipo" => "danger",
+                     "mensaje" => "Email asociado a cuenta existente"
+                  ];
+                  $errores["email"] = "Error: Email ya existe";
+                  $parametros = ["mensajes" => $this->mensajes];
+               }
+               if (strpos($resultModelo['error'], "usuario")) {
+                  $this->mensajes[] = [
+                     "campo" => "usuario",
+                     "tipo" => "danger",
+                     "mensaje" => "Nombre de usuario en uso"
+                  ];
+                  $errores["usuario"] = "Error: Usuario ya existe";
+                  $parametros = ["mensajes" => $this->mensajes];
+               }
+               $this->view->show("inicio",$parametros);
+
+               // $this->mensajes[] = [
+               //    "tipo" => "danger",
+               //    "mensaje" => "El usuario no pudo registrarse!! :( <br />({$resultModelo["error"]})"
+               // ];
             endif;
          } else {
             $this->mensajes[] = [
@@ -193,18 +248,22 @@ class UserController extends BaseController
          }
       }
 
-      $parametros = [
-         "tituloventana" => "Base de Datos con PHP y PDO",
-         "datos" => [
-            "txtnombre" => isset($nombre) ? $nombre : "",
-            "txtpass" => isset($password) ? $password : "",
-            "txtemail" => isset($email) ? $email : "",
-            "imagen" => isset($imagen) ? $imagen : ""
-         ],
-         "mensajes" => $this->mensajes
-      ];
-      //Visualizamos la vista asociada al registro de usuarios
-      $this->view->show("completarPerfil",$parametros);
+      if (count($errores) == 0){
+         $_SESSION['usuario'] = $usuario;
+
+         $parametros = [
+            "tituloventana" => "Base de Datos con PHP y PDO",
+            "datos" => [
+               "txtnombre" => isset($nombre) ? $nombre : "",
+               "txtpass" => isset($password) ? $password : "",
+               "txtemail" => isset($email) ? $email : "",
+               "imagen" => isset($imagen) ? $imagen : ""
+            ],
+            "mensajes" => $this->mensajes
+         ];
+         //Visualizamos la vista asociada al registro de usuarios
+         $this->view->show("completarPerfil",$parametros);
+      }
    }
 
    /**
