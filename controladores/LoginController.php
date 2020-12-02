@@ -53,7 +53,7 @@ class LoginController extends BaseController
          $_SESSION['usuario'] = $usuario;
          $datos = $this->modelo->userValidado($usuario);
 
-         // if ($datos['datos']['rol_id']!=2) {
+         if ($datos['datos']['rol_id']!=2) {
 
             if ($resultado['correcto'] == TRUE) {
 
@@ -111,15 +111,15 @@ class LoginController extends BaseController
                $this->view->show("Login",$parametros);
             }
          
-         // }else{
-         //    $this->mensajes[] = [
-         //       "tipo" => "warning",
-         //       "mensaje" => "Usuario no validado."
-         //    ];
-         //    $parametros["mensajes"] = $this->mensajes;
+         }else{
+            $this->mensajes[] = [
+               "tipo" => "warning",
+               "mensaje" => "Usuario no validado."
+            ];
+            $parametros["mensajes"] = $this->mensajes;
 
-         //    $this->view->show("Login",$parametros);
-         // }
+            $this->view->show("Login",$parametros);
+         }
 
       }else {
          $this->view->show("Login");

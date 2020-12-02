@@ -184,7 +184,7 @@ class IndexController extends BaseController
          $this->view->show("completarPerfil",$parametros);
       }else{
          $_SESSION['perfilCompleto'] = true;
-         $this->view->show("paginaUsuario",$parametros);
+         $this->view->show("inicio",$parametros);
       }
       
       
