@@ -92,8 +92,11 @@
                     }?>
                   </div>
                   
+                  <div class="md-form pl-5">
+                    <div class="g-recaptcha" data-sitekey="6LfRLfYZAAAAAFtXRmQEdD2jCV8KBjlt-TgZxI5I"></div>
+                  </div>
 
-                  <div class="text-center">
+                  <div class="md-form text-center">
                     <button class="btn btn-indigo" type="submit"  name="submit">Enviar</button>
                   </div>                    
                 </form>
