@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 /**
  * Clase base para los controladores
  */

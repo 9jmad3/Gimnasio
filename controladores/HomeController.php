@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 /**
  * Controlador de la página de entrada al portal desde la que se pueden hacer las funciones que te permita tu rol
  */

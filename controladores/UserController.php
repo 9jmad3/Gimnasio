@@ -123,6 +123,7 @@ class UserController extends BaseController
 
    /**
     * Método de la clase controlador que realiza la inserción en la bdbb de un usuario con los tres campos basicos. usuario, password y email.
+    * TERMINADO / FUNCIONADO CORRECTAMENTE
     */
    public function adduser()
    {
@@ -431,6 +432,11 @@ class UserController extends BaseController
       $this->view->show("EditarPerfilAdmin", $parametros);
    }
    
+   public function cerrarSesion()
+   {
+      session_destroy();
+      $this->view->show("inicio");
+   }
 
    public function completarPerfil()
    {

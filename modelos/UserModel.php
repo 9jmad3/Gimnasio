@@ -306,7 +306,7 @@ class UserModel extends BaseModel
          "correcto" => FALSE,
          "error" => NULL
       ];
-
+      
       try {
          //Inicializamos la transacción
          //$this->db->beginTransaction();
@@ -381,6 +381,31 @@ class UserModel extends BaseModel
             if ($query) {
                $return["correcto"] = TRUE;
                $return["datos"] = $query->fetch(PDO::FETCH_ASSOC);
+            } // o no :(
+         } catch (PDOException $ex) {
+            $return["error"] = $ex->getMessage();
+            //die();
+         }
+
+      return $return;
+   }
+
+   public function userValidado($usuario)
+   {
+      $return = [
+         "correcto" => FALSE,
+         "datos" => NULL,
+         "error" => NULL
+      ];
+
+         try {
+            $sql = "SELECT rol_id FROM usuarios WHERE usuario=:usuario";
+            $query = $this->db->prepare($sql);
+            $query->execute(['usuario' => $usuario]);
+            //Supervisamos que la consulta se realizó correctamente... 
+            if ($query) {
+               $return["correcto"] = TRUE;
+               $return["datos"] = $query->fetch();
             } // o no :(
          } catch (PDOException $ex) {
             $return["error"] = $ex->getMessage();

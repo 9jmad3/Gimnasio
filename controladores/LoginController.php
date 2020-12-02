@@ -1,5 +1,4 @@
 <?php
-session_start();
 /**
  * Incluimos los modelos que necesite este controlador
  */
@@ -32,8 +31,14 @@ class LoginController extends BaseController
 
       if (isset($_POST['submit'])) {
          if (empty( $_POST['txtusuario']) || empty($_POST['txtpassword'])) {
-            $this->view->show("Login");
-            //TODO: Poner alerta de campos vacios.
+            
+            $this->mensajes[] = [
+               "tipo" => "danger",
+               "mensaje" => "¿No tienes cuenta? Necesitas registrarte"
+            ];
+            $parametros["mensajes"] = $this->mensajes;
+
+            $this->view->show("Login",$parametros);
          }
 
          $usuario = $_POST['txtusuario'];
@@ -45,53 +50,63 @@ class LoginController extends BaseController
                'password' => $password
             ]);
          }
+         $_SESSION['usuario'] = $usuario;
+         $datos = $this->modelo->userValidado($usuario);
 
-         if ($resultado['correcto'] == TRUE) {
+         if ($datos['datos']['rol_id']!=2) {
 
-            $parametros['datos'] = $resultado['datos'];
+            if ($resultado['correcto'] == TRUE) {
+               $parametros['datos'] = $resultado['datos'];
 
 
-            if ($parametros['datos'][0]['rol_id'] == 0) {
-               $parametros['pendientesActivacion']= $this->modelo->pendientesActivacion();
+               if ($parametros['datos'][0]['rol_id'] == 0) {
+                  $parametros['pendientesActivacion']= $this->modelo->pendientesActivacion();
 
+                  
+                  $_SESSION['nombre'] = $parametros['datos'][0]['nombre'];
+                  $_SESSION['perfilCompleto']=true;
+                  
+                  $this->view->show("paginaAdmin",$parametros);
+               } 
+               if($parametros['datos'][0]['rol_id'] == 1 || $parametros['datos'][0]['rol_id'] == 2){
+
+                  $_SESSION['usuario'] = $usuario;
+
+                  $this->view->show("paginaUsuario",$parametros);
+               }
+
+               $perfilCompleto = $this->modelo->perfilCompleto($_SESSION['usuario']);
+               if (is_null($perfilCompleto['datos']['nif']) || is_null($perfilCompleto['datos']['nombre']) || is_null($perfilCompleto['datos']['apellido1']) || is_null($perfilCompleto['datos']['apellido2']) || is_null($perfilCompleto['datos']['telefono']) || is_null($perfilCompleto['datos']['direccion'])) {
+                  $_SESSION['perfilCompleto'] = false;
+                  $_SESSION['nombre'] = $perfilCompleto['datos']['nombre'];
+                  $_SESSION['apellido1'] = $perfilCompleto['datos']['apellido1'];
+                  $_SESSION['apellido2'] = $perfilCompleto['datos']['apellido2'];
+                  $_SESSION['dni'] = $perfilCompleto['datos']['nif'];
+                  $_SESSION['telefono'] = $perfilCompleto['datos']['telefono'];
+                  $_SESSION['direccion'] = $perfilCompleto['datos']['direccion'];
+               }else{
+                  $_SESSION['perfilCompleto'] = true;
+               }
                
-               $_SESSION['nombre'] = $parametros['datos'][0]['nombre'];
-               $_SESSION['perfilCompleto']=true;
-               
-               $this->view->show("paginaAdmin",$parametros);
-            } 
-            if($parametros['datos'][0]['rol_id'] == 1 || $parametros['datos'][0]['rol_id'] == 2){
+            } else {
+               $this->mensajes[] = [
+                  "tipo" => "danger",
+                  "mensaje" => "Usuario o contraseña incorrectos"
+               ];
+               $parametros["mensajes"] = $this->mensajes;
 
-               $_SESSION['usuario'] = $usuario;
-
-               $this->view->show("paginaUsuario",$parametros);
+               $this->view->show("Login",$parametros);
             }
-
-            $perfilCompleto = $this->modelo->perfilCompleto($_SESSION['usuario']);
-            if (is_null($perfilCompleto['datos']['nif']) || is_null($perfilCompleto['datos']['nombre']) || is_null($perfilCompleto['datos']['apellido1']) || is_null($perfilCompleto['datos']['apellido2']) || is_null($perfilCompleto['datos']['telefono']) || is_null($perfilCompleto['datos']['direccion'])) {
-               $_SESSION['perfilCompleto'] = false;
-               $_SESSION['nombre'] = $perfilCompleto['datos']['nombre'];
-               $_SESSION['apellido1'] = $perfilCompleto['datos']['apellido1'];
-               $_SESSION['apellido2'] = $perfilCompleto['datos']['apellido2'];
-               $_SESSION['dni'] = $perfilCompleto['datos']['nif'];
-               $_SESSION['telefono'] = $perfilCompleto['datos']['telefono'];
-               $_SESSION['direccion'] = $perfilCompleto['datos']['direccion'];
-            }else{
-               $_SESSION['perfilCompleto'] = true;
-            }
-            
-         } else {
+         
+         }else{
             $this->mensajes[] = [
-               "tipo" => "success",
-               "mensaje" => "Usuario o contraseña incorrectos"
+               "tipo" => "warning",
+               "mensaje" => "Usuario no validado."
             ];
             $parametros["mensajes"] = $this->mensajes;
 
             $this->view->show("Login",$parametros);
-            //TODO: Poner alerta usuario o contraseña incorrectos
          }
-         
-
 
       }else {
          $this->view->show("Login");

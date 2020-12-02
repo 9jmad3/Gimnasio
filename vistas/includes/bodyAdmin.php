@@ -33,7 +33,6 @@
 
       </div>
       <!-- Grid column -->
-
        <!-- Grid column -->
        <div class="col-xl-3 col-md-6 mb-4">
         </div>
