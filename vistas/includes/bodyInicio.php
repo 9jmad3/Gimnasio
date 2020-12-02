@@ -46,6 +46,12 @@
                     <strong>Registro</strong>
                   </h3>
                   <hr>
+                  <?php if (isset($mensajes)) {
+                      foreach ($mensajes as $mensaje) : 
+                        if ($mensaje["campo"] == "nuevoUsuario") {?>                         
+                          <div class="alert alert-<?= $mensaje["tipo"] ?>"><?= $mensaje["mensaje"] ?></div>
+                    <?php } endforeach;
+                    }?>
 
                   <div class="md-form">
                     <i class="fas fa-user prefix grey-text"></i>

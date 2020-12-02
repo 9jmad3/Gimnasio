@@ -183,6 +183,13 @@ class IndexController extends BaseController
          $_SESSION['perfilCompleto'] = false;
          $this->view->show("completarPerfil",$parametros);
       }else{
+         $this->mensajes[] = [
+            "campo" => "nuevoUsuario",
+            "tipo" => "warning",
+            "mensaje" => "Un administrador validará tu perfil."
+         ];
+         $errores["nombre"] = "Error: No valido";
+         $parametros = ["mensajes" => $this->mensajes];
          $_SESSION['perfilCompleto'] = true;
          $this->view->show("inicio",$parametros);
       }
