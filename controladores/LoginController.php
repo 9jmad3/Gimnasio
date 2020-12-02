@@ -53,11 +53,24 @@ class LoginController extends BaseController
          $_SESSION['usuario'] = $usuario;
          $datos = $this->modelo->userValidado($usuario);
 
-         if ($datos['datos']['rol_id']!=2) {
+         // if ($datos['datos']['rol_id']!=2) {
 
             if ($resultado['correcto'] == TRUE) {
-               $parametros['datos'] = $resultado['datos'];
 
+
+               
+               //Implementación de la funcion recuerdame que guarda en usuario y contraseña en cookies. 
+               if(isset($_POST['recuerdo']) && ($_POST['recuerdo']=="on"))            { // Creamos las cookies para ambas variables
+                  setcookie('usuario',$usuario,time() + (15 * 24 * 60 * 60));
+                  setcookie('password',$password,time() + (15 * 24 * 60 * 60));
+                  setcookie('recuerdo',$_POST['recuerdo'],time() + (15 * 24 * 60 * 60));
+              } else{ // Eliminamos las cookies vaciandolas
+                  if(isset($_COOKIE['usuario'])) { setcookie('usuario',""); }
+                  if(isset($_COOKIE['password'])){ setcookie('password',""); }
+                  if(isset($_COOKIE['recuerdo'])){ setcookie('recuerdo',""); } 
+              }
+
+               $parametros['datos'] = $resultado['datos'];
 
                if ($parametros['datos'][0]['rol_id'] == 0) {
                   $parametros['pendientesActivacion']= $this->modelo->pendientesActivacion();
@@ -98,15 +111,15 @@ class LoginController extends BaseController
                $this->view->show("Login",$parametros);
             }
          
-         }else{
-            $this->mensajes[] = [
-               "tipo" => "warning",
-               "mensaje" => "Usuario no validado."
-            ];
-            $parametros["mensajes"] = $this->mensajes;
+         // }else{
+         //    $this->mensajes[] = [
+         //       "tipo" => "warning",
+         //       "mensaje" => "Usuario no validado."
+         //    ];
+         //    $parametros["mensajes"] = $this->mensajes;
 
-            $this->view->show("Login",$parametros);
-         }
+         //    $this->view->show("Login",$parametros);
+         // }
 
       }else {
          $this->view->show("Login");

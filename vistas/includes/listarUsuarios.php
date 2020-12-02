@@ -45,7 +45,7 @@
             <?php elseif ($d["rol_id"] == 1) : ?>
               <td>Standard</td>
             <?php elseif ($d["rol_id"] == 2) : ?>
-              <td></td>
+              <td>Por validar</td>
             <?php endif; ?> 
 
             <?php if ($d["imagen"] !== NULL) : ?>
@@ -53,8 +53,9 @@
               <?php else : ?>
                 <td>----</td>
             <?php endif; ?>
+
             <!-- Enviamos a actuser.php, mediante GET, el id del registro que deseamos editar o eliminar: -->
-            <td><a href="?controller=user&accion=actualizaruser&id=<?= $d['id'] ?>"><i class="fas fa-user-edit"></i> Editar </a><a href="?controller=user&accion=deluser&id=<?= $d['id'] ?>&vista=1"><i class="fas fa-trash-alt"></i> Eliminar</a></td>
+            <td><a href="?controller=user&accion=editarUsuario&usuario=<?= $d['usuario'] ?>"><i class="fas fa-user-edit"></i> Editar </a><br><a href="?controller=user&accion=deluser&id=<?= $d['id'] ?>&vista=1"><i class="fas fa-trash-alt"></i> Eliminar</a></td>
           </tr>
     <?php endforeach; ?>
 </table>

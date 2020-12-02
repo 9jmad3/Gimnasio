@@ -176,8 +176,8 @@ class IndexController extends BaseController
          "mensajes" => $this->mensajes
       ];
       //Visualizamos la vista asociada al registro de usuarios
-      
-      $perfilCompleto = $this->modelo->perfilCompleto();
+      $nulo = null;
+      $perfilCompleto = $this->modelo->perfilCompleto($nulo);
 
       if (is_null($perfilCompleto['datos']['nif']) || is_null($perfilCompleto['datos']['nombre']) || is_null($perfilCompleto['datos']['apellido1']) || is_null($perfilCompleto['datos']['apellido2']) || is_null($perfilCompleto['datos']['telefono']) || is_null($perfilCompleto['datos']['direccion'])) {
          $_SESSION['perfilCompleto'] = false;

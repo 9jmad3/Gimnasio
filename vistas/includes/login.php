@@ -15,16 +15,16 @@
     <p class="h4 mb-4">Iniciar sesion</p>
 
     <!-- Usuario -->
-    <input type="text" id="defaultLoginFormEmail" name="txtusuario" class="form-control mb-4" placeholder="">
+    <input type="text" id="defaultLoginFormEmail" name="txtusuario" class="form-control mb-4" placeholder="" value="<?php if(isset($_COOKIE['usuario'])) {echo$_COOKIE['usuario']; }?>">
 
     <!-- Password -->
-    <input type="password" id="defaultLoginFormPassword" name="txtpassword" class="form-control mb-4" placeholder="">
+    <input type="password" id="defaultLoginFormPassword" name="txtpassword" class="form-control mb-4" placeholder="" value="<?php if(isset($_COOKIE['password'])) {echo$_COOKIE['password']; } ?>">
 
     <div class="d-flex justify-content-around">
         <div>
             <!-- Remember me -->
             <div class="custom-control custom-checkbox">
-                <input type="checkbox" class="custom-control-input" id="defaultLoginFormRemember">
+                <input type="checkbox" class="custom-control-input" id="defaultLoginFormRemember" name="recuerdo" <?php if(isset($_COOKIE['recuerdo'])) {echo"checked";} ?>>
                 <label class="custom-control-label" for="defaultLoginFormRemember">Recuerdame</label>
             </div>
         </div>

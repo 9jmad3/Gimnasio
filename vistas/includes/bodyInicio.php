@@ -94,7 +94,7 @@
                 <!-- Form -->
 
               </div>
-
+<?php var_dump($_SESSION)?>
             </div>
             <!--/.Card-->
 

@@ -314,15 +314,30 @@ class UserModel extends BaseModel
          $sql = "UPDATE usuarios SET nif= :nif, nombre= :nombre, apellido1= :apellido1, apellido2= :apellido2, telefono= :telefono, direccion= :direccion  WHERE usuario= :usuario";
          $query = $this->db->prepare($sql);
 
-         $query->execute([
-            'nif' => $datos['dni'],
-            'nombre' => $datos["nombre"],
-            'apellido1'=> $datos["apellido1"],
-            'apellido2'=> $datos["apellido2"],
-            'telefono' => $datos['telefono'],
-            'direccion' => $datos['direccion'],
-            'usuario'=> $_SESSION['usuario']
-         ]);
+         if (!is_null($datos['usuario'])) {
+            $query->execute([
+               'nif' => $datos['dni'],
+               'nombre' => $datos["nombre"],
+               'apellido1'=> $datos["apellido1"],
+               'apellido2'=> $datos["apellido2"],
+               'telefono' => $datos['telefono'],
+               'direccion' => $datos['direccion'],
+               'usuario'=> $datos['usuario']
+            ]);
+         } else {
+            $query->execute([
+               'nif' => $datos['dni'],
+               'nombre' => $datos["nombre"],
+               'apellido1'=> $datos["apellido1"],
+               'apellido2'=> $datos["apellido2"],
+               'telefono' => $datos['telefono'],
+               'direccion' => $datos['direccion'],
+               'usuario'=> $_SESSION['usuario']
+            ]);
+         }
+         
+
+         
 
          //Supervisamos si la inserción se realizó correctamente... 
          if ($query) {
@@ -365,7 +380,7 @@ class UserModel extends BaseModel
       return $return;
    }
 
-   public function perfilCompleto()
+   public function perfilCompleto($usuario)
    {
       $return = [
          "correcto" => FALSE,
@@ -376,7 +391,15 @@ class UserModel extends BaseModel
          try {
             $sql = "SELECT * FROM usuarios WHERE usuario=:usuario";
             $query = $this->db->prepare($sql);
-            $query->execute(['usuario' => $_SESSION['usuario']]);
+
+            //depende de que metodo llame a este (perfilCompleto), se ejecutara la consulta de una determinada manera.
+            if (is_null($usuario)) {
+               $query->execute(['usuario' => $_SESSION['usuario']]);
+            } else {
+               $query->execute(['usuario' => $usuario]);
+            }
+            
+           
             //Supervisamos que la consulta se realizó correctamente... 
             if ($query) {
                $return["correcto"] = TRUE;

@@ -20,13 +20,13 @@
         <ul class="navbar-nav mr-auto">
           <li class="nav-item "> 
           <!-- active -->
-            <a class="nav-link" href="#">Ver horario
+            <a class="nav-link" href="#" <?php if($_SESSION['perfilCompleto'] == false){echo"hidden";}?>>Ver horario
             <span class="sr-only">(current)</span>
             </a>
           </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown"
-              aria-haspopup="true" aria-expanded="false">Clases dirigidas</a>
+              aria-haspopup="true" aria-expanded="false" <?php if($_SESSION['perfilCompleto'] == false){echo"hidden";}?>>Clases dirigidas</a>
             <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink">
               <a class="dropdown-item" href="?controller=User&accion=listaUsuarios">Nueva inscripcion</a>
               <a class="dropdown-item" href="?controller=User&accion=listaUsuariosNoValidados">Cancelar inscripcion</a>
@@ -34,7 +34,7 @@
             </div>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#location">Mensajes</a>
+            <a class="nav-link" href="#location" <?php if($_SESSION['perfilCompleto'] == false){echo"hidden";}?>>Mensajes</a>
           </li>
         </ul>
 

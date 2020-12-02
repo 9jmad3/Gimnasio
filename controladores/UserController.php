@@ -68,23 +68,20 @@ class UserController extends BaseController
       $this->view->show("ListadoUser", $parametros);
    }
 
-   public function actualizaruser()
-   {
-      $parametros = [
-         "tituloventana" => "Base de Datos con PHP y PDO",
-         "datos" => NULL,
-         "mensajes" => []
-      ];
+   /**
+    * Metodo que se usa para cargar los datos de un usuario especifico para que el administrador pueda editarlos.
+    */
+   public function editarUsuario()
+   {  
+      // Array asociativo que almacenará los mensajes de error que se generen por cada campo
+      $errores = array();
+      // Inicializamos valores de los campos de texto
+      $valnombre = "";
+      $valemail = "";
+      $valimagen = "";
 
-      $datos = [];
-      $datos['id'] = $_GET['id'];
-      $datos['rol_id'] = $_GET['rol_id'];
-
-      
-      $this->modelo->actualizaruser($datos);
-
-      
-      $this->listaUsuariosNoValidados();
+      $parametros['datos'] = $this->modelo->perfilCompleto($_GET['usuario']);     
+      $this->view->show("editarUsuario",$parametros);
    }
 
    /**
@@ -232,7 +229,7 @@ class UserController extends BaseController
    }
 
    /**
-    * Método de la clase controlador que permite actualizar los datos del usuario
+    * Método de la clase controlador que permite actualizar al administrador los datos del usuario
     * cuyo id coincide con el que se pasa como parámetro desde la vista de listado
     * a través de GET
     */
@@ -240,20 +237,20 @@ class UserController extends BaseController
    {
       // Array asociativo que almacenará los mensajes de error que se generen por cada campo
       $errores = array();
-      // Inicializamos valores de los campos de texto
-      $valnombre = "";
-      $valemail = "";
-      $valimagen = "";
+      // Si se ha pulsado el botón guardar...
+      if (isset($_POST) && !empty($_POST) && isset($_POST['submit'])) { // y hemos recibido las variables del formulario y éstas no están vacías...
+         $nombre = filter_var($_POST['txtnombre'],FILTER_SANITIZE_STRING);
+         $apellido1 = filter_var($_POST['txtapellido1'],FILTER_SANITIZE_STRING); //sha1();
+         $apellido2 = filter_var($_POST['txtapellido2'],FILTER_SANITIZE_STRING);
+         $dni = filter_var($_POST['txtdni'],FILTER_SANITIZE_STRING);
+         $direccion = filter_var($_POST['txtdireccion'],FILTER_SANITIZE_STRING);
+         $telefono = filter_var($_POST['txttelefono'],FILTER_SANITIZE_STRING);
 
-      // Si se ha pulsado el botón actualizar...
-      if (isset($_POST['submit'])) { //Realizamos la actualización con los datos existentes en los campos
-         $id = $_POST['id']; //Lo recibimos por el campo oculto
-         $nuevonombre = $_POST['txtnombre'];
-         $nuevoemail  = $_POST['txtemail'];
-         $nuevaimagen = "";
-
-         // Definimos la variable $imagen que almacenará el nombre de imagen 
-         // que almacenará la Base de Datos inicializada a NULL
+         /* Realizamos la carga de la imagen en el servidor */
+         //       Comprobamos que el campo tmp_name tiene un valor asignado para asegurar que hemos
+         //       recibido la imagen correctamente
+         //       Definimos la variable $imagen que almacenará el nombre de imagen 
+         //       que almacenará la Base de Datos inicializada a NULL
          $imagen = NULL;
 
          if (isset($_FILES["imagen"]) && (!empty($_FILES["imagen"]["tmp_name"]))) {
@@ -264,7 +261,7 @@ class UserController extends BaseController
             } else {
                $dir = true;
             }
-            // Ya verificado que la carpeta fotos existe movemos el fichero seleccionado a dicha carpeta
+            // Ya verificado que la carpeta uploads existe movemos el fichero seleccionado a dicha carpeta
             if ($dir) {
                //Para asegurarnos que el nombre va a ser único...
                $nombrefichimg = time() . "-" . $_FILES["imagen"]["name"];
@@ -275,38 +272,81 @@ class UserController extends BaseController
                if ($movfichimg) {
                   $imagencargada = true;
                } else {
-                  //Si no pudo moverse a la carpeta destino generamos un mensaje que se le
-                  //mostrará al usuario en la vista actuser
                   $imagencargada = false;
-                  $errores["imagen"] = "Error: La imagen no se cargó correctamente! :(";
                   $this->mensajes[] = [
                      "tipo" => "danger",
                      "mensaje" => "Error: La imagen no se cargó correctamente! :("
                   ];
+                  $errores["imagen"] = "Error: La imagen no se cargó correctamente! :(";
                }
             }
          }
-         $nuevaimagen = $imagen;
 
+         //Si no se cumple la expresión regular se genera un error especifico.
+         if (!preg_match("/^[a-zA-Z]{1,50}$/", $nombre)) {
+            $this->mensajes[] = [
+               "campo" => "nombre",
+               "tipo" => "danger",
+               "mensaje" => "Nombre no valido."
+            ];
+            $errores["nombre"] = "Error: No valido";
+            $parametros = ["mensajes" => $this->mensajes];
+         }
+
+         if (!preg_match("/^\d{8}[a-zA-Z]{1}$/", $dni)) {
+            $this->mensajes[] = [
+               "campo" => "dni",
+               "tipo" => "danger",
+               "mensaje" => "Dni no valido."
+            ];
+            $errores["nombre"] = "Error: No valido";
+            $parametros = ["mensajes" => $this->mensajes];
+         }
+
+         if (!preg_match("/^[6-7]{1}[0-9]{8}$/", $telefono) && !preg_match("/^[8-9]{1}[0-9]{8}$/", $telefono)) {
+            $this->mensajes[] = [
+               "campo" => "telefono",
+               "tipo" => "danger",
+               "mensaje" => "Solo fijos nacionales o moviles."
+            ];
+            $errores["nombre"] = "Error: No valido";
+            $parametros = ["mensajes" => $this->mensajes];
+         }
+
+         if (!preg_match("/[a-zA-Z0-9_]{1,100}/", $direccion)) {
+            $this->mensajes[] = [
+               "campo" => "direccion",
+               "tipo" => "danger",
+               "mensaje" => "Nombre no valido."
+            ];
+            $errores["nombre"] = "Error: No valido";
+            $parametros = ["mensajes" => $this->mensajes];
+         }
+         
+         if (count($errores) > 0) {$this->view->show("editarUsuario",$parametros);}
+ 
+         // Si no se han producido errores realizamos el registro del usuario
          if (count($errores) == 0) {
-            //Ejecutamos la instrucción de actualización a la que le pasamos los valores
+
             $resultModelo = $this->modelo->actuser([
-               'id' => $id,
-               'nombre' => $nuevonombre,
-               'email' => $nuevoemail,
-               'imagen' => $nuevaimagen
+               'nombre' => $nombre,
+               "apellido1" => $apellido1,
+               'apellido2' => $apellido2,
+               'dni' => $dni,
+               'direccion' => $direccion,
+               'telefono' => $telefono,
+               'usuario' => $_GET['usuario'] //Parametro opcional depende del metodo que haya ejecutado este.
             ]);
-            //Analizamos cómo finalizó la operación de registro y generamos un mensaje
-            //indicativo del estado correspondiente
+
             if ($resultModelo["correcto"]) :
                $this->mensajes[] = [
                   "tipo" => "success",
-                  "mensaje" => "El usuario se actualizó correctamente!! :)"
+                  "mensaje" => "El usuarios se registró correctamente!! :)"
                ];
             else :
                $this->mensajes[] = [
                   "tipo" => "danger",
-                  "mensaje" => "El usuario no pudo actualizarse!! :( <br/>({$resultModelo["error"]})"
+                  "mensaje" => "El usuario no pudo registrarse!! :( <br />({$resultModelo["error"]})"
                ];
             endif;
          } else {
@@ -316,47 +356,9 @@ class UserController extends BaseController
             ];
          }
 
-         // Obtenemos los valores para mostrarlos en los campos del formulario
-         $valnombre = $nuevonombre;
-         $valemail  = $nuevoemail;
-         $valimagen = $nuevaimagen;
-      } else { //Estamos rellenando los campos con los valores recibidos del listado
-         if (isset($_GET['id']) && (is_numeric($_GET['id']))) {
-            $id = $_GET['id'];
-            //Ejecutamos la consulta para obtener los datos del usuario #id
-            $resultModelo = $this->modelo->listausuario($id);
-            //Analizamos si la consulta se realiz´correctamente o no y generamos un
-            //mensaje indicativo
-            if ($resultModelo["correcto"]) :
-               $this->mensajes[] = [
-                  "tipo" => "success",
-                  "mensaje" => "Los datos del usuario se obtuvieron correctamente!! :)"
-               ];
-               $valnombre = $resultModelo["datos"]["nombre"];
-               $valemail  = $resultModelo["datos"]["email"];
-               $valimagen = $resultModelo["datos"]["imagen"];
-            else :
-               $this->mensajes[] = [
-                  "tipo" => "danger",
-                  "mensaje" => "No se pudieron obtener los datos de usuario!! :( <br/>({$resultModelo["error"]})"
-               ];
-            endif;
-         }
+         //$this->view->show("editarUsuario",$parametros);
+         $this->listaUsuarios();
       }
-      //Preparamos un array con todos los valores que tendremos que rellenar en
-      //la vista adduser: título de la página y campos del formulario
-      $parametros = [
-         "tituloventana" => "Base de Datos con PHP y PDO",
-         "datos" => [
-            "txtnombre" => $valnombre,
-            "txtemail"  => $valemail,
-            "imagen"    => $valimagen
-         ],
-         "mensajes" => $this->mensajes,
-         "id" => $id
-      ];
-      //Mostramos la vista actuser
-      $this->view->show("ActUser",$parametros);
    }
 
    public function listaUsuarios()
@@ -448,5 +450,24 @@ class UserController extends BaseController
    public function completarPerfil()
    {
       $this->view->show("completarPerfil");
+   }
+
+   public function actualizaruser()
+   {
+      $parametros = [
+         "tituloventana" => "Base de Datos con PHP y PDO",
+         "datos" => NULL,
+         "mensajes" => []
+      ];
+
+      $datos = [];
+      $datos['id'] = $_GET['id'];
+      $datos['rol_id'] = $_GET['rol_id'];
+
+      
+      $this->modelo->actualizaruser($datos);
+
+      
+      $this->listaUsuariosNoValidados();
    }
 }
