@@ -1,6 +1,6 @@
 
 <div class="container-fluid mt-5" style="margin-top: 100px !important; height: 70vh;">
-
+<H2 class="text-center pb-1">TODOS LOS USUARIOS</H2>
 <!--Mostramos los mensajes que se hayan generado al realizar el listado-->
 
 <?php if (isset($mensajes)) {
@@ -54,7 +54,7 @@
                 <td>----</td>
             <?php endif; ?>
             <!-- Enviamos a actuser.php, mediante GET, el id del registro que deseamos editar o eliminar: -->
-            <td><a href="?controller=user&accion=actualizaruser&id=<?= $d['id'] ?>"><i class="fas fa-user-edit"></i> Editar </a><a href="?controller=user&accion=deluser&id=<?= $d['id'] ?>"><i class="fas fa-trash-alt"></i> Eliminar</a></td>
+            <td><a href="?controller=user&accion=actualizaruser&id=<?= $d['id'] ?>"><i class="fas fa-user-edit"></i> Editar </a><a href="?controller=user&accion=deluser&id=<?= $d['id'] ?>&vista=1"><i class="fas fa-trash-alt"></i> Eliminar</a></td>
           </tr>
     <?php endforeach; ?>
 </table>

@@ -1,6 +1,6 @@
 
 <div class="container-fluid mt-5" style="margin-top: 100px !important; height: 70vh;">
-
+<H2 class="text-center pb-1">USUARIOS NO VALIDADOS</H2>
 <!--Mostramos los mensajes que se hayan generado al realizar el listado-->
 
 <?php if (isset($mensajes)) {

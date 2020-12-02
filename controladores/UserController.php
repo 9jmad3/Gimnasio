@@ -117,8 +117,15 @@ class UserController extends BaseController
             "mensaje" => "No se pudo acceder al id del usuario a eliminar!! :("
          ];
       }
-      //Realizamos el listado de los usuarios
-      $this->listaUsuariosNoValidados();
+
+      if ($_GET['vista'] == 1) {
+         $this->listaUsuarios();
+      } else {
+         $this->listaUsuariosNoValidados();
+      }
+      
+      
+      
    }
 
    /**
