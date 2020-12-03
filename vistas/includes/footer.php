@@ -46,6 +46,9 @@
   <h6 class="mt-1">Adaptado y personalizado por JMAD</h6>
 </div>
 <!--/.Copyright-->
-
+  <?php 
+    /**Librerias externas para Qr y demás */
+  
+  ?>
 </footer>
 <!--/.Footer-->

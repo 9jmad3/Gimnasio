@@ -5,8 +5,11 @@
  * que requiere (incluye) la clase
  * @return void
  */
+require 'vendor/autoload.php';
+
 spl_autoload_register(function ($nombre) {
    require 'core/' . $nombre . '.php';
+   
 });
 
 try {

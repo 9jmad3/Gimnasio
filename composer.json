@@ -1,0 +1,13 @@
+{
+    "name": "root/gimnasio",
+    "description": "Practica Primera Evaluacion DWES PHP",
+    "authors": [
+        {
+            "name": "Jose Manuel",
+            "email": "josemanuelalejandrod@gmail.com"
+        }
+    ],
+    "require": {
+        "endroid/qr-code": "^3.9"
+    }
+}
