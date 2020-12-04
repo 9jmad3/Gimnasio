@@ -131,101 +131,147 @@ class UserController extends BaseController
     */
    public function adduser()
    {
-      // Array asociativo que almacenará los mensajes de error que se generen por cada campo
+
       $errores = array();
-      // Si se ha pulsado el botón guardar...
-      if (isset($_POST) && !empty($_POST) && isset($_POST['submit'])) { // y hemos recibido las variables del formulario y éstas no están vacías...
-         $usuario = filter_var($_POST['txtusuario'],FILTER_SANITIZE_STRING);
-         $password = $_POST['txtpassword']; //sha1();
-         $email = filter_var($_POST['txtemail'],FILTER_SANITIZE_STRING);
+      //CAPTCHA
+      $secret = "6LfRLfYZAAAAAPCGrD5YeHyQaCQd-JJ-VnlVhNKp";
+      $response = null;
+      // comprueba la clave secreta
+      $reCaptcha = new ReCaptcha($secret);
+     
+      if ($_POST["g-recaptcha-response"]) {
+          $response = $reCaptcha->verifyResponse(
+          $_SERVER["REMOTE_ADDR"],
+          $_POST["g-recaptcha-response"]
+          );
+       }
+      
+     
+      if ($response != null && $response->success) {
+         // Array asociativo que almacenará los mensajes de error que se generen por cada campo
+      
+            // Si se ha pulsado el botón guardar...
+            if (isset($_POST) && !empty($_POST) && isset($_POST['submit'])) { // y hemos recibido las variables del formulario y éstas no están vacías...
+               $usuario = filter_var($_POST['txtusuario'],FILTER_SANITIZE_STRING);
+               $password = $_POST['txtpassword']; //sha1();
+               $email = filter_var($_POST['txtemail'],FILTER_SANITIZE_STRING);
 
-         //Si no se cumple la expresión regular se genera un error especifico.
-         if (!preg_match("/^[a-z0-9ü][a-z0-9ü_]{3,9}$/", $usuario)) {
-            $this->mensajes[] = [
-               "campo" => "usuario",
-               "tipo" => "danger",
-               "mensaje" => "Usuario no valido. Caracteres alfanumericos de 3 a 9 veces."
-            ];
-            $errores["email"] = "Error: No valido";
-            $parametros = ["mensajes" => $this->mensajes];
-         }
-         //Si no se cumple la expresión regular se genera un error especifico.
-         if (!preg_match("/^[^@]+@[^@]+\.[a-zA-Z]{2,}$/", $email)) {
-            $this->mensajes[] = [
-               "campo" => "email",
-               "tipo" => "danger",
-               "mensaje" => "Email no valido"
-            ];
-            $errores["email"] = "Error: No valido";
-            $parametros = ["mensajes" => $this->mensajes];
-         }
-         //Si no se cumple la expresión regular se genera un error especifico.
-         if (!preg_match("/^(?=\w*\d)(?=\w*[A-Z])(?=\w*[a-z])\S{8,16}$/", $password)) {
-            $this->mensajes[] = [
-               "campo" => "password",
-               "tipo" => "danger",
-               "mensaje" => "Contraseña no valida Ej: 0aRaprueba"
-            ];
-            $errores["password"] = "Error: No valido";
-            $parametros = ["mensajes" => $this->mensajes];  
-         }
-         //Si se ha generado algún error se retorna al inicio pasando el/los errores pertinentes.
-         if (count($errores) > 0) {$this->view->show("inicio",$parametros);}
-
-         // Si no se han producido errores realizamos el registro del usuario
-         if (count($errores) == 0) {
-            $resultModelo = $this->modelo->adduser([
-               'usuario' => $usuario,
-               "password" => $password,
-               'email' => $email
-            ]);
-               if ($resultModelo["correcto"]){
+               //Si no se cumple la expresión regular se genera un error especifico.
+               if (!preg_match("/^[a-z0-9ü][a-z0-9ü_]{3,9}$/", $usuario)) {
                   $this->mensajes[] = [
-                     "tipo" => "success",
-                     "mensaje" => "El usuarios se registró correctamente!! :)"
+                     "campo" => "usuario",
+                     "tipo" => "danger",
+                     "mensaje" => "Usuario no valido. Caracteres alfanumericos de 3 a 9 veces."
                   ];
-               }else{
-                     //Si se ha retornado un error con el campo email ya existente se genera el mensaje para mostrar al usuario.
-                     if (strpos($resultModelo['error'], "email")) {
-                        $this->mensajes[] = [
-                           "campo" => "email",
-                           "tipo" => "danger",
-                           "mensaje" => "Email asociado a cuenta existente"
-                        ];
-                        $errores["email"] = "Error: Email ya existe";
-                        $parametros = ["mensajes" => $this->mensajes];
-                     }
-                     //Si se ha retornado un error con el campo usuario ya existente se genera el mensaje para mostrar al usuario.
-                     if (strpos($resultModelo['error'], "usuario")) {
-                        $this->mensajes[] = [
-                           "campo" => "usuario",
-                           "tipo" => "danger",
-                           "mensaje" => "Nombre de usuario en uso"
-                        ];
-                        $errores["usuario"] = "Error: Usuario ya existe";
-                        $parametros = ["mensajes" => $this->mensajes];
-                     }
-                     //Retornamos errores a la vista principal.
-                     $this->view->show("inicio",$parametros);
-                  };
-         } 
-      }
+                  $errores["email"] = "Error: No valido";
+                  $parametros = ["mensajes" => $this->mensajes];
+               }
+               //Si no se cumple la expresión regular se genera un error especifico.
+               if (!preg_match("/^[^@]+@[^@]+\.[a-zA-Z]{2,}$/", $email)) {
+                  $this->mensajes[] = [
+                     "campo" => "email",
+                     "tipo" => "danger",
+                     "mensaje" => "Email no valido"
+                  ];
+                  $errores["email"] = "Error: No valido";
+                  $parametros = ["mensajes" => $this->mensajes];
+               }
+               //Si no se cumple la expresión regular se genera un error especifico.
+               if (!preg_match("/^(?=\w*\d)(?=\w*[A-Z])(?=\w*[a-z])\S{8,16}$/", $password)) {
+                  $this->mensajes[] = [
+                     "campo" => "password",
+                     "tipo" => "danger",
+                     "mensaje" => "Contraseña no valida Ej: 0aRaprueba"
+                  ];
+                  $errores["password"] = "Error: No valido";
+                  $parametros = ["mensajes" => $this->mensajes];  
+               }
+               //Si se ha generado algún error se retorna al inicio pasando el/los errores pertinentes.
+               if (count($errores) > 0) {$this->view->show("inicio",$parametros);}
 
-      if (count($errores) == 0){
-         $_SESSION['usuario'] = $usuario;
+               // Si no se han producido errores realizamos el registro del usuario
+               if (count($errores) == 0) {
+                  $resultModelo = $this->modelo->adduser([
+                     'usuario' => $usuario,
+                     "password" => $password,
+                     'email' => $email
+                  ]);
+                     if ($resultModelo["correcto"]){
+                        $this->mensajes[] = [
+                           "tipo" => "success",
+                           "mensaje" => "El usuarios se registró correctamente!! :)"
+                        ];
+                     }else{
+                           //Si se ha retornado un error con el campo email ya existente se genera el mensaje para mostrar al usuario.
+                           if (strpos($resultModelo['error'], "email")) {
+                              $this->mensajes[] = [
+                                 "campo" => "email",
+                                 "tipo" => "danger",
+                                 "mensaje" => "Email asociado a cuenta existente"
+                              ];
+                              $errores["email"] = "Error: Email ya existe";
+                              $parametros = ["mensajes" => $this->mensajes];
+                           }
+                           //Si se ha retornado un error con el campo usuario ya existente se genera el mensaje para mostrar al usuario.
+                           if (strpos($resultModelo['error'], "usuario")) {
+                              $this->mensajes[] = [
+                                 "campo" => "usuario",
+                                 "tipo" => "danger",
+                                 "mensaje" => "Nombre de usuario en uso"
+                              ];
+                              $errores["usuario"] = "Error: Usuario ya existe";
+                              $parametros = ["mensajes" => $this->mensajes];
+                           }
+                           //Retornamos errores a la vista principal.
+                           $this->view->show("inicio",$parametros);
+                        };
+               } 
+            }
 
-         $parametros = [
-            "tituloventana" => "Base de Datos con PHP y PDO",
-            "datos" => [
-               "txtusuario" => isset($usuario) ? $usuario : "",
-               "txtpass" => isset($password) ? $password : "",
-               "txtemail" => isset($email) ? $email : ""
-            ],
-            "mensajes" => $this->mensajes
+            if (count($errores) == 0){
+               $_SESSION['usuario'] = $usuario;
+
+               // $parametros = [
+               //    "tituloventana" => "Base de Datos con PHP y PDO",
+               //    "datos" => [
+               //       "txtusuario" => isset($usuario) ? $usuario : "",
+               //       "txtpass" => isset($password) ? $password : "",
+               //       "txtemail" => isset($email) ? $email : ""
+               //    ],
+               //    "mensajes" => $this->mensajes
+               // ];
+               //Visualizamos la vista asociada al registro de usuarios
+               $this->mensajes[] = [
+                  "campo" => "nuevoUsuario",
+                  "tipo" => "warning",
+                  "mensaje" => "Un administrador validará tu perfil."
+               ];
+               $errores["nombre"] = "Error: No valido";
+               $parametros = ["mensajes" => $this->mensajes];
+               $_SESSION['perfilCompleto'] = true;
+               $this->view->show("inicio",$parametros);
+            }
+      } else {
+         // Si el código no es válido, lanzamos mensaje de error al usuario
+         $this->mensajes[] = [
+            "campo" => "captcha",
+            "tipo" => "danger",
+            "mensaje" => "No aceptamos robots."
          ];
-         //Visualizamos la vista asociada al registro de usuarios
-         $this->view->show("completarPerfil",$parametros);
-      }
+         $errores["email"] = "Error: No valido";
+         $parametros = ["mensajes" => $this->mensajes];
+         $this->view->show("inicio",$parametros);
+   }
+
+
+
+
+
+
+
+
+
+      
    }
 
    /**

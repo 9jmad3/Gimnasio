@@ -96,6 +96,13 @@
                     <div class="g-recaptcha" data-sitekey="6LfRLfYZAAAAAFtXRmQEdD2jCV8KBjlt-TgZxI5I"></div>
                   </div>
 
+                  <?php if (isset($mensajes)) {
+                      foreach ($mensajes as $mensaje) : 
+                        if ($mensaje["captcha"] == "nuevoUsuario") {?>                         
+                          <div class="alert alert-<?= $mensaje["tipo"] ?>"><?= $mensaje["mensaje"] ?></div>
+                    <?php } endforeach;
+                    }?>
+
                   <div class="md-form text-center">
                     <button class="btn btn-indigo" type="submit"  name="submit">Enviar</button>
                   </div>                    

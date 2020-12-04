@@ -6,6 +6,7 @@
  * @return void
  */
 require 'vendor/autoload.php';
+require_once "core/captcha.php";
 
 spl_autoload_register(function ($nombre) {
    require 'core/' . $nombre . '.php';

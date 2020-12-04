@@ -51,7 +51,7 @@
         </a>
         <div class="dropdown-menu dropdown-menu-lg-right dropdown-secondary"
           aria-labelledby="navbarDropdownMenuLink-55">
-          <a class="dropdown-item" href="?controller=User&accion=completarPerfil" <?php if($_SESSION['perfilCompleto'] == true){echo"hidden";}?>>Editar perfil</a>
+          <a class="dropdown-item" href="?controller=User&accion=completarPerfil">Editar perfil</a>
           <a class="dropdown-item" href="?controller=User&accion=cerrarSesion">Cerrar sesion</a>
         </div>
       </li>

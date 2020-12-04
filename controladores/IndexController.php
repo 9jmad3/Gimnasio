@@ -191,7 +191,7 @@ class IndexController extends BaseController
          $errores["nombre"] = "Error: No valido";
          $parametros = ["mensajes" => $this->mensajes];
          $_SESSION['perfilCompleto'] = true;
-         $this->view->show("inicio",$parametros);
+         $this->view->show("paginaUsuario",$parametros);
       }
       
       
