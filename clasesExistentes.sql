@@ -34,7 +34,9 @@ CREATE TABLE `clasesExistentes` (
   `idUsuario` varchar(50) NOT NULL,
   `Dia` varchar(10) NOT NULL,
   `duracion` int(2) NOT NULL,
-  `horaInicio` varchar(5) NOT NULL
+  `horaInicio` varchar(5) NOT NULL,
+  `horaFin` varchar(5) NOT NULL
+
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 --
 -- Índices para tablas volcadas
