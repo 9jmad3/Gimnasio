@@ -115,6 +115,39 @@ class UserModel extends BaseModel
     * -'error': almacena el mensaje asociado a una situación errónea (excepción) 
     * @return type
     */
+    public function listadoClases()
+    {
+       $return = [
+          "correcto" => FALSE,
+          "datos" => NULL,
+          "error" => NULL
+       ];
+       //Realizamos la consulta...
+       try {  //Definimos la instrucción SQL  
+          $sql = "SELECT * FROM clasesExistentes";
+          // Hacemos directamente la consulta al no tener parámetros
+          $resultsquery = $this->db->query($sql);
+          //Supervisamos si la inserción se realizó correctamente... 
+          if ($resultsquery) :
+             $return["correcto"] = TRUE;
+             $return["datos"] = $resultsquery->fetchAll(PDO::FETCH_ASSOC);
+          endif; // o no :(
+       } catch (PDOException $ex) {
+          $return["error"] = $ex->getMessage();
+       }
+ 
+       return $return;
+    }
+
+
+   /**
+    * Función que realiza el listado de todos los usuarios registrados
+    * Devuelve un array asociativo con tres campos:
+    * -'correcto': indica si el listado se realizó correctamente o no.
+    * -'datos': almacena todos los datos obtenidos de la consulta.
+    * -'error': almacena el mensaje asociado a una situación errónea (excepción) 
+    * @return type
+    */
     public function listadoNoValidados()
     {
        $return = [

@@ -8,6 +8,8 @@ class HomeController extends BaseController
    public function __construct()
    {
       parent::__construct();
+      // $this->modelo = new UserModel();
+      //$this->mensajes = [];
    }
 
    public function index()
@@ -17,4 +19,6 @@ class HomeController extends BaseController
       ];
       $this->view->show("inicio", $parametros);
    }
+
+   
 }

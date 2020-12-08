@@ -201,4 +201,38 @@ class IndexController extends BaseController
     * Otras acciones que puedan ser necesarias
     */
 
+    public function listarHorario()
+   {
+      
+      // Almacenamos en el array 'parametros[]'los valores que vamos a mostrar en la vista
+      $parametros = [
+         "tituloventana" => "Base de Datos con PHP y PDO",
+         "datos" => NULL,
+         "mensajes" => []
+      ];
+      // Realizamos la consulta y almacenamos los resultados en la variable $resultModelo
+      $resultModelo = $this->modelo->listadoClases();
+      // Si la consulta se realizó correctamente transferimos los datos obtenidos
+      // de la consulta del modelo ($resultModelo["datos"]) a nuestro array parámetros
+      // ($parametros["datos"]), que será el que le pasaremos a la vista para visualizarlos
+      if ($resultModelo["correcto"]) :
+         $parametros["datos"] = $resultModelo["datos"];
+         //Definimos el mensaje para el alert de la vista de que todo fue correctamente
+         $this->mensajes[] = [
+            "tipo" => "success",
+            "mensaje" => "El listado se realizó correctamente"
+         ];
+      else :
+         //Definimos el mensaje para el alert de la vista de que se produjeron errores al realizar el listado
+         $this->mensajes[] = [
+            "tipo" => "danger",
+            "mensaje" => "El listado no pudo realizarse correctamente!! :( <br/>({$resultModelo["error"]})"
+         ];
+      endif;
+      //Asignamos al campo 'mensajes' del array de parámetros el valor del atributo 
+      //'mensaje', que recoge cómo finalizó la operación:
+      $parametros["mensajes"] = $this->mensajes;
+      // Incluimos la vista en la que visualizaremos los datos o un mensaje de error
+      $this->view->show("ListarClases", $parametros);
+   }
 }

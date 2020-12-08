@@ -261,17 +261,7 @@ class UserController extends BaseController
          $errores["email"] = "Error: No valido";
          $parametros = ["mensajes" => $this->mensajes];
          $this->view->show("inicio",$parametros);
-   }
-
-
-
-
-
-
-
-
-
-      
+      }   
    }
 
    /**
@@ -516,4 +506,5 @@ class UserController extends BaseController
       
       $this->listaUsuariosNoValidados();
    }
+
 }
