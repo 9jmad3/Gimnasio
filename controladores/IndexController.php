@@ -203,12 +203,12 @@ class IndexController extends BaseController
 
     public function listarHorario()
    {
-      
       // Almacenamos en el array 'parametros[]'los valores que vamos a mostrar en la vista
       $parametros = [
          "tituloventana" => "Base de Datos con PHP y PDO",
          "datos" => NULL,
-         "mensajes" => []
+         "mensajes" => [],
+         "horario" => ["09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "13:00", "17:00", "17:30", "18:00", "18:30", "19:00", "19:30", "20:00", "20:30", "21:00"]
       ];
       // Realizamos la consulta y almacenamos los resultados en la variable $resultModelo
       $resultModelo = $this->modelo->listadoClases();
@@ -216,6 +216,13 @@ class IndexController extends BaseController
       // de la consulta del modelo ($resultModelo["datos"]) a nuestro array parámetros
       // ($parametros["datos"]), que será el que le pasaremos a la vista para visualizarlos
       if ($resultModelo["correcto"]) :
+
+         foreach ($resultModelo["datos"] as $key => $value) {
+            $horas[$key] = $value['horaInicio'];
+         }
+
+         array_multisort($horas, SORT_ASC, $resultModelo["datos"]);
+
          $parametros["datos"] = $resultModelo["datos"];
          //Definimos el mensaje para el alert de la vista de que todo fue correctamente
          $this->mensajes[] = [

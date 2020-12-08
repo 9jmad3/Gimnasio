@@ -32,7 +32,7 @@ CREATE TABLE `clasesExistentes` (
   `id` int(11) NOT NULL,
   `idClase` int(11) NOT NULL,
   `idUsuario` varchar(50) NOT NULL,
-  `Anotaciones` varchar(100) NULL,
+  `Dia` varchar(10) NOT NULL,
   `duracion` int(2) NOT NULL,
   `horaInicio` varchar(5) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
