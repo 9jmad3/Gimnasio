@@ -223,6 +223,10 @@ class IndexController extends BaseController
 
          array_multisort($horas, SORT_ASC, $resultModelo["datos"]);
 
+         
+
+
+
          $parametros["datos"] = $resultModelo["datos"];
          //Definimos el mensaje para el alert de la vista de que todo fue correctamente
          $this->mensajes[] = [

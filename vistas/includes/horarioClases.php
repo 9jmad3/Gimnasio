@@ -26,15 +26,16 @@
                         <?= $d?>
                     </td> 
                     <td>
+                        
                         <?php foreach ($datos as $clase) :?>
-                            <?php if ($clase["Dia"] == 'Lunes' && $clase['horaInicio'] == $d) : ?>
+                            <?php if ($clase["Dia"] == 'Lunes' && $clase['horaInicio'] == $d || $clase["Dia"] == 'Lunes' &&  $clase['horaFin'] > $d && $clase['horaInicio'] < $d) : ?>
                                 <?php if ($clase['idClase'] == 1) : ?>
                                     <a href="?controller=user&accion=editarUsuario&usuario=<?= $datos[$contador]['id'] ?>">
-                                        <button type="button" class="btn btn-indigo btn-sm m-0">BodyPump</button>
+                                        <button type="button" class="btn btn-indigo btn-sm m-0">BodyPump <?php?> min</button>
                                     </a>
                                 <?php elseif ($clase["idClase"] == 2) : ?>
                                     <a href="?controller=user&accion=editarUsuario&usuario=<?= $datos[$contador]['id'] ?>">
-                                        <button type="button" class="btn btn-danger btn-sm m-0">BodyCombat</button>
+                                        <button type="button" class="btn btn-danger btn-sm m-0">BodyCombat <?php $clase['duracion']?> min</button>
                                     </a>
                                 <?php elseif ($clase['idClase'] == 3) : ?>
                                     <a href="?controller=user&accion=editarUsuario&usuario=<?= $datos[$contador]['id'] ?>">
@@ -42,11 +43,11 @@
                                     </a>
                                 <?php elseif ($clase["idClase"] == 4) : ?>
                                     <a href="?controller=user&accion=editarUsuario&usuario=<?= $datos[$contador]['id'] ?>">
-                                        <button type="button" class="btn btn-pink btn-sm m-0">Yoga</button>
+                                        <button type="button" class="btn btn-pink btn-sm m-0">Yoga <?php $clase['duracion']?> min</button>
                                     </a>
                                 <?php elseif ($clase["idClase"] == 5) : ?>
                                     <a href="?controller=user&accion=editarUsuario&usuario=<?= $datos[$contador]['id'] ?>">
-                                        <button type="button" class="btn btn-light-blue btn-sm m-0">Cycling</button>
+                                        <button type="button" class="btn btn-light-blue btn-sm m-0">Cycling <?php $clase['duracion']?> min</button>
                                     </a>
                                 <?php endif; $vacio = false;?> 
                             <?php  endif; ?> 
@@ -60,7 +61,7 @@
 
                     <td>
                         <?php foreach ($datos as $clase) :?>
-                            <?php if ($clase["Dia"] == 'Martes' && $clase['horaInicio'] == $d) : ?>
+                            <?php if ($clase["Dia"] == 'Martes' && $clase['horaInicio'] == $d || $clase["Dia"] == 'Martes' &&  $clase['horaFin'] > $d && $clase['horaInicio'] < $d /*|| $clase["Dia"] == 'Martes' && $clase['horaFin'] == $d*/): ?>
                         
                                 <?php if ($clase["idClase"] == 1) : ?>
                                     <a href="?controller=user&accion=editarUsuario&usuario=<?= $datos[$contador]['id'] ?>">
@@ -94,7 +95,7 @@
 
                     <td>
                         <?php foreach ($datos as $clase) :?>
-                            <?php if ($clase["Dia"] == 'Miercoles' && $clase['horaInicio'] == $d) : ?>
+                            <?php if ($clase["Dia"] == 'Miercoles' && $clase['horaInicio'] == $d || $clase["Dia"] == 'Miercoles' &&  $clase['horaFin'] > $d && $clase['horaInicio'] < $d) : ?>
                                 <?php if ($clase["idClase"] == 1) : ?>
                                     <a href="?controller=user&accion=editarUsuario&usuario=<?= $datos[$contador]['id'] ?>">
                                         <button type="button" class="btn btn-indigo btn-sm m-0">BodyPump</button>
@@ -126,7 +127,7 @@
 
                     <td>
                         <?php foreach ($datos as $clase) :?>
-                            <?php if ($clase["Dia"] == 'Jueves' && $clase['horaInicio'] == $d) : ?>
+                            <?php if ($clase["Dia"] == 'Jueves' && $clase['horaInicio'] == $d || $clase["Dia"] == 'Jueves' &&  $clase['horaFin'] > $d && $clase['horaInicio'] < $d) : ?>
                                 <?php if ($clase["idClase"] == 1) : ?>
                                     <a href="?controller=user&accion=editarUsuario&usuario=<?= $datos[$contador]['id'] ?>">
                                         <button type="button" class="btn btn-indigo btn-sm m-0">BodyPump</button>
@@ -158,7 +159,7 @@
 
                     <td>
                         <?php foreach ($datos as $clase) :?>
-                            <?php if ($clase["Dia"] == 'Viernes' && $clase['horaInicio'] == $d) : ?>
+                            <?php if ($clase["Dia"] == 'Viernes' && $clase['horaInicio'] == $d || $clase["Dia"] == 'Viernes' &&  $clase['horaFin'] > $d && $clase['horaInicio'] < $d) : ?>
                                 <?php if ($clase["idClase"] == 1) : ?>
                                     <a href="?controller=user&accion=editarUsuario&usuario=<?= $datos[$contador]['id'] ?>">
                                         <button type="button" class="btn btn-indigo btn-sm m-0">BodyPump</button>
@@ -190,7 +191,7 @@
 
                     <td>
                         <?php foreach ($datos as $clase) :?>
-                            <?php if ($clase["Dia"] == 'Sabado' && $clase['horaInicio'] == $d) : ?>
+                            <?php if ($clase["Dia"] == 'Sabado' && $clase['horaInicio'] == $d || $clase["Dia"] == 'Sabado' &&  $clase['horaFin'] > $d && $clase['horaInicio'] < $d) : ?>
                                 <?php if ($clase["idClase"] == 1) : ?>
                                     <a href="?controller=user&accion=editarUsuario&usuario=<?= $datos[$contador]['id'] ?>">
                                         <button type="button" class="btn btn-indigo btn-sm m-0">BodyPump</button>

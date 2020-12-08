@@ -31,7 +31,6 @@ SET time_zone = "+00:00";
 CREATE TABLE `clasesExistentes` (
   `id` int(11) NOT NULL,
   `idClase` int(11) NOT NULL,
-  `idUsuario` varchar(50) NOT NULL,
   `Dia` varchar(10) NOT NULL,
   `duracion` int(2) NOT NULL,
   `horaInicio` varchar(5) NOT NULL,
@@ -47,8 +46,7 @@ CREATE TABLE `clasesExistentes` (
 --
 ALTER TABLE `clasesExistentes`
   ADD PRIMARY KEY (`id`),
-  ADD FOREIGN KEY (`idClase`) REFERENCES clases(`id`),
-  ADD FOREIGN KEY (`idUsuario`) REFERENCES usuarios(`usuario`);
+  ADD FOREIGN KEY (`idClase`) REFERENCES clases(`id`);
 --
 -- AUTO_INCREMENT de las tablas volcadas
 --
