@@ -8,7 +8,7 @@
 
 <body>
   <?php require 'includes/navUsuario.php';?>
-  <?php require 'includes/bodyAdmin.php';?>
+  <?php require 'includes/bodyUsuario.php';?>
   <?php require 'includes/scriptsBody.php';?>
   <?php require 'includes/footer.php';?>
   
