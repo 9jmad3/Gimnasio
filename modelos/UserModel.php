@@ -149,8 +149,8 @@ class UserModel extends BaseModel
 
       try {  
          $this->db->beginTransaction();
-         
-         $sql = "DELETE FROM asistenciaClases WHERE idAlumno= :idAlumno, idClase= :idClase";
+
+         $sql = "DELETE FROM asistenciaClases WHERE idAlumno=:idAlumno and idClase=:idClase";
          $query = $this->db->prepare($sql);
          $query->execute(['idAlumno' => $usuario, 
                           'idClase' => $id]);

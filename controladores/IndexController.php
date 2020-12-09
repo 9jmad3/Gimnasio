@@ -314,6 +314,6 @@ class IndexController extends BaseController
       // Incluimos la vista en la que visualizaremos los datos o un mensaje de error
 
 
-      $this->view->show("ListarClasesInscritas", $parametros);
+      $this->listarInscripciones();
    }
 }
