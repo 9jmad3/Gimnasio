@@ -29,8 +29,7 @@
               aria-haspopup="true" aria-expanded="false" <?php if($_SESSION['perfilCompleto'] == false){echo"hidden";}?>>Clases dirigidas</a>
             <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink">
               <a class="dropdown-item" href="?controller=index&accion=listarhorario">Horario</a>
-              <a class="dropdown-item" href="?controller=User&accion=listaUsuariosNoValidados">Cancelar inscripcion</a>
-              <a class="dropdown-item disabled" href="#">Inscripciones activas</a>
+              <a class="dropdown-item" href="?controller=index&accion=listarInscripciones">Inscripciones activas</a>
             </div>
           </li>
           <li class="nav-item">

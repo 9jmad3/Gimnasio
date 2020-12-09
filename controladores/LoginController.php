@@ -52,7 +52,8 @@ class LoginController extends BaseController
          }
          $_SESSION['usuario'] = $usuario;
          $datos = $this->modelo->userValidado($usuario);
-
+         $_SESSION['id'] = $datos['datos']['id'];
+         
          if ($datos['datos']['rol_id']!=2) {
 
             if ($resultado['correcto'] == TRUE) {

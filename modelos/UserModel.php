@@ -106,6 +106,66 @@ class UserModel extends BaseModel
       return $return;
    }
 
+   public function listadoInscripciones()
+   {
+      $return = [
+         "correcto" => FALSE,
+         "datos" => NULL,
+         "error" => NULL
+      ];
+
+      //Realizamos la consulta...
+      try {  //Definimos la instrucción SQL  
+         $sql = "SELECT nombre, clasesExistentes.id, idAlumno, horaInicio, horaFin, Dia, clasesExistentes.duracion FROM clasesExistentes 
+                                                                                          JOIN asistenciaClases ON clasesExistentes.id = asistenciaClases.idClase 
+                                                                                          JOIN clases ON asistenciaClases.idClase = clases.id 
+                                                                                          WHERE idAlumno=:idAlumno";
+
+
+         $query = $this->db->prepare($sql);
+         // Hacemos directamente la consulta al no tener parámetros
+         $query->execute(['idAlumno' => $_SESSION['id']]);
+         //Supervisamos si la inserción se realizó correctamente... 
+         if ($query) :
+            $return["correcto"] = TRUE;
+            $return["datos"] = $query->fetchAll(PDO::FETCH_ASSOC);
+         endif; // o no :(
+      } catch (PDOException $ex) {
+         $return["error"] = $ex->getMessage();
+      }
+
+      return $return;
+   }
+
+   public function borrarInscripcion($id)
+   {
+      $return = [
+         "correcto" => FALSE,
+         "datos" => NULL,
+         "error" => NULL
+      ];
+      
+      $usuario = $_SESSION['id'];
+
+      try {  
+         $this->db->beginTransaction();
+         
+         $sql = "DELETE FROM asistenciaClases WHERE idAlumno= :idAlumno, idClase= :idClase";
+         $query = $this->db->prepare($sql);
+         $query->execute(['idAlumno' => $usuario, 
+                          'idClase' => $id]);
+         
+         if ($query) {
+            $this->db->commit();  
+            $return["correcto"] = TRUE;
+         } 
+      } catch (PDOException $ex) {
+         $this->db->rollback(); 
+         $return["error"] = $ex->getMessage();
+      }
+
+      return $return;
+   }
 
    /**
     * Función que realiza el listado de todos los usuarios registrados
@@ -122,6 +182,7 @@ class UserModel extends BaseModel
           "datos" => NULL,
           "error" => NULL
        ];
+
        //Realizamos la consulta...
        try {  //Definimos la instrucción SQL  
           $sql = "SELECT * FROM clasesExistentes";
@@ -455,7 +516,7 @@ class UserModel extends BaseModel
       ];
 
          try {
-            $sql = "SELECT rol_id FROM usuarios WHERE usuario=:usuario";
+            $sql = "SELECT rol_id , id FROM usuarios WHERE usuario=:usuario";
             $query = $this->db->prepare($sql);
             $query->execute(['usuario' => $usuario]);
             //Supervisamos que la consulta se realizó correctamente... 
