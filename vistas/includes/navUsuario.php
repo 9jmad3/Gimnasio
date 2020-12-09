@@ -3,7 +3,7 @@
     <div class="container">
 
       <!-- Brand -->
-      <a class="navbar-brand" href="?controller=Index&accion=index">
+      <a class="navbar-brand" href="?controller=Login&accion=inUser">
         <strong>Bienvenido</strong>
       </a>
 
@@ -18,12 +18,6 @@
 
         <!-- Left -->
         <ul class="navbar-nav mr-auto">
-          <li class="nav-item "> 
-          <!-- active -->
-            <a class="nav-link" href="#" <?php if($_SESSION['perfilCompleto'] == false){echo"hidden";}?>>Ver horario
-            <span class="sr-only">(current)</span>
-            </a>
-          </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown"
               aria-haspopup="true" aria-expanded="false" <?php if($_SESSION['perfilCompleto'] == false){echo"hidden";}?>>Clases dirigidas</a>

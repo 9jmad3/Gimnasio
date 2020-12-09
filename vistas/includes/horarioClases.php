@@ -35,26 +35,26 @@
                     <td>
                         
                         <?php foreach ($datos as $clase) :?>
-                            <?php if ($clase["Dia"] == 'Lunes' && $clase['horaInicio'] == $d || $clase["Dia"] == 'Lunes' &&  $clase['horaFin'] > $d && $clase['horaInicio'] < $d) : ?>
+                            <?php if ($clase["Dia"] == 'Lunes' && $clase['horaInicio'] == $d || $clase["Dia"] == 'Lunes' &&  $clase['horaFin'] > $d && $clase['horaInicio'] < $d || $clase["Dia"] == 'Lunes' &&  $clase['horaFin'] == $d) : ?>
                                 <?php if ($clase['idClase'] == 1) : ?>
                                     <a href="?controller=index&accion=insertarInscripcion&idCl=<?= $clase['id'] ?>">
-                                        <button type="button" class="btn btn-indigo btn-sm m-0">BodyPump <?php?> min</button>
+                                        <button type="button" class="btn btn-indigo btn-sm m-0 mb-1 mt-1">BodyPump</button><br>
                                     </a>
                                 <?php elseif ($clase["idClase"] == 2) : ?>
                                     <a href="?controller=index&accion=insertarInscripcion&idCl=<?= $clase['id'] ?>">
-                                        <button type="button" class="btn btn-danger btn-sm m-0">BodyCombat <?php $clase['duracion']?> min</button>
+                                        <button type="button" class="btn btn-danger btn-sm m-0 mb-1 mt-1">BodyCombat</button><br>
                                     </a>
                                 <?php elseif ($clase['idClase'] == 3) : ?>
                                     <a href="?controller=index&accion=insertarInscripcion&idCl=<?= $clase['id'] ?>">
-                                        <button type="button" class="btn btn-dark-green btn-sm m-0">BodyAttack</button>
+                                        <button type="button" class="btn btn-dark-green btn-sm m-0 mb-1 mt-1">BodyAttack</button><br>
                                     </a>
                                 <?php elseif ($clase["idClase"] == 4) : ?>
                                     <a href="?controller=index&accion=insertarInscripcion&idCl=<?= $clase['id'] ?>">
-                                        <button type="button" class="btn btn-pink btn-sm m-0">Yoga <?php $clase['duracion']?> min</button>
+                                        <button type="button" class="btn btn-pink btn-sm m-0 mb-1 mt-1">Yoga</button><br>
                                     </a>
                                 <?php elseif ($clase["idClase"] == 5) : ?>
                                     <a href="?controller=index&accion=insertarInscripcion&idCl=<?= $clase['id'] ?>">
-                                        <button type="button" class="btn btn-light-blue btn-sm m-0">Cycling <?php $clase['duracion']?> min</button>
+                                        <button type="button" class="btn btn-light-blue btn-sm m-0 mb-1 mt-1">Cycling</button><br>
                                     </a>
                                 <?php endif; $vacio = false;?> 
                             <?php  endif; ?> 
@@ -68,27 +68,27 @@
 
                     <td>
                         <?php foreach ($datos as $clase) :?>
-                            <?php if ($clase["Dia"] == 'Martes' && $clase['horaInicio'] == $d || $clase["Dia"] == 'Martes' &&  $clase['horaFin'] > $d && $clase['horaInicio'] < $d /*|| $clase["Dia"] == 'Martes' && $clase['horaFin'] == $d*/): ?>
+                            <?php if ($clase["Dia"] == 'Martes' && $clase['horaInicio'] == $d || $clase["Dia"] == 'Martes' &&  $clase['horaFin'] > $d && $clase['horaInicio'] < $d || $clase["Dia"] == 'Martes' &&  $clase['horaFin'] == $d): ?>
                         
                                 <?php if ($clase["idClase"] == 1) : ?>
                                     <a href="?controller=index&accion=insertarInscripcion&idCl=<?= $clase['id'] ?>">
-                                        <button type="button" class="btn btn-indigo btn-sm m-0">BodyPump</button>
+                                        <button type="button" class="btn btn-indigo btn-sm m-0 mb-1 mt-1">BodyPump</button>
                                     </a>
                                 <?php elseif ($clase["idClase"] == 2) : ?>
                                     <a href="?controller=index&accion=insertarInscripcion&idCl=<?= $clase['id'] ?>">
-                                        <button type="button" class="btn btn-danger btn-sm m-0">BodyCombat</button>
+                                        <button type="button" class="btn btn-danger btn-sm m-0 mb-1 mt-1">BodyCombat</button>
                                     </a>
                                 <?php elseif ($clase["idClase"] == 3) : ?>
                                     <a href="?controller=index&accion=insertarInscripcion&idCl=<?= $clase['id'] ?>">
-                                        <button type="button" class="btn btn-dark-green btn-sm m-0">BodyAttack</button>
+                                        <button type="button" class="btn btn-dark-green btn-sm m-0 mb-1 mt-1">BodyAttack</button>
                                     </a>
                                 <?php elseif ($clase["idClase"] == 4) : ?>
                                     <a href="?controller=index&accion=insertarInscripcion&idCl=<?= $clase['id'] ?>">
-                                        <button type="button" class="btn btn-pink btn-sm m-0">Yoga</button>
+                                        <button type="button" class="btn btn-pink btn-sm m-0 mb-1 mt-1">Yoga</button>
                                     </a>
                                 <?php elseif ($clase["idClase"] == 5) : ?>
                                     <a href="?controller=index&accion=insertarInscripcion&idCl=<?= $clase['id'] ?>">
-                                        <button type="button" class="btn btn-light-blue btn-sm m-0">Cycling</button>
+                                        <button type="button" class="btn btn-light-blue btn-sm m-0 mb-1 mt-1">Cycling</button>
                                     </a>
                                 <?php endif; $vacio = false; ?> 
                             <?php endif; ?> 
@@ -102,26 +102,26 @@
 
                     <td>
                         <?php foreach ($datos as $clase) :?>
-                            <?php if ($clase["Dia"] == 'Miercoles' && $clase['horaInicio'] == $d || $clase["Dia"] == 'Miercoles' &&  $clase['horaFin'] > $d && $clase['horaInicio'] < $d) : ?>
+                            <?php if ($clase["Dia"] == 'Miercoles' && $clase['horaInicio'] == $d || $clase["Dia"] == 'Miercoles' &&  $clase['horaFin'] > $d && $clase['horaInicio'] < $d || $clase["Dia"] == 'Miercoles' &&  $clase['horaFin'] == $d) : ?>
                                 <?php if ($clase["idClase"] == 1) : ?>
                                     <a href="?controller=index&accion=insertarInscripcion&idCl=<?= $clase['id'] ?>">
-                                        <button type="button" class="btn btn-indigo btn-sm m-0">BodyPump</button>
+                                        <button type="button" class="btn btn-indigo btn-sm m-0 mb-1 mt-1">BodyPump</button>
                                     </a>
                                 <?php elseif ($clase["idClase"] == 2) : ?>
                                     <a href="?controller=index&accion=insertarInscripcion&idCl=<?= $clase['id'] ?>">
-                                        <button type="button" class="btn btn-danger btn-sm m-0">BodyCombat</button>
+                                        <button type="button" class="btn btn-danger btn-sm m-0 mb-1 mt-1">BodyCombat</button>
                                     </a>
                                 <?php elseif ($clase["idClase"] == 3) : ?>
                                     <a href="?controller=index&accion=insertarInscripcion&idCl=<?= $clase['id'] ?>">
-                                        <button type="button" class="btn btn-dark-green btn-sm m-0">BodyAttack</button>
+                                        <button type="button" class="btn btn-dark-green btn-sm m-0 mb-1 mt-1">BodyAttack</button>
                                     </a>
                                 <?php elseif ($clase["idClase"] == 4) : ?>
                                     <a href="?controller=index&accion=insertarInscripcion&idCl=<?= $clase['id'] ?>">
-                                        <button type="button" class="btn btn-pink btn-sm m-0">Yoga</button>
+                                        <button type="button" class="btn btn-pink btn-sm m-0 mb-1 mt-1">Yoga</button>
                                     </a>
                                 <?php elseif ($clase["idClase"] == 5) : ?>
                                     <a href="?controller=index&accion=insertarInscripcion&idCl=<?= $clase['id'] ?>">
-                                        <button type="button" class="btn btn-light-blue btn-sm m-0">Cycling</button>
+                                        <button type="button" class="btn btn-light-blue btn-sm m-0 mb-1 mt-1">Cycling</button>
                                     </a>
                                 <?php endif; $vacio = false; ?> 
                             <?php endif; ?> 
@@ -134,26 +134,26 @@
 
                     <td>
                         <?php foreach ($datos as $clase) :?>
-                            <?php if ($clase["Dia"] == 'Jueves' && $clase['horaInicio'] == $d || $clase["Dia"] == 'Jueves' &&  $clase['horaFin'] > $d && $clase['horaInicio'] < $d) : ?>
+                            <?php if ($clase["Dia"] == 'Jueves' && $clase['horaInicio'] == $d || $clase["Dia"] == 'Jueves' &&  $clase['horaFin'] > $d && $clase['horaInicio'] < $d || $clase["Dia"] == 'Jueves' &&  $clase['horaFin'] == $d) : ?>
                                 <?php if ($clase["idClase"] == 1) : ?>
                                     <a href="?controller=index&accion=insertarInscripcion&idCl=<?= $clase['id'] ?>">
-                                        <button type="button" class="btn btn-indigo btn-sm m-0">BodyPump</button>
+                                        <button type="button" class="btn btn-indigo btn-sm m-0 mb-1 mt-1">BodyPump</button>
                                     </a>
                                 <?php elseif ($clase["idClase"] == 2) : ?>
                                     <a href="?controller=index&accion=insertarInscripcion&idCl=<?= $clase['id'] ?>">
-                                        <button type="button" class="btn btn-danger btn-sm m-0">BodyCombat</button>
+                                        <button type="button" class="btn btn-danger btn-sm m-0 mb-1 mt-1">BodyCombat</button>
                                     </a>
                                 <?php elseif ($clase["idClase"] == 3) : ?>
                                     <a href="?controller=index&accion=insertarInscripcion&idCl=<?= $clase['id'] ?>">
-                                        <button type="button" class="btn btn-dark-green btn-sm m-0">BodyAttack</button>
+                                        <button type="button" class="btn btn-dark-green btn-sm m-0 mb-1 mt-1">BodyAttack</button>
                                     </a>
                                 <?php elseif ($clase["idClase"] == 4) : ?>
                                     <a href="?controller=index&accion=insertarInscripcion&idCl=<?= $clase['id'] ?>">
-                                        <button type="button" class="btn btn-pink btn-sm m-0">Yoga</button>
+                                        <button type="button" class="btn btn-pink btn-sm m-0 mb-1 mt-1">Yoga</button>
                                     </a>
                                 <?php elseif ($clase["idClase"] == 5) : ?>
                                     <a href="?controller=index&accion=insertarInscripcion&idCl=<?= $clase['id'] ?>">
-                                        <button type="button" class="btn btn-light-blue btn-sm m-0">Cycling</button>
+                                        <button type="button" class="btn btn-light-blue btn-sm m-0 mb-1 mt-1">Cycling</button>
                                     </a>
                                 <?php endif; $vacio = false; ?> 
                             <?php endif; ?> 
@@ -166,26 +166,26 @@
 
                     <td>
                         <?php foreach ($datos as $clase) :?>
-                            <?php if ($clase["Dia"] == 'Viernes' && $clase['horaInicio'] == $d || $clase["Dia"] == 'Viernes' &&  $clase['horaFin'] > $d && $clase['horaInicio'] < $d) : ?>
+                            <?php if ($clase["Dia"] == 'Viernes' && $clase['horaInicio'] == $d || $clase["Dia"] == 'Viernes' &&  $clase['horaFin'] > $d && $clase['horaInicio'] < $d || $clase["Dia"] == 'Viernes' &&  $clase['horaFin'] == $d) : ?>
                                 <?php if ($clase["idClase"] == 1) : ?>
                                     <a href="?controller=index&accion=insertarInscripcion&idCl=<?= $clase['id'] ?>">
-                                        <button type="button" class="btn btn-indigo btn-sm m-0">BodyPump</button>
+                                        <button type="button" class="btn btn-indigo btn-sm m-0 mb-1 mt-1">BodyPump</button>
                                     </a>
                                 <?php elseif ($clase["idClase"] == 2) : ?>
                                     <a href="?controller=index&accion=insertarInscripcion&idCl=<?= $clase['id'] ?>">
-                                        <button type="button" class="btn btn-danger btn-sm m-0">BodyCombat</button>
+                                        <button type="button" class="btn btn-danger btn-sm m-0 mb-1 mt-1">BodyCombat</button>
                                     </a>
                                 <?php elseif ($clase["idClase"] == 3) : ?>
                                     <a href="?controller=index&accion=insertarInscripcion&idCl=<?= $clase['id'] ?>">
-                                        <button type="button" class="btn btn-dark-green btn-sm m-0">BodyAttack</button>
+                                        <button type="button" class="btn btn-dark-green btn-sm m-0 mb-1 mt-1">BodyAttack</button>
                                     </a>
                                 <?php elseif ($clase["idClase"] == 4) : ?>
                                     <a href="?controller=index&accion=insertarInscripcion&idCl=<?= $clase['id'] ?>">
-                                        <button type="button" class="btn btn-pink btn-sm m-0">Yoga</button>
+                                        <button type="button" class="btn btn-pink btn-sm m-0 mb-1 mt-1">Yoga</button>
                                     </a>
                                 <?php elseif ($clase["idClase"] == 5) : ?>
                                     <a href="?controller=index&accion=insertarInscripcion&idCl=<?= $clase['id'] ?>">
-                                        <button type="button" class="btn btn-light-blue btn-sm m-0">Cycling</button>
+                                        <button type="button" class="btn btn-light-blue btn-sm m-0 mb-1 mt-1">Cycling</button>
                                     </a>
                                 <?php endif; $vacio = false; ?> 
                             <?php endif; ?> 
@@ -198,26 +198,26 @@
 
                     <td>
                         <?php foreach ($datos as $clase) :?>
-                            <?php if ($clase["Dia"] == 'Sabado' && $clase['horaInicio'] == $d || $clase["Dia"] == 'Sabado' &&  $clase['horaFin'] > $d && $clase['horaInicio'] < $d) : ?>
+                            <?php if ($clase["Dia"] == 'Sabado' && $clase['horaInicio'] == $d || $clase["Dia"] == 'Sabado' &&  $clase['horaFin'] > $d && $clase['horaInicio'] < $d || $clase["Dia"] == 'Sabado' &&  $clase['horaFin'] == $d) : ?>
                                 <?php if ($clase["idClase"] == 1) : ?>
                                     <a href="?controller=index&accion=insertarInscripcion&idCl=<?= $clase['id'] ?>">
-                                        <button type="button" class="btn btn-indigo btn-sm m-0">BodyPump</button>
+                                        <button type="button" class="btn btn-indigo btn-sm m-0 mb-1 mt-1">BodyPump</button>
                                     </a>
                                 <?php elseif ($clase["idClase"] == 2) : ?>
                                     <a href="?controller=index&accion=insertarInscripcion&idCl=<?= $clase['id'] ?>">
-                                        <button type="button" class="btn btn-danger btn-sm m-0">BodyCombat</button>
+                                        <button type="button" class="btn btn-danger btn-sm m-0 mb-1 mt-1">BodyCombat</button>
                                     </a>
                                 <?php elseif ($clase["idClase"] == 3) : ?>
                                     <a href="?controller=index&accion=insertarInscripcion&idCl=<?= $clase['id'] ?>">
-                                        <button type="button" class="btn btn-dark-green btn-sm m-0">BodyAttack</button>
+                                        <button type="button" class="btn btn-dark-green btn-sm m-0 mb-1 mt-1">BodyAttack</button>
                                     </a>
                                 <?php elseif ($clase["idClase"] == 4) : ?>
                                     <a href="?controller=index&accion=insertarInscripcion&idCl=<?= $clase['id'] ?>">
-                                        <button type="button" class="btn btn-pink btn-sm m-0">Yoga</button>
+                                        <button type="button" class="btn btn-pink btn-sm m-0 mb-1 mt-1">Yoga</button>
                                     </a>
                                 <?php elseif ($clase["idClase"] == 5) : ?>
                                     <a href="?controller=index&accion=insertarInscripcion&idCl=<?= $clase['id'] ?>">
-                                        <button type="button" class="btn btn-light-blue btn-sm m-0">Cycling</button>
+                                        <button type="button" class="btn btn-light-blue btn-sm m-0 mb-1 mt-1">Cycling</button>
                                     </a>
                                 <?php endif; $vacio = false; ?> 
                             <?php endif; ?> 
