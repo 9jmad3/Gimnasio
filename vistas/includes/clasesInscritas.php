@@ -1,6 +1,6 @@
 
 <div class="container-fluid mt-5" style="margin-top: 100px !important;">
-<H2 class="text-center pb-1">TODOS LOS USUARIOS</H2>
+<H2 class="text-center pb-1">INSCRIPCIONES ACTIVAS</H2>
 <!--Mostramos los mensajes que se hayan generado al realizar el listado-->
 
 <?php if (isset($mensajes)) {
@@ -21,11 +21,25 @@
   </thead>
   <tbody>
 
-  <?php foreach ($datos as $d) : ?>
+  <?php foreach ($datos as $d) :?>
+      
           <!--Mostramos cada registro en una fila de la tabla-->
           <tr>
             <td><?= $d["id"] ?></td>  
-            <td><?= $d["nombre"] ?></td>
+
+            <?php if ($d["idClase"] == 1) : ?>
+              <td>BodyPump</td>
+            <?php elseif ($d["idClase"] == 2) : ?>
+              <td>BodyCombat</td>
+            <?php elseif ($d["idClase"] == 3) : ?>
+              <td>BodyAttack</td>
+            <?php elseif ($d["idClase"] == 4) : ?>
+              <td>Yoga</td>
+            <?php elseif ($d["idClase"] == 5) : ?>
+              <td>Cycling</td>
+            <?php endif; ?> 
+
+
             <td><?= $d["Dia"] ?></td>
             <td><?= $d["horaInicio"] ?></td>
             <td><?= $d["horaFin"] ?></td>

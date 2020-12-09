@@ -116,7 +116,7 @@ class UserModel extends BaseModel
 
       //Realizamos la consulta...
       try {  //Definimos la instrucción SQL  
-         $sql = "SELECT nombre, clasesExistentes.id, idAlumno, horaInicio, horaFin, Dia, clasesExistentes.duracion FROM clasesExistentes 
+         $sql = "SELECT clasesExistentes.idClase, clasesExistentes.id, idAlumno, horaInicio, horaFin, Dia, clasesExistentes.duracion FROM clasesExistentes 
                                                                                           JOIN asistenciaClases ON clasesExistentes.id = asistenciaClases.idClase 
                                                                                           JOIN clases ON asistenciaClases.idClase = clases.id 
                                                                                           WHERE idAlumno=:idAlumno";
@@ -162,6 +162,41 @@ class UserModel extends BaseModel
       } catch (PDOException $ex) {
          $this->db->rollback(); 
          $return["error"] = $ex->getMessage();
+      }
+
+      return $return;
+   }
+
+   public function insertarInscripcion($id)
+   {
+      $return = [
+         "correcto" => FALSE,
+         "error" => NULL
+      ];
+
+      try {
+
+         $idUsuario = $_SESSION['id'];
+         //Inicializamos la transacción
+         $this->db->beginTransaction();
+         //Definimos la instrucción SQL parametrizada 
+         $sql = "INSERT INTO asistenciaClases (idClase, idAlumno)
+                         VALUES (:idClase,:idUsuario)";
+         // Preparamos la consulta...
+         $query = $this->db->prepare($sql);
+         // y la ejecutamos indicando los valores que tendría cada parámetro
+         $query->execute([
+            'idClase' => $id,
+            'idUsuario' => $idUsuario
+         ]); //Supervisamos si la inserción se realizó correctamente... 
+         if ($query) {
+            $this->db->commit(); // commit() confirma los cambios realizados durante la transacción
+            $return["correcto"] = TRUE;
+         } // o no :(
+      } catch (PDOException $ex) {
+         $this->db->rollback(); // rollback() se revierten los cambios realizados durante la transacción
+         $return["error"] = $ex->getMessage();
+         //die();
       }
 
       return $return;

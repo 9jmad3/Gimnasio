@@ -279,6 +279,43 @@ class IndexController extends BaseController
       $this->view->show("ListarClasesInscritas", $parametros);
    }
 
+   public function insertarInscripcion()
+   {
+      // Almacenamos en el array 'parametros[]'los valores que vamos a mostrar en la vista
+      $parametros = [
+         "tituloventana" => "Base de Datos con PHP y PDO",
+         "datos" => NULL,
+         "mensajes" => []
+      ];
+
+      // Realizamos la consulta y almacenamos los resultados en la variable $resultModelo
+      $resultModelo = $this->modelo->insertarInscripcion($_GET['idCl']);
+      // Si la consulta se realizó correctamente transferimos los datos obtenidos
+      // de la consulta del modelo ($resultModelo["datos"]) a nuestro array parámetros
+      // ($parametros["datos"]), que será el que le pasaremos a la vista para visualizarlos
+      if ($resultModelo["correcto"]) :
+         $parametros["datos"] = $resultModelo["datos"];
+         //Definimos el mensaje para el alert de la vista de que todo fue correctamente
+         $this->mensajes[] = [
+            "tipo" => "success",
+            "mensaje" => "Se te ha inscrito en la clase seleccionada"
+         ];
+      else :
+         //Definimos el mensaje para el alert de la vista de que se produjeron errores al realizar el listado
+         $this->mensajes[] = [
+            "tipo" => "danger",
+            "mensaje" => "Error inesperado!! :( <br/>({$resultModelo["error"]})"
+         ];
+      endif;
+      //Asignamos al campo 'mensajes' del array de parámetros el valor del atributo 
+      //'mensaje', que recoge cómo finalizó la operación:
+      $parametros["mensajes"] = $this->mensajes;
+      // Incluimos la vista en la que visualizaremos los datos o un mensaje de error
+
+
+      $this->listarHorario($parametros["mensajes"]);
+   }
+
    public function borrarInscripcion()
    {
       // Almacenamos en el array 'parametros[]'los valores que vamos a mostrar en la vista
