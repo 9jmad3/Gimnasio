@@ -4,7 +4,7 @@
 
       <!-- Brand -->
       <a class="navbar-brand" href="?controller=Index&accion=index">
-        <strong>FitGymm</strong>
+        <strong>FitGym</strong>
       </a>
 
       <!-- Collapse -->
