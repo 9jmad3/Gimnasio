@@ -2,7 +2,7 @@
 session_start();
 /**
  *   Clase 'UserModel' que implementa el modelo de usuarios de nuestra aplicación en una
- * arquitectura MVC. Se encarga de gestionar el acceso a la tabla usuarios
+ * arquitectura MVC. Se encarga de gestionar el acceso a la tabla usuarios 
  */
 class UserModel extends BaseModel
 {
