@@ -34,7 +34,7 @@
             </div>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#location">Mensajes</a>
+            <a class="nav-link" href="?controller=user&accion=mensajes">Mensajes</a>
           </li>
         </ul>
 
@@ -51,7 +51,7 @@
         </a>
         <div class="dropdown-menu dropdown-menu-lg-right dropdown-secondary"
           aria-labelledby="navbarDropdownMenuLink-55">
-          <a class="dropdown-item" href="?controller=User&accion=editPerfilAdmin"<?php if($_SESSION['perfilCompleto'] == true){echo"hidden";}?>>Editar perfil</a>
+          <a class="dropdown-item" href="?controller=User&accion=editPerfilAdmin">Editar perfil</a>
           <a class="dropdown-item" href="?controller=User&accion=cerrarSesion">Cerrar sesion</a>
         </div>
       </li>

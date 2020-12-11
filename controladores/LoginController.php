@@ -51,15 +51,16 @@ class LoginController extends BaseController
             ]);
          }
          $_SESSION['usuario'] = $usuario;
+
          $datos = $this->modelo->userValidado($usuario);
          $_SESSION['id'] = $datos['datos']['id'];
+         $_SESSION['rol_id'] = $datos['datos']['rol_id'];
+
          
-         if ($datos['datos']['rol_id']!=2) {
-
+         
+         if ($_SESSION['rol_id']!=2) {
+            
             if ($resultado['correcto'] == TRUE) {
-
-
-               
                //Implementación de la funcion recuerdame que guarda en usuario y contraseña en cookies. 
                if(isset($_POST['recuerdo']) && ($_POST['recuerdo']=="on"))            { // Creamos las cookies para ambas variables
                   setcookie('usuario',$usuario,time() + (15 * 24 * 60 * 60));
@@ -73,19 +74,16 @@ class LoginController extends BaseController
 
                $parametros['datos'] = $resultado['datos'];
 
-               if ($parametros['datos'][0]['rol_id'] == 0) {
+               if ($_SESSION['rol_id'] == 0) {
                   $parametros['pendientesActivacion']= $this->modelo->pendientesActivacion();
 
                   
-                  $_SESSION['nombre'] = $parametros['datos'][0]['nombre'];
+                  $_SESSION['nombre'] = $_SESSION['nombre'];
                   $_SESSION['perfilCompleto']=true;
                   
                   $this->view->show("paginaAdmin",$parametros);
                } 
-               if($parametros['datos'][0]['rol_id'] == 1 || $parametros['datos'][0]['rol_id'] == 2){
-
-                  $_SESSION['usuario'] = $usuario;
-
+               if($_SESSION['rol_id'] == 1 || $_SESSION['rol_id'] == 2){
                   $this->view->show("paginaUsuario",$parametros);
                }
 

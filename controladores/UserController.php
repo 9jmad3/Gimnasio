@@ -137,8 +137,81 @@ class UserController extends BaseController
             "mensaje" => "ERROR al borrar."
          ];
       }
+      
+      //Listamos de nuevo los mensajes
+      $this->mensajes();
+   }
 
-      $this->view->show("paginaMensajes");
+   public function addmensaje()
+   {
+
+      $errores = array();
+      $parametros = [];          
+            // Si se ha pulsado el botón guardar...
+
+            if (isset($_POST) && !empty($_POST['txtusuario'] && !empty($_POST['txtmensaje'])) && isset($_POST['submit'])) { // y hemos recibido las variables del formulario y éstas no están vacías...
+               $usuario = filter_var($_POST['txtusuario'],FILTER_SANITIZE_STRING);
+               $asunto = filter_var($_POST['txtasunto'],FILTER_SANITIZE_STRING);
+               $mensaje = filter_var($_POST['txtmensaje'],FILTER_SANITIZE_STRING);
+
+               //Si no se cumple la expresión regular se genera un error especifico.
+               if (!preg_match("/^[a-z0-9ü_]{3,15}$/", $usuario)) {
+                  $this->mensajes[] = [
+                     "campo" => "usuario",
+                     "tipo" => "danger",
+                     "mensaje" => "Usuario no valido."
+                  ];
+                  $errores["usuario"] = "Error: No valido";
+                  $parametros = ["mensajes" => $this->mensajes];
+               }
+                              
+               //Si se ha generado algún error se retorna al inicio pasando el/los errores pertinentes.
+               if (count($errores) > 0) { $this->mensajes($parametros); }
+
+               // Si no se han producido errores realizamos el registro del usuario
+               if (count($errores) == 0) {
+                  $resultModelo = $this->modelo->addmensaje([
+                     'idRemitente' => $_SESSION['id'],
+                     'destinatario' => $usuario,
+                     'contenido' => $mensaje,
+                     'asunto' => $asunto
+                  ]);
+
+                     if ($resultModelo["correcto"]){
+                        $this->mensajes[] = [
+                           "campo" => "informacion",
+                           "tipo" => "success",
+                           "mensaje" => "Mensaje enviado"
+                        ];
+                        
+                        
+                        $parametros = ["mensajes" => $this->mensajes];
+                        $this->mensajes($parametros);
+                     }else{
+                        $this->mensajes[] = [
+                           "campo" => "informacion",
+                           "tipo" => "danger",
+                           "mensaje" => "ERROR: mensaje no enviado."
+                        ];  
+                        $parametros = ["mensajes" => $this->mensajes];
+                           
+                        $this->mensajes($parametros);
+                     };
+               } 
+            }else {
+               $this->mensajes[] = [
+                  "campo" => "vacio",
+                  "tipo" => "warning",
+                  "mensaje" => "Usuario de destino y mensaje no pueden estar vacios."
+               ];  
+
+               $parametros = ["mensajes" => $this->mensajes];
+                  //Retornamos errores a la vista principal.
+              
+               $this->mensajes($parametros);
+            };
+   
+
    }
 
    /**
@@ -173,11 +246,11 @@ class UserController extends BaseController
                $email = filter_var($_POST['txtemail'],FILTER_SANITIZE_STRING);
 
                //Si no se cumple la expresión regular se genera un error especifico.
-               if (!preg_match("/^[a-z0-9ü][a-z0-9ü_]{3,9}$/", $usuario)) {
+               if (!preg_match("/^[a-z0-9ü_]{3,15}$/", $usuario)) {
                   $this->mensajes[] = [
                      "campo" => "usuario",
                      "tipo" => "danger",
-                     "mensaje" => "Usuario no valido. Caracteres alfanumericos de 3 a 9 veces."
+                     "mensaje" => "Usuario no valido. Caracteres alfanumericos de 3 a 15 veces."
                   ];
                   $errores["email"] = "Error: No valido";
                   $parametros = ["mensajes" => $this->mensajes];
@@ -523,7 +596,7 @@ class UserController extends BaseController
       $this->listaUsuariosNoValidados();
    }
 
-   public function mensajes()
+   public function mensajes($parametros = null)
    {
        // Almacenamos en el array 'parametros[]'los valores que vamos a mostrar en la vista
        $parametros = [
@@ -554,6 +627,11 @@ class UserController extends BaseController
       //'mensaje', que recoge cómo finalizó la operación:
       $parametros["mensajes"] = $this->mensajes;
       // Incluimos la vista en la que visualizaremos los datos o un mensaje de error
-      $this->view->show("paginaMensajes", $parametros);
+      
+      if ($_SESSION['rol_id']==0) {
+         $this->view->show("paginaMensajesAdmin", $parametros);  
+      } else {
+         $this->view->show("paginaMensajes", $parametros);  
+      }
    }
 }

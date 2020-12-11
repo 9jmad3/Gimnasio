@@ -133,6 +133,60 @@ class UserModel extends BaseModel
       return $return;
    }
 
+   public function addmensaje($datos)
+   {
+      $return = [
+         "correcto" => FALSE,
+         "error" => NULL,
+         "inscrito" => FALSE
+      ];
+
+         $fecha = date("d/m/Y");
+         $idUsuario = $_SESSION['id'];
+         $usuarioDestino = $datos['destinatario'];
+
+         //Primero buscamos el usuario de destino mediante su nombre de usuario.
+         $sqlUno = "SELECT id FROM usuarios WHERE usuario=:usuario";
+         $queryUno = $this->db->prepare($sqlUno);
+
+         $queryUno->execute(['usuario' => $usuarioDestino]);
+
+         if ($queryUno) {
+            try {//Inicializamos la transacción
+               $resultado = $queryUno->fetch();
+
+               $this->db->beginTransaction();
+               //Definimos la instrucción SQL parametrizada 
+               $sql = "INSERT INTO mensajes (idRemitente, idDestinatario, contenido, asunto, fechaCreacion)
+                              VALUES (:idRemitente, :idDestinatario, :contenido, :asunto, :fechaCreacion)";
+               // Preparamos la consulta...
+               $query = $this->db->prepare($sql);
+               // y la ejecutamos indicando los valores que tendría cada parámetro
+               $query->execute([
+                  'idRemitente' => $datos['idRemitente'],
+                  'idDestinatario' => $resultado['id'],
+                  'contenido' => $datos['contenido'],
+                  'asunto' => $datos['asunto'],
+                  'fechaCreacion' => $fecha
+               ]); //Supervisamos si la inserción se realizó correctamente... 
+
+               if ($query) {
+                  $this->db->commit(); // commit() confirma los cambios realizados durante la transacción
+                  $return["correcto"] = TRUE;
+               } // o no :(
+            } catch (PDOException $ex) {
+               $this->db->rollback(); // rollback() se revierten los cambios realizados durante la transacción
+               $return["error"] = $ex->getMessage();
+               //die();
+            }
+
+         } else {
+            $return["error"] = "El usuario destinatario no existe";
+         }
+         
+      return $return;
+   }
+
    public function delMensaje($id)
    {
       // La función devuelve un array con dos valores:'correcto', que indica si la
