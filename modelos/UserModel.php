@@ -106,6 +106,67 @@ class UserModel extends BaseModel
       return $return;
    }
 
+   public function listadoMensajes()
+   {
+      $return = [
+         "correcto" => FALSE,
+         "datos" => NULL,
+         "error" => NULL
+      ];
+      //Realizamos la consulta...
+      try {  //Definimos la instrucción SQL  
+         $sql = "SELECT usuarios.usuario, mensajes.id, mensajes.idRemitente, mensajes.idDestinatario, mensajes.contenido, mensajes.asunto, mensajes.fechaCreacion  
+                           FROM mensajes JOIN usuarios ON mensajes.idRemitente = usuarios.id 
+                                          WHERE idDestinatario=:idDestinatario";
+         $query = $this->db->prepare($sql);
+         // Hacemos directamente la consulta al no tener parámetros
+         $query->execute(['idDestinatario' => $_SESSION['id']]);
+         //Supervisamos si la inserción se realizó correctamente... 
+         if ($query) :
+            $return["correcto"] = TRUE;
+            $return["datos"] = $query->fetchAll(PDO::FETCH_ASSOC);
+         endif; // o no :(
+      } catch (PDOException $ex) {
+         $return["error"] = $ex->getMessage();
+      }
+
+      return $return;
+   }
+
+   public function delMensaje($id)
+   {
+      // La función devuelve un array con dos valores:'correcto', que indica si la
+      // operación se realizó correctamente, y 'mensaje', campo a través del cual le
+      // mandamos a la vista el mensaje indicativo del resultado de la operación
+      $return = [
+         "correcto" => FALSE,
+         "error" => NULL
+      ];
+      //Si hemos recibido el id y es un número realizamos el borrado...
+      if ($id && is_numeric($id)) {
+         try {
+            //Inicializamos la transacción
+            $this->db->beginTransaction();
+            //Definimos la instrucción SQL parametrizada 
+            $sql = "DELETE FROM mensajes WHERE id=:id";
+            $query = $this->db->prepare($sql);
+            $query->execute(['id' => $id]);
+            //Supervisamos si la eliminación se realizó correctamente... 
+            if ($query) {
+               $this->db->commit();  // commit() confirma los cambios realizados durante la transacción
+               $return["correcto"] = TRUE;
+            } // o no :(
+         } catch (PDOException $ex) {
+            $this->db->rollback(); // rollback() se revierten los cambios realizados durante la transacción
+            $return["error"] = $ex->getMessage();
+         }
+      } else {
+         $return["correcto"] = FALSE;
+      }
+
+      return $return;
+   }
+
    public function listadoInscripciones()
    {
       $return = [
@@ -171,34 +232,54 @@ class UserModel extends BaseModel
    {
       $return = [
          "correcto" => FALSE,
-         "error" => NULL
+         "error" => NULL,
+         "inscrito" => FALSE
       ];
 
-      try {
+      $contador= 0; //Variable para editar clases duplicadas.
 
+      
          $idUsuario = $_SESSION['id'];
-         //Inicializamos la transacción
-         $this->db->beginTransaction();
-         //Definimos la instrucción SQL parametrizada 
-         $sql = "INSERT INTO asistenciaClases (idClase, idAlumno)
-                         VALUES (:idClase,:idUsuario)";
-         // Preparamos la consulta...
-         $query = $this->db->prepare($sql);
-         // y la ejecutamos indicando los valores que tendría cada parámetro
-         $query->execute([
-            'idClase' => $id,
-            'idUsuario' => $idUsuario
-         ]); //Supervisamos si la inserción se realizó correctamente... 
-         if ($query) {
-            $this->db->commit(); // commit() confirma los cambios realizados durante la transacción
-            $return["correcto"] = TRUE;
-         } // o no :(
-      } catch (PDOException $ex) {
-         $this->db->rollback(); // rollback() se revierten los cambios realizados durante la transacción
-         $return["error"] = $ex->getMessage();
-         //die();
-      }
 
+         //Primero comprobamos que el usuario no esté ya inscrito en esa clase.
+         $sqlUno = "SELECT count(*) FROM asistenciaClases WHERE idAlumno=:id and  idClase=:idClase";
+         $queryUno = $this->db->prepare($sqlUno);
+         $queryUno->execute([
+            'id' => $idUsuario,
+            'idClase' => $id]
+         );
+         $contador = $queryUno->fetch();
+
+         //Si no esta inscrito se le inscribe
+         if ($contador["count(*)"]==0) {
+            try {//Inicializamos la transacción
+               $this->db->beginTransaction();
+               //Definimos la instrucción SQL parametrizada 
+               $sql = "INSERT INTO asistenciaClases (idClase, idAlumno)
+                              VALUES (:idClase,:idUsuario)";
+               // Preparamos la consulta...
+               $query = $this->db->prepare($sql);
+               // y la ejecutamos indicando los valores que tendría cada parámetro
+               $query->execute([
+                  'idClase' => $id,
+                  'idUsuario' => $idUsuario
+               ]); //Supervisamos si la inserción se realizó correctamente... 
+
+               if ($query) {
+                  $this->db->commit(); // commit() confirma los cambios realizados durante la transacción
+                  $return["correcto"] = TRUE;
+               } // o no :(
+            } catch (PDOException $ex) {
+               $this->db->rollback(); // rollback() se revierten los cambios realizados durante la transacción
+               $return["error"] = $ex->getMessage();
+               //die();
+            }
+
+         } else { //Si ya esta inscrito se le informa.
+            var_dump("inscrito");
+            $return["inscrito"] = TRUE;
+         }
+         
       return $return;
    }
 

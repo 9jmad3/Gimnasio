@@ -121,8 +121,24 @@ class UserController extends BaseController
          $this->listaUsuariosNoValidados();
       }
       
-      
-      
+   }
+
+   public function delMensaje()
+   {
+      // verificamos que hemos recibido los parámetros desde la vista de listado 
+      if (isset($_GET['id']) && (is_numeric($_GET['id']))) {
+         $id = $_GET["id"];
+         //Realizamos la operación de suprimir el mensaje con el id=$id
+         $resultModelo = $this->modelo->delMensaje($id);
+             
+      } else { //Si no recibimos el valor del parámetro $id generamos el mensaje indicativo:
+         $this->mensajes[] = [
+            "tipo" => "danger",
+            "mensaje" => "ERROR al borrar."
+         ];
+      }
+
+      $this->view->show("paginaMensajes");
    }
 
    /**
@@ -507,4 +523,37 @@ class UserController extends BaseController
       $this->listaUsuariosNoValidados();
    }
 
+   public function mensajes()
+   {
+       // Almacenamos en el array 'parametros[]'los valores que vamos a mostrar en la vista
+       $parametros = [
+         "tituloventana" => "Base de Datos con PHP y PDO",
+         "datos" => NULL,
+         "mensajes" => []
+      ];
+      // Realizamos la consulta y almacenamos los resultados en la variable $resultModelo
+      $resultModelo = $this->modelo->listadoMensajes();
+      // Si la consulta se realizó correctamente transferimos los datos obtenidos
+      // de la consulta del modelo ($resultModelo["datos"]) a nuestro array parámetros
+      // ($parametros["datos"]), que será el que le pasaremos a la vista para visualizarlos
+      if ($resultModelo["correcto"]) :
+         $parametros["datos"] = $resultModelo["datos"];
+         //Definimos el mensaje para el alert de la vista de que todo fue correctamente
+         $this->mensajes[] = [
+            "tipo" => "success",
+            "mensaje" => "El listado se realizó correctamente"
+         ];
+      else :
+         //Definimos el mensaje para el alert de la vista de que se produjeron errores al realizar el listado
+         $this->mensajes[] = [
+            "tipo" => "danger",
+            "mensaje" => "El listado no pudo realizarse correctamente!! :( <br/>({$resultModelo["error"]})"
+         ];
+      endif;
+      //Asignamos al campo 'mensajes' del array de parámetros el valor del atributo 
+      //'mensaje', que recoge cómo finalizó la operación:
+      $parametros["mensajes"] = $this->mensajes;
+      // Incluimos la vista en la que visualizaremos los datos o un mensaje de error
+      $this->view->show("paginaMensajes", $parametros);
+   }
 }

@@ -27,7 +27,7 @@
             </div>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#location" <?php if($_SESSION['perfilCompleto'] == false){echo"hidden";}?>>Mensajes</a>
+            <a class="nav-link" href="?controller=user&accion=mensajes" <?php if($_SESSION['perfilCompleto'] == false){echo"hidden";}?>>Mensajes</a>
           </li>
         </ul>
 

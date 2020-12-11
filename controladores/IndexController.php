@@ -293,26 +293,33 @@ class IndexController extends BaseController
       // Si la consulta se realizó correctamente transferimos los datos obtenidos
       // de la consulta del modelo ($resultModelo["datos"]) a nuestro array parámetros
       // ($parametros["datos"]), que será el que le pasaremos a la vista para visualizarlos
-      if ($resultModelo["correcto"]) :
-         $parametros["datos"] = $resultModelo["datos"];
-         //Definimos el mensaje para el alert de la vista de que todo fue correctamente
-         $this->mensajes[] = [
-            "tipo" => "success",
-            "mensaje" => "Se te ha inscrito en la clase seleccionada"
-         ];
-      else :
-         //Definimos el mensaje para el alert de la vista de que se produjeron errores al realizar el listado
-         $this->mensajes[] = [
-            "tipo" => "danger",
-            "mensaje" => "Error inesperado!! :( <br/>({$resultModelo["error"]})"
-         ];
-      endif;
-      //Asignamos al campo 'mensajes' del array de parámetros el valor del atributo 
-      //'mensaje', que recoge cómo finalizó la operación:
-      $parametros["mensajes"] = $this->mensajes;
-      // Incluimos la vista en la que visualizaremos los datos o un mensaje de error
+      if ($resultModelo['inscrito'] == false) {
 
+         if ($resultModelo["correcto"]) :
+            $parametros["datos"] = $resultModelo["datos"];
+            //Definimos el mensaje para el alert de la vista de que todo fue correctamente
+            $this->mensajes[] = [
+               "tipo" => "success",
+               "mensaje" => "Se te ha inscrito en la clase seleccionada"
+            ];
+         else :
+            //Definimos el mensaje para el alert de la vista de que se produjeron errores al realizar el listado
+            $this->mensajes[] = [
+               "tipo" => "danger",
+               "mensaje" => "Error inesperado!! :( <br/>({$resultModelo["error"]})"
+            ];
+         endif;
+         //Asignamos al campo 'mensajes' del array de parámetros el valor del atributo 
+         //'mensaje', que recoge cómo finalizó la operación:
+         $parametros["mensajes"] = $this->mensajes;
+         // Incluimos la vista en la que visualizaremos los datos o un mensaje de error
 
+      } else {
+         $this->mensajes[] = [
+               "tipo" => "warning",
+               "mensaje" => "Usted ya esta inscrito en esa clase."
+         ];
+      }
       $this->listarHorario($parametros["mensajes"]);
    }
 

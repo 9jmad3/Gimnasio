@@ -4,7 +4,7 @@
  <!-- Default form login -->
 
     <!-- ALERTAS-->
-    <form class="text-center border border-light p-5 w-50 bg-white rounded-lg" action="?controller=Login&accion=inUser" id="login" method="post">
+    <form class="text-center border border-light p-5 w-25 bg-white rounded-lg" action="?controller=Login&accion=inUser" id="login" method="post">
     <?php if (isset($mensajes)) {
           foreach ($mensajes as $mensaje) : ?> 
             <div class="alert alert-<?= $mensaje["tipo"] ?>"><?= $mensaje["mensaje"] ?></div>
