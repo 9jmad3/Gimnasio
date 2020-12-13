@@ -7,16 +7,16 @@
     }?>
 
     <!-- Default form register -->
-    <form class="text-center border border-light p-5" action="?controller=index&accion=editarClase&id=<?= $_GET['id'] ?>" method="post" enctype="multipart/form-data">
+    <form class="text-center border border-light p-5" action="?controller=index&accion=insertarClase" method="post" enctype="multipart/form-data">
 
-        <p class="h4 mb-4">EDITAR CLASE</p>
+        <p class="h4 mb-4">INSERTAR CLASE</p>
 
         <!-- Nombre -->
         <input type="text" id="defaultRegisterFormFirstName" class="form-control mb-4" placeholder="Nombre" name="txtnombre" value="">
        
         <!-- Tipo -->
         <select class="browser-default custom-select form-control mb-4" name="txttipo">
-            <option selected>Indefinido</option>
+            <option selected>Indefindo</option>
             <option value="Resistencia">Resistencia</option>
             <option value="Estiramiento">Estiramiento</option>
             <option value="Resistenca-Fuerza">Resistenca-Fuerza</option>

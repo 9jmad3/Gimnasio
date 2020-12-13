@@ -29,7 +29,7 @@
               aria-haspopup="true" aria-expanded="false">Operaciones clases dirigidas</a>
             <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink">
               <a class="dropdown-item" href="?controller=index&accion=listarOferta">Listar</a>
-              <a class="dropdown-item" href="?controller=User&accion=listaUsuariosNoValidados">Insertar</a>
+              <a class="dropdown-item" href="?controller=index&accion=insertClase">Insertar</a>
               <a class="dropdown-item" href="?controller=index&accion=listarClasesEditarBorrar">Editar/Borrar</a>
             </div>
           </li>

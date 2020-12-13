@@ -221,6 +221,45 @@ class UserModel extends BaseModel
       return $return;
    }
 
+   public function insertarClase($datos)
+   {
+      $return = [
+         "correcto" => FALSE,
+         "error" => NULL
+      ];
+      
+      try {
+         //Inicializamos la transacción
+         //$this->db->beginTransaction();
+         //Definimos la instrucción SQL parametrizada 
+         $sql = "INSERT INTO clases(nombre,tipo,descripcion,imagen)
+                         VALUES (:nombre,:tipo,:descripcion,:imagen)";
+         $query = $this->db->prepare($sql);
+
+         $query->execute([
+            'nombre' => $datos["nombre"],
+            'tipo'=> $datos['tipo'],
+            'descripcion'=> $datos['descripcion'],
+            'imagen'=> $datos['imagen']
+         ]);   
+
+         
+
+         //Supervisamos si la inserción se realizó correctamente... 
+         if ($query) {
+            //$this->db->commit();  // commit() confirma los cambios realizados durante la transacción
+            $return["correcto"] = TRUE;
+         } // o no :(
+      } catch (PDOException $ex) {
+         var_dump($ex->getMessage());
+         //$this->db->rollback(); // rollback() se revierten los cambios realizados durante la transacción
+         $return["error"] = $ex->getMessage();
+         //die();
+      }
+
+      return $return;
+   }
+
    public function editarClase($datos)
    {
       $return = [

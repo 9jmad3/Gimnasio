@@ -404,14 +404,87 @@ class IndexController extends BaseController
          $this->view->show("ListarClasesEditarBorrar",$parametros);
    }
 
-   public function editClase()
+   public function editClase($parametros=null)
    {
-       $parametros = [
+      $this->view->show("editarClase", $parametros);
+   }
+
+   public function insertClase($parametros = null)
+   {
+      $this->view->show("insertarClase",$parametros);
+   }
+
+   public function insertarClase()
+   {
+      // Almacenamos en el array 'parametros[]'los valores que vamos a mostrar en la vista
+      $parametros = [
          "datos" => NULL,
          "mensajes" => []
       ];
 
-      $this->view->show("editarClase", $parametros);
+      $imagen = NULL;
+      if (!empty($_POST['txtnombre']) || !empty($_POST['txtdescripcion'])) {
+
+         if (isset($_FILES["imagen"]) && (!empty($_FILES["imagen"]["tmp_name"]))) {
+            // Verificamos la carga de la imagen
+            // Comprobamos si existe el directorio fotos, y si no, lo creamos
+            if (!is_dir("img/ofertaClases")) {
+               $dir = mkdir("img/ofertaClases", 0777, true);
+            } else {
+               $dir = true;
+            }
+            // Ya verificado que la carpeta uploads existe movemos el fichero seleccionado a dicha carpeta
+            if ($dir) {
+               //Para asegurarnos que el nombre va a ser único...
+               $nombrefichimg = $_FILES["imagen"]["name"];
+               // Movemos el fichero de la carpeta temportal a la nuestra
+               $movfichimg = move_uploaded_file($_FILES["imagen"]["tmp_name"], "img/ofertaClases/" . $nombrefichimg);
+               $imagen = $nombrefichimg;
+               // Verficamos que la carga se ha realizado correctamente
+               if ($movfichimg) {
+                  $imagencargada = true;
+               } else {
+                  $imagencargada = false;
+                  $this->mensajes[] = [
+                     "tipo" => "danger",
+                     "mensaje" => "Error: La imagen no se cargó correctamente! :("
+                  ];
+                  $errores["imagen"] = "Error: La imagen no se cargó correctamente! :(";
+               }
+            }
+         }
+   
+         $resultModelo = $this->modelo->insertarClase([
+            'nombre' => $_POST['txtnombre'],
+            'tipo' => $_POST['txttipo'],
+            'descripcion' => $_POST['txtdescripcion'],
+            'imagen' => $imagen
+         ]);
+      
+         if ($resultModelo["correcto"]){
+            $parametros["datos"] = $resultModelo["datos"];
+            $this->mensajes[] = [
+               "tipo" => "success",
+               "mensaje" => "Operacion realizada correctamente"
+            ];
+         }else{
+            $this->mensajes[] = [
+               "tipo" => "danger",
+               "mensaje" => "No se ha podido borrar!! :( <br/>({$resultModelo["error"]})"
+            ];
+         }
+      $parametros["mensajes"] = $this->mensajes;
+      }else{
+         $this->mensajes[] = [
+            "tipo" => "danger",
+            "mensaje" => "No pueden existir campos vacios."
+         ];
+         $parametros["mensajes"] = $this->mensajes;
+      }
+
+      
+
+   $this->insertClase($parametros);
    }
 
    public function editarClase()
@@ -424,66 +497,75 @@ class IndexController extends BaseController
 
       $imagen = NULL;
 
-      if (isset($_FILES["imagen"]) && (!empty($_FILES["imagen"]["tmp_name"]))) {
-         // Verificamos la carga de la imagen
-         // Comprobamos si existe el directorio fotos, y si no, lo creamos
-         if (!is_dir("img/ofertaClases")) {
-            $dir = mkdir("img/ofertaClases", 0777, true);
-         } else {
-            $dir = true;
-         }
-         // Ya verificado que la carpeta uploads existe movemos el fichero seleccionado a dicha carpeta
-         if ($dir) {
-            //Para asegurarnos que el nombre va a ser único...
-            $nombrefichimg = $_FILES["imagen"]["name"];
-            // Movemos el fichero de la carpeta temportal a la nuestra
-            $movfichimg = move_uploaded_file($_FILES["imagen"]["tmp_name"], "img/ofertaClases/" . $nombrefichimg);
-            $imagen = $nombrefichimg;
-            // Verficamos que la carga se ha realizado correctamente
-            if ($movfichimg) {
-               $imagencargada = true;
+      if (!empty($_POST['txtnombre']) || !empty($_POST['txtdescripcion'])) {
+
+         if (isset($_FILES["imagen"]) && (!empty($_FILES["imagen"]["tmp_name"]))) {
+            // Verificamos la carga de la imagen
+            // Comprobamos si existe el directorio fotos, y si no, lo creamos
+            if (!is_dir("img/ofertaClases")) {
+               $dir = mkdir("img/ofertaClases", 0777, true);
             } else {
-               $imagencargada = false;
-               $this->mensajes[] = [
-                  "tipo" => "danger",
-                  "mensaje" => "Error: La imagen no se cargó correctamente! :("
-               ];
-               $errores["imagen"] = "Error: La imagen no se cargó correctamente! :(";
+               $dir = true;
+            }
+            // Ya verificado que la carpeta uploads existe movemos el fichero seleccionado a dicha carpeta
+            if ($dir) {
+               //Para asegurarnos que el nombre va a ser único...
+               $nombrefichimg = $_FILES["imagen"]["name"];
+               // Movemos el fichero de la carpeta temportal a la nuestra
+               $movfichimg = move_uploaded_file($_FILES["imagen"]["tmp_name"], "img/ofertaClases/" . $nombrefichimg);
+               $imagen = $nombrefichimg;
+               // Verficamos que la carga se ha realizado correctamente
+               if ($movfichimg) {
+                  $imagencargada = true;
+               } else {
+                  $imagencargada = false;
+                  $this->mensajes[] = [
+                     "tipo" => "danger",
+                     "mensaje" => "Error: La imagen no se cargó correctamente! :("
+                  ];
+                  $errores["imagen"] = "Error: La imagen no se cargó correctamente! :(";
+               }
             }
          }
-      }
 
 
-      $resultModelo = $this->modelo->editarClase([
-            'nombre' => $_POST['txtnombre'],
-            'tipo' => $_POST['txttipo'],
-            'descripcion' => $_POST['txtdescripcion'],
-            'id' => $_GET['id'],
-            'imagen' => $imagen
-      ]);
-      
-      if ($resultModelo["correcto"]) :
-         $parametros["datos"] = $resultModelo["datos"];
-         //Definimos el mensaje para el alert de la vista de que todo fue correctamente
-         $this->mensajes[] = [
-            "tipo" => "success",
-            "mensaje" => "Operacion realizada correctamente"
-         ];
+         $resultModelo = $this->modelo->editarClase([
+               'nombre' => $_POST['txtnombre'],
+               'tipo' => $_POST['txttipo'],
+               'descripcion' => $_POST['txtdescripcion'],
+               'id' => $_GET['id'],
+               'imagen' => $imagen
+         ]);
+         
+         if ($resultModelo["correcto"]) :
+            $parametros["datos"] = $resultModelo["datos"];
+            //Definimos el mensaje para el alert de la vista de que todo fue correctamente
+            $this->mensajes[] = [
+               "tipo" => "success",
+               "mensaje" => "Operacion realizada correctamente"
+            ];
 
 
-      else :
-         //Definimos el mensaje para el alert de la vista de que se produjeron errores al realizar el listado
+         else :
+            //Definimos el mensaje para el alert de la vista de que se produjeron errores al realizar el listado
+            $this->mensajes[] = [
+               "tipo" => "danger",
+               "mensaje" => "No se ha podido borrar!! :( <br/>({$resultModelo["error"]})"
+            ];
+         endif;
+         //Asignamos al campo 'mensajes' del array de parámetros el valor del atributo 
+         //'mensaje', que recoge cómo finalizó la operación:
+         $parametros["mensajes"] = $this->mensajes;
+         // Incluimos la vista en la que visualizaremos los datos o un mensaje de error
+      }else{
          $this->mensajes[] = [
             "tipo" => "danger",
-            "mensaje" => "No se ha podido borrar!! :( <br/>({$resultModelo["error"]})"
+            "mensaje" => "No pueden existir campos vacios."
          ];
-      endif;
-      //Asignamos al campo 'mensajes' del array de parámetros el valor del atributo 
-      //'mensaje', que recoge cómo finalizó la operación:
-      $parametros["mensajes"] = $this->mensajes;
-      // Incluimos la vista en la que visualizaremos los datos o un mensaje de error
-
-      $this->editClase();
+         $parametros["mensajes"] = $this->mensajes;
+      }
+      
+      $this->editClase($parametros);
    
    }
 
