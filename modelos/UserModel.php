@@ -221,6 +221,85 @@ class UserModel extends BaseModel
       return $return;
    }
 
+   public function editarClase($datos)
+   {
+      $return = [
+         "correcto" => FALSE,
+         "error" => NULL
+      ];
+      
+      try {
+         //Inicializamos la transacción
+         //$this->db->beginTransaction();
+         //Definimos la instrucción SQL parametrizada 
+         $sql = "UPDATE clases SET nombre= :nombre, tipo= :tipo, descripcion= :descripcion, imagen= :imagen  WHERE id= :id";
+         $query = $this->db->prepare($sql);
+
+         $query->execute([
+            'nombre' => $datos["nombre"],
+            'tipo'=> $datos['tipo'],
+            'descripcion'=> $datos['descripcion'],
+            'imagen'=> $datos['imagen'],
+            'id' => $datos['id']
+         ]);   
+
+         
+
+         //Supervisamos si la inserción se realizó correctamente... 
+         if ($query) {
+            //$this->db->commit();  // commit() confirma los cambios realizados durante la transacción
+            $return["correcto"] = TRUE;
+         } // o no :(
+      } catch (PDOException $ex) {
+         //$this->db->rollback(); // rollback() se revierten los cambios realizados durante la transacción
+         $return["error"] = $ex->getMessage();
+         //die();
+      }
+
+      return $return;
+   }
+
+   public function delClase($id)
+   {
+      // La función devuelve un array con dos valores:'correcto', que indica si la
+      // operación se realizó correctamente, y 'mensaje', campo a través del cual le
+      // mandamos a la vista el mensaje indicativo del resultado de la operación
+      $return = [
+         "correcto" => FALSE,
+         "error" => NULL
+      ];
+      //Si hemos recibido el id y es un número realizamos el borrado...
+      if ($id && is_numeric($id)) {
+         try {
+            //PRIMERO BORRAMOS LAS CLASES EN EL HORARIO
+            //Inicializamos la transacción
+            $this->db->beginTransaction();
+            //Definimos la instrucción SQL parametrizada 
+            $sql = "DELETE FROM clasesExistentes WHERE idClase=:id";
+            $query = $this->db->prepare($sql);
+            $query->execute(['id' => $id]);
+
+            //DESPUES BORRAMOS LA CLASE DEL SISTEMA
+            //Definimos la instrucción SQL parametrizada 
+            $sql = "DELETE FROM clases WHERE id=:id";
+            $query = $this->db->prepare($sql);
+            $query->execute(['id' => $id]);
+            //Supervisamos si la eliminación se realizó correctamente... 
+            if ($query) {
+               $this->db->commit();  // commit() confirma los cambios realizados durante la transacción
+               $return["correcto"] = TRUE;
+            } // o no :(
+         } catch (PDOException $ex) {
+            $this->db->rollback(); // rollback() se revierten los cambios realizados durante la transacción
+            $return["error"] = $ex->getMessage();
+         }
+      } else {
+         $return["correcto"] = FALSE;
+      }
+
+      return $return;
+   }
+
    public function listarOferta()
    {
       $return = [

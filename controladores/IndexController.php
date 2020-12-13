@@ -370,6 +370,159 @@ class IndexController extends BaseController
       $this->listarInscripciones();
    }
 
+   public function listarClasesEditarBorrar()
+   {
+      // Almacenamos en el array 'parametros[]'los valores que vamos a mostrar en la vista
+      $parametros = [
+         "datos" => NULL,
+         "mensajes" => []
+      ];
+      // Realizamos la consulta y almacenamos los resultados en la variable $resultModelo
+      $resultModelo = $this->modelo->listarOferta();
+      // Si la consulta se realizó correctamente transferimos los datos obtenidos
+      // de la consulta del modelo ($resultModelo["datos"]) a nuestro array parámetros
+      // ($parametros["datos"]), que será el que le pasaremos a la vista para visualizarlos
+      if ($resultModelo["correcto"]) :
+         $parametros["datos"] = $resultModelo["datos"];
+         //Definimos el mensaje para el alert de la vista de que todo fue correctamente
+         $this->mensajes[] = [
+            "tipo" => "success",
+            "mensaje" => "El listado se realizó correctamente"
+         ];
+      else :
+         //Definimos el mensaje para el alert de la vista de que se produjeron errores al realizar el listado
+         $this->mensajes[] = [
+            "tipo" => "danger",
+            "mensaje" => "El listado no pudo realizarse correctamente!! :( <br/>({$resultModelo["error"]})"
+         ];
+      endif;
+      //Asignamos al campo 'mensajes' del array de parámetros el valor del atributo 
+      //'mensaje', que recoge cómo finalizó la operación:
+      $parametros["mensajes"] = $this->mensajes;
+      // Incluimos la vista en la que visualizaremos los datos o un mensaje de error
+
+         $this->view->show("ListarClasesEditarBorrar",$parametros);
+   }
+
+   public function editClase()
+   {
+       $parametros = [
+         "datos" => NULL,
+         "mensajes" => []
+      ];
+
+      $this->view->show("editarClase", $parametros);
+   }
+
+   public function editarClase()
+   {
+      // Almacenamos en el array 'parametros[]'los valores que vamos a mostrar en la vista
+      $parametros = [
+         "datos" => NULL,
+         "mensajes" => []
+      ];
+
+      $imagen = NULL;
+
+      if (isset($_FILES["imagen"]) && (!empty($_FILES["imagen"]["tmp_name"]))) {
+         // Verificamos la carga de la imagen
+         // Comprobamos si existe el directorio fotos, y si no, lo creamos
+         if (!is_dir("img/ofertaClases")) {
+            $dir = mkdir("img/ofertaClases", 0777, true);
+         } else {
+            $dir = true;
+         }
+         // Ya verificado que la carpeta uploads existe movemos el fichero seleccionado a dicha carpeta
+         if ($dir) {
+            //Para asegurarnos que el nombre va a ser único...
+            $nombrefichimg = $_FILES["imagen"]["name"];
+            // Movemos el fichero de la carpeta temportal a la nuestra
+            $movfichimg = move_uploaded_file($_FILES["imagen"]["tmp_name"], "img/ofertaClases/" . $nombrefichimg);
+            $imagen = $nombrefichimg;
+            // Verficamos que la carga se ha realizado correctamente
+            if ($movfichimg) {
+               $imagencargada = true;
+            } else {
+               $imagencargada = false;
+               $this->mensajes[] = [
+                  "tipo" => "danger",
+                  "mensaje" => "Error: La imagen no se cargó correctamente! :("
+               ];
+               $errores["imagen"] = "Error: La imagen no se cargó correctamente! :(";
+            }
+         }
+      }
+
+
+      $resultModelo = $this->modelo->editarClase([
+            'nombre' => $_POST['txtnombre'],
+            'tipo' => $_POST['txttipo'],
+            'descripcion' => $_POST['txtdescripcion'],
+            'id' => $_GET['id'],
+            'imagen' => $imagen
+      ]);
+      
+      if ($resultModelo["correcto"]) :
+         $parametros["datos"] = $resultModelo["datos"];
+         //Definimos el mensaje para el alert de la vista de que todo fue correctamente
+         $this->mensajes[] = [
+            "tipo" => "success",
+            "mensaje" => "Operacion realizada correctamente"
+         ];
+
+
+      else :
+         //Definimos el mensaje para el alert de la vista de que se produjeron errores al realizar el listado
+         $this->mensajes[] = [
+            "tipo" => "danger",
+            "mensaje" => "No se ha podido borrar!! :( <br/>({$resultModelo["error"]})"
+         ];
+      endif;
+      //Asignamos al campo 'mensajes' del array de parámetros el valor del atributo 
+      //'mensaje', que recoge cómo finalizó la operación:
+      $parametros["mensajes"] = $this->mensajes;
+      // Incluimos la vista en la que visualizaremos los datos o un mensaje de error
+
+      $this->editClase();
+   
+   }
+
+   public function delClase()
+   {
+      // Almacenamos en el array 'parametros[]'los valores que vamos a mostrar en la vista
+      $parametros = [
+         "datos" => NULL,
+         "mensajes" => []
+      ];
+      $id = $_GET['id'];
+  
+      $resultModelo = $this->modelo->delClase($id);
+      
+      if ($resultModelo["correcto"]) :
+         $parametros["datos"] = $resultModelo["datos"];
+         //Definimos el mensaje para el alert de la vista de que todo fue correctamente
+         $this->mensajes[] = [
+            "tipo" => "success",
+            "mensaje" => "Operacion realizada correctamente"
+         ];
+
+
+      else :
+         //Definimos el mensaje para el alert de la vista de que se produjeron errores al realizar el listado
+         $this->mensajes[] = [
+            "tipo" => "danger",
+            "mensaje" => "No se ha podido borrar!! :( <br/>({$resultModelo["error"]})"
+         ];
+      endif;
+      //Asignamos al campo 'mensajes' del array de parámetros el valor del atributo 
+      //'mensaje', que recoge cómo finalizó la operación:
+      $parametros["mensajes"] = $this->mensajes;
+      // Incluimos la vista en la que visualizaremos los datos o un mensaje de error
+
+
+      $this->listarClasesEditarBorrar();
+   }
+
    public function listarOferta()
    {
       // Almacenamos en el array 'parametros[]'los valores que vamos a mostrar en la vista
