@@ -18,12 +18,15 @@
 
         <!-- Left -->
         <ul class="navbar-nav mr-auto">
-          <li class="nav-item "> 
-          <!-- active -->
-            <a class="nav-link" href="#">Modificar horario
-            <span class="sr-only">(current)</span>
-            </a>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown"
+              aria-haspopup="true" aria-expanded="false">Operaciones con Horario</a>
+            <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink">
+              <a class="dropdown-item" href="?controller=index&accion=insertClaseExistente">Insertar nueva clase</a>
+              <a class="dropdown-item" href="?controller=index&accion=editarHorario">Eliminar clase existente</a>
+            </div>
           </li>
+
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown"
               aria-haspopup="true" aria-expanded="false">Operaciones clases dirigidas</a>

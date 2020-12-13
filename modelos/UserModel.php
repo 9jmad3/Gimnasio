@@ -395,6 +395,33 @@ class UserModel extends BaseModel
       return $return;
    }
 
+   public function delCLaseExistente($id)
+   {
+      $return = [
+         "correcto" => FALSE,
+         "datos" => NULL,
+         "error" => NULL
+      ];
+
+      try {  
+         $this->db->beginTransaction();
+
+         $sql = "DELETE FROM clasesExistentes WHERE id=:id";
+         $query = $this->db->prepare($sql);
+         $query->execute(['id' => $id]);
+         
+         if ($query) {
+            $this->db->commit();  
+            $return["correcto"] = TRUE;
+         } 
+      } catch (PDOException $ex) {
+         $this->db->rollback(); 
+         $return["error"] = $ex->getMessage();
+      }
+
+      return $return;
+   }
+
    public function borrarInscripcion($id)
    {
       $return = [
@@ -422,6 +449,57 @@ class UserModel extends BaseModel
          $return["error"] = $ex->getMessage();
       }
 
+      return $return;
+   }
+
+   public function insertarClaseExistente($datos)
+   {
+      $return = [
+         "correcto" => FALSE,
+         "error" => NULL
+      ];
+
+      $contador= 0; //Variable para editar clases duplicadas.
+
+      try {
+         $this->db->beginTransaction();
+         //Primero comprobamos que el usuario no esté ya inscrito en esa clase.
+         $sqlUno = "SELECT count(*) FROM clasesExistentes WHERE Dia=:dia and horaInicio<:horaFin and horaFin>:horaInicio";
+         $queryUno = $this->db->prepare($sqlUno);
+         
+         $queryUno->execute([
+            'dia' => $datos['Dia'],
+            'horaFin' => $datos['horaFin'],
+            'horaInicio' => $datos['horaInicio']]
+         );
+         $contador = $queryUno->fetch();
+
+         if ($contador['count(*)'] == 0) {
+            $sql = "INSERT INTO clasesExistentes (idClase, Dia, horaInicio, horaFin)
+                              VALUES (:idClase,:Dia,:horaInicio,:horaFin)";
+               // Preparamos la consulta...
+               $query = $this->db->prepare($sql);
+               // y la ejecutamos indicando los valores que tendría cada parámetro
+               $query->execute([
+                  'idClase' => $datos['idClase'],
+                  'Dia' => $datos['Dia'],
+                  'horaFin' => $datos['horaFin'],
+                  'horaInicio' => $datos['horaInicio']
+               ]); //Supervisamos si la inserción se realizó correctamente... 
+
+               if ($query) {
+                  $this->db->commit(); // commit() confirma los cambios realizados durante la transacción
+                  $return["correcto"] = TRUE;
+               } // o no :(
+         } else {
+            $return["error"] = "Horario no disponible. Consulte el horario para ver horas libres.";
+         }
+
+      } catch (PDOException $ex) {
+         $this->db->rollback(); // rollback() se revierten los cambios realizados durante la transacción
+         $return["error"] = $ex->getMessage();
+         //die();
+      }         
       return $return;
    }
 
@@ -497,7 +575,8 @@ class UserModel extends BaseModel
 
        //Realizamos la consulta...
        try {  //Definimos la instrucción SQL  
-          $sql = "SELECT * FROM clasesExistentes";
+          $sql = "SELECT clasesExistentes.id, clasesExistentes.idClase, clasesExistentes.duracion ,clasesExistentes.Dia, clasesExistentes.horaInicio, clasesExistentes.horaFin, clases.nombre FROM clasesExistentes
+                                                                                                                                                                               JOIN clases ON clasesExistentes.idClase = clases.id;";
           // Hacemos directamente la consulta al no tener parámetros
           $resultsquery = $this->db->query($sql);
           //Supervisamos si la inserción se realizó correctamente... 

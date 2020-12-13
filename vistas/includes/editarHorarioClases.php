@@ -1,5 +1,5 @@
 <div class="container-fluid" style="margin-top: 100px !important;">
-    <h2 class="text-center m-3">INSCRIPCIÓN EN UN CLICK</h2>
+    <h2 class="text-center m-3">EDICION DE HORARIO</h2>
 
     <?php if (isset($mensajes)) {
     foreach ($mensajes as $mensaje) : ?> 
@@ -34,11 +34,12 @@
                     </td> 
                     <td>
                         
-                        <?php foreach ($datos as $clase) :?>                      
+                        <?php foreach ($datos as $clase) :?>                    
                             <?php if ($clase["Dia"] == 'Lunes' && $clase['horaInicio'] == $d || $clase["Dia"] == 'Lunes' &&  $clase['horaFin'] > $d && $clase['horaInicio'] < $d || $clase["Dia"] == 'Lunes' &&  $clase['horaFin'] == $d) : ?>
-                                    <a href="?controller=index&accion=insertarInscripcion&idCl=<?= $clase['id'] ?>">
-                                        <button type="button" class="btn btn-indigo btn-sm m-0 mb-1 mt-1"><?= $clase['nombre'] ?></button><br>
-                                    </a>
+                                <h5 class="m-0 mb-1 mt-1 bg-dark text-white"><?= $clase['nombre'] ?></h5>
+                                <a href="?controller=index&accion=delClaseExistente&id=<?= $clase['id'] ?>">
+                                    <i class="fas fa-trash-alt"></i> Eliminar
+                                </a>
                             <?php  endif;?> 
                         <?php endforeach;?> 
                     </td>
@@ -47,8 +48,9 @@
                     <td>
                         <?php foreach ($datos as $clase) :?>
                             <?php if ($clase["Dia"] == 'Martes' && $clase['horaInicio'] == $d || $clase["Dia"] == 'Martes' &&  $clase['horaFin'] > $d && $clase['horaInicio'] < $d || $clase["Dia"] == 'Martes' &&  $clase['horaFin'] == $d): ?>
-                                <a href="?controller=index&accion=insertarInscripcion&idCl=<?= $clase['id'] ?>">
-                                    <button type="button" class="btn btn-indigo btn-sm m-0 mb-1 mt-1"><?= $clase['nombre'] ?></button>
+                                <h5 class="m-0 mb-1 mt-1 bg-dark text-white"><?= $clase['nombre'] ?></h5>
+                                <a href="?controller=index&accion=delClaseExistente&id=<?= $clase['id'] ?>">
+                                    <i class="fas fa-trash-alt"></i> Eliminar
                                 </a>
                             <?php endif;?> 
                         <?php endforeach;?>   
@@ -58,8 +60,9 @@
                     <td>
                         <?php foreach ($datos as $clase) :?>
                             <?php if ($clase["Dia"] == 'Miercoles' && $clase['horaInicio'] == $d || $clase["Dia"] == 'Miercoles' &&  $clase['horaFin'] > $d && $clase['horaInicio'] < $d || $clase["Dia"] == 'Miercoles' &&  $clase['horaFin'] == $d) : ?>
-                                <a href="?controller=index&accion=insertarInscripcion&idCl=<?= $clase['id'] ?>">
-                                    <button type="button" class="btn btn-indigo btn-sm m-0 mb-1 mt-1"><?= $clase['nombre'] ?></button>
+                                <h5 class="m-0 mb-1 mt-1 bg-dark text-white"><?= $clase['nombre'] ?></h5>
+                                <a href="?controller=index&accion=delClaseExistente&id=<?= $clase['id'] ?>">
+                                    <i class="fas fa-trash-alt"></i> Eliminar
                                 </a>
                             <?php endif;?> 
                         <?php endforeach;?>   
@@ -68,18 +71,20 @@
                     <td>
                         <?php foreach ($datos as $clase) :?>
                             <?php if ($clase["Dia"] == 'Jueves' && $clase['horaInicio'] == $d || $clase["Dia"] == 'Jueves' &&  $clase['horaFin'] > $d && $clase['horaInicio'] < $d || $clase["Dia"] == 'Jueves' &&  $clase['horaFin'] == $d) : ?>
-                                <a href="?controller=index&accion=insertarInscripcion&idCl=<?= $clase['id'] ?>">
-                                    <button type="button" class="btn btn-indigo btn-sm m-0 mb-1 mt-1"><?= $clase['nombre'] ?></button>
+                                <h5 class="m-0 mb-1 mt-1 bg-dark text-white"><?= $clase['nombre'] ?></h5>
+                                <a href="?controller=index&accion=delClaseExistente&id=<?= $clase['id'] ?>">
+                                    <i class="fas fa-trash-alt"></i> Eliminar
                                 </a>
                             <?php endif;?> 
-                        <?php endforeach;?>
+                        <?php endforeach;?>   
                     </td>
 
                     <td>
                         <?php foreach ($datos as $clase) :?>
                             <?php if ($clase["Dia"] == 'Viernes' && $clase['horaInicio'] == $d || $clase["Dia"] == 'Viernes' &&  $clase['horaFin'] > $d && $clase['horaInicio'] < $d || $clase["Dia"] == 'Viernes' &&  $clase['horaFin'] == $d) : ?>
-                                <a href="?controller=index&accion=insertarInscripcion&idCl=<?= $clase['id'] ?>">
-                                    <button type="button" class="btn btn-indigo btn-sm m-0 mb-1 mt-1"><?= $clase['nombre'] ?></button>
+                                <h5 class="m-0 mb-1 mt-1 bg-dark text-white"><?= $clase['nombre'] ?></h5>
+                                <a href="?controller=index&accion=delClaseExistente&id=<?= $clase['id'] ?>">
+                                    <i class="fas fa-trash-alt"></i> Eliminar
                                 </a>
                             <?php endif;?> 
                         <?php endforeach;?>   
@@ -88,8 +93,9 @@
                     <td>
                         <?php foreach ($datos as $clase) :?>
                             <?php if ($clase["Dia"] == 'Sabado' && $clase['horaInicio'] == $d || $clase["Dia"] == 'Sabado' &&  $clase['horaFin'] > $d && $clase['horaInicio'] < $d || $clase["Dia"] == 'Sabado' &&  $clase['horaFin'] == $d) : ?>
-                                <a href="?controller=index&accion=insertarInscripcion&idCl=<?= $clase['id'] ?>">
-                                    <button type="button" class="btn btn-indigo btn-sm m-0 mb-1 mt-1"><?= $clase['nombre'] ?></button>
+                                <h5 class="m-0 mb-1 mt-1 bg-dark text-white"><?= $clase['nombre'] ?></h5>
+                                <a href="?controller=index&accion=delClaseExistente&id=<?= $clase['id'] ?>">
+                                    <i class="fas fa-trash-alt"></i> Eliminar
                                 </a>
                             <?php endif;?> 
                         <?php endforeach;?>   
