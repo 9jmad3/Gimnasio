@@ -26,11 +26,20 @@
           </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown"
+              aria-haspopup="true" aria-expanded="false">Operaciones clases dirigidas</a>
+            <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink">
+              <a class="dropdown-item" href="?controller=index&accion=listarOferta">Listar</a>
+              <a class="dropdown-item" href="?controller=User&accion=listaUsuariosNoValidados">Insertar</a>
+              <a class="dropdown-item" href="?controller=User&accion=listaUsuariosNoValidados">Editar/Borrar</a>
+            </div>
+          </li>
+
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown"
               aria-haspopup="true" aria-expanded="false">Operaciones con usuarios</a>
             <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink">
               <a class="dropdown-item" href="?controller=User&accion=listaUsuarios">Listar</a>
               <a class="dropdown-item" href="?controller=User&accion=listaUsuariosNoValidados">No validados</a>
-              <a class="dropdown-item disabled" href="#">Disabled</a>
             </div>
           </li>
           <li class="nav-item">
@@ -46,12 +55,12 @@
           <li class="nav-item avatar dropdown">
         <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-55" data-toggle="dropdown"
           aria-haspopup="true" aria-expanded="false">
-          <img src="https://mdbootstrap.com/img/Photos/Avatars/avatar-2.jpg" class="rounded-circle z-depth-0"
-            alt="avatar image" style="max-width: 40px !important;">
+          <img src="fotos/<?= $_SESSION['imagen'] ?>" class="rounded-circle z-depth-0"
+            alt="avatar" style="max-width: 40px !important;">
         </a>
         <div class="dropdown-menu dropdown-menu-lg-right dropdown-secondary"
           aria-labelledby="navbarDropdownMenuLink-55">
-          <a class="dropdown-item" href="?controller=User&accion=editPerfilAdmin">Editar perfil</a>
+          <a class="dropdown-item" href="?controller=User&accion=completarPerfil">Editar perfil</a>
           <a class="dropdown-item" href="?controller=User&accion=cerrarSesion">Cerrar sesion</a>
         </div>
       </li>

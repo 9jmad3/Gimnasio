@@ -221,6 +221,31 @@ class UserModel extends BaseModel
       return $return;
    }
 
+   public function listarOferta()
+   {
+      $return = [
+         "correcto" => FALSE,
+         "datos" => NULL,
+         "error" => NULL
+      ];
+
+      //Realizamos la consulta...
+      try {  //Definimos la instrucción SQL  
+         $sql = "SELECT * FROM clases";
+
+         $resultsquery = $this->db->query($sql);
+
+         if ($resultsquery) :
+            $return["correcto"] = TRUE;
+            $return["datos"] = $resultsquery->fetchAll(PDO::FETCH_ASSOC);
+         endif;
+      } catch (PDOException $ex) {
+         $return["error"] = $ex->getMessage();
+      }
+
+      return $return;
+   }
+
    public function listadoInscripciones()
    {
       $return = [
@@ -330,7 +355,6 @@ class UserModel extends BaseModel
             }
 
          } else { //Si ya esta inscrito se le informa.
-            var_dump("inscrito");
             $return["inscrito"] = TRUE;
          }
          
@@ -575,7 +599,7 @@ class UserModel extends BaseModel
          //Inicializamos la transacción
          //$this->db->beginTransaction();
          //Definimos la instrucción SQL parametrizada 
-         $sql = "UPDATE usuarios SET nif= :nif, nombre= :nombre, apellido1= :apellido1, apellido2= :apellido2, telefono= :telefono, direccion= :direccion  WHERE usuario= :usuario";
+         $sql = "UPDATE usuarios SET nif= :nif, nombre= :nombre, apellido1= :apellido1, apellido2= :apellido2, imagen= :imagen, telefono= :telefono, direccion= :direccion  WHERE usuario= :usuario";
          $query = $this->db->prepare($sql);
 
          if (!is_null($datos['usuario'])) {
@@ -584,6 +608,7 @@ class UserModel extends BaseModel
                'nombre' => $datos["nombre"],
                'apellido1'=> $datos["apellido1"],
                'apellido2'=> $datos["apellido2"],
+               'imagen' => $datos['imagen'],
                'telefono' => $datos['telefono'],
                'direccion' => $datos['direccion'],
                'usuario'=> $datos['usuario']
@@ -594,6 +619,7 @@ class UserModel extends BaseModel
                'nombre' => $datos["nombre"],
                'apellido1'=> $datos["apellido1"],
                'apellido2'=> $datos["apellido2"],
+               'imagen' => $datos['imagen'],
                'telefono' => $datos['telefono'],
                'direccion' => $datos['direccion'],
                'usuario'=> $_SESSION['usuario']

@@ -22,6 +22,7 @@
             <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown"
               aria-haspopup="true" aria-expanded="false">Clases dirigidas</a>
             <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink">
+              <a class="dropdown-item" href="?controller=index&accion=listarOferta">Oferta de clases</a>
               <a class="dropdown-item" href="?controller=index&accion=listarhorario">Horario</a>
               <a class="dropdown-item" href="?controller=index&accion=listarInscripciones">Inscripciones activas</a>
             </div>
@@ -39,7 +40,7 @@
           <li class="nav-item avatar dropdown">
         <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-55" data-toggle="dropdown"
           aria-haspopup="true" aria-expanded="false">
-          <img src="https://mdbootstrap.com/img/Photos/Avatars/avatar-2.jpg" class="rounded-circle z-depth-0"
+          <img src="fotos/<?= $_SESSION['imagen'] ?>" class="rounded-circle z-depth-0"
             alt="avatar image" style="max-width: 40px !important;">
         </a>
         <div class="dropdown-menu dropdown-menu-lg-right dropdown-secondary"

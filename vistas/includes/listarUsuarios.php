@@ -49,7 +49,7 @@
             <?php endif; ?> 
 
             <?php if ($d["imagen"] !== NULL) : ?>
-                <td><img src="fotos/<?= $d['imagen'] ?>" width="40" /></td>
+                <td><img src="fotos/<?= $d['imagen'] ?>" width="80"/></td>
               <?php else : ?>
                 <td>----</td>
             <?php endif; ?>

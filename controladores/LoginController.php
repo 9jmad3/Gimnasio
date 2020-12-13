@@ -61,45 +61,36 @@ class LoginController extends BaseController
          if ($_SESSION['rol_id']!=2) {
             
             if ($resultado['correcto'] == TRUE) {
+
                //Implementación de la funcion recuerdame que guarda en usuario y contraseña en cookies. 
-               if(isset($_POST['recuerdo']) && ($_POST['recuerdo']=="on"))            { // Creamos las cookies para ambas variables
+               if(isset($_POST['recuerdo']) && ($_POST['recuerdo']=="on")){ // Creamos las cookies para ambas variables
                   setcookie('usuario',$usuario,time() + (15 * 24 * 60 * 60));
                   setcookie('password',$password,time() + (15 * 24 * 60 * 60));
                   setcookie('recuerdo',$_POST['recuerdo'],time() + (15 * 24 * 60 * 60));
-              } else{ // Eliminamos las cookies vaciandolas
+
+               } else{ // Eliminamos las cookies vaciandolas
                   if(isset($_COOKIE['usuario'])) { setcookie('usuario',""); }
                   if(isset($_COOKIE['password'])){ setcookie('password',""); }
                   if(isset($_COOKIE['recuerdo'])){ setcookie('recuerdo',""); } 
-              }
+               }
 
                $parametros['datos'] = $resultado['datos'];
 
-               if ($_SESSION['rol_id'] == 0) {
-                  $parametros['pendientesActivacion']= $this->modelo->pendientesActivacion();
+               $_SESSION['nombre'] = $parametros['datos'][0]['nombre'];
+               $_SESSION['apellido1'] = $parametros['datos'][0]['apellido1'];
+               $_SESSION['apellido2'] = $parametros['datos'][0]['apellido2'];
+               $_SESSION['dni'] = $parametros['datos'][0]['nif'];
+               $_SESSION['telefono'] = $parametros['datos'][0]['telefono'];
+               $_SESSION['direccion'] = $parametros['datos'][0]['direccion'];
+               $_SESSION['imagen'] = $parametros['datos'][0]['imagen'];
 
-                  
-                  $_SESSION['nombre'] = $_SESSION['nombre'];
-                  $_SESSION['perfilCompleto']=true;
-                  
+               if ($_SESSION['rol_id'] == 0) {
                   $this->view->show("paginaAdmin",$parametros);
                } 
-               if($_SESSION['rol_id'] == 1 || $_SESSION['rol_id'] == 2){
+               if($_SESSION['rol_id'] == 1){
                   $this->view->show("paginaUsuario",$parametros);
                }
-
-               $perfilCompleto = $this->modelo->perfilCompleto($_SESSION['usuario']);
-               if (is_null($perfilCompleto['datos']['nif']) || is_null($perfilCompleto['datos']['nombre']) || is_null($perfilCompleto['datos']['apellido1']) || is_null($perfilCompleto['datos']['apellido2']) || is_null($perfilCompleto['datos']['telefono']) || is_null($perfilCompleto['datos']['direccion'])) {
-                  $_SESSION['perfilCompleto'] = false;
-                  $_SESSION['nombre'] = $perfilCompleto['datos']['nombre'];
-                  $_SESSION['apellido1'] = $perfilCompleto['datos']['apellido1'];
-                  $_SESSION['apellido2'] = $perfilCompleto['datos']['apellido2'];
-                  $_SESSION['dni'] = $perfilCompleto['datos']['nif'];
-                  $_SESSION['telefono'] = $perfilCompleto['datos']['telefono'];
-                  $_SESSION['direccion'] = $perfilCompleto['datos']['direccion'];
-               }else{
-                  $_SESSION['perfilCompleto'] = true;
-               }
-               
+              
             } else {
                $this->mensajes[] = [
                   "tipo" => "danger",

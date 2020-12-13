@@ -1,8 +1,8 @@
 <div class="container" style="margin-top: 100px !important;">
     <!-- Default form register -->
-    <form class="text-center border border-light p-5" action="?controller=Index&accion=register" method="post">
+    <form class="text-center border border-light p-5" action="?controller=Index&accion=register" method="post" enctype="multipart/form-data">
 
-        <p class="h4 mb-4">Completa tu perfil!</p>
+        <p class="h4 mb-4">EDITAR PERFIL</p>
 
         <!-- Nombre -->
         <input type="text" id="defaultRegisterFormFirstName" class="form-control mb-4" placeholder="Nombre" name="txtnombre" value="<?php if(isset($_SESSION['nombre'])){echo $_SESSION['nombre'] ;}?>">
@@ -51,13 +51,14 @@
             <?php } endforeach;
         }?>
 
+        <!-- Imagen -->
+        <div class="custom-file">
+            <input type="file" class="custom-file-input" id="customFileLang" lang="es" name="imagen">
+            <label class="custom-file-label" for="customFileLang">Seleccionar Archivo</label>
+        </div>
+
         <!-- Sign up button -->
         <button class="btn btn-info my-4 btn-block" type="submit" name="submit">Actualizar</button>
-
-        <hr>
-
-        <!-- Terms of service -->
-        <p>Al completar tu perfil un administrador verificará los datos y validará tu cuenta.
 
     </form>
     <!-- Default form register -->

@@ -1,54 +1,158 @@
-<!--Footer-->
-<footer class="page-footer text-center font-small mt-4 wow fadeIn">
+<!-- Footer -->
+<footer class="page-footer font-small stylish-color-dark pt-4 mt-4">
 
-<hr class="my-4">
+  <!-- Footer Links -->
+  <div class="container text-center text-md-left">
 
-<!-- Social icons -->
-<div class="pb-4">
-  <a href="https://www.facebook.com/mdbootstrap" target="_blank">
-    <i class="fab fa-facebook-f mr-3"></i>
-  </a>
+    <!-- Grid row -->
+    <div class="row">
 
-  <a href="https://twitter.com/MDBootstrap" target="_blank">
-    <i class="fab fa-twitter mr-3"></i>
-  </a>
+      <!-- Grid column -->
+      <div class="col-md-4 mx-auto">
 
-  <a href="https://www.youtube.com/watch?v=7MUISDJ5ZZ4" target="_blank">
-    <i class="fab fa-youtube mr-3"></i>
-  </a>
+        <!-- Content -->
+        <h5 class="font-weight-bold text-uppercase mt-3 mb-4">Footer Content</h5>
+        <p>Here you can use rows and columns to organize your footer content. Lorem ipsum dolor sit amet,
+          consectetur
+          adipisicing elit.</p>
 
-  <a href="https://plus.google.com/u/0/b/107863090883699620484" target="_blank">
-    <i class="fab fa-google-plus-g mr-3"></i>
-  </a>
+      </div>
+      <!-- Grid column -->
 
-  <a href="https://dribbble.com/mdbootstrap" target="_blank">
-    <i class="fab fa-dribbble mr-3"></i>
-  </a>
+      <hr class="clearfix w-100 d-md-none">
 
-  <a href="https://pinterest.com/mdbootstrap" target="_blank">
-    <i class="fab fa-pinterest mr-3"></i>
-  </a>
+      <!-- Grid column -->
+      <div class="col-md-2 mx-auto">
 
-  <a href="https://github.com/mdbootstrap/bootstrap-material-design" target="_blank">
-    <i class="fab fa-github mr-3"></i>
-  </a>
+        <!-- Links -->
+        <h5 class="font-weight-bold text-uppercase mt-3 mb-4">Links</h5>
 
-  <a href="http://codepen.io/mdbootstrap/" target="_blank">
-    <i class="fab fa-codepen mr-3"></i>
-  </a>
-</div>
-<!-- Social icons -->
+        <ul class="list-unstyled">
+          <li>
+            <a href="#!">Link 1</a>
+          </li>
+          <li>
+            <a href="#!">Link 2</a>
+          </li>
+          <li>
+            <a href="#!">Link 3</a>
+          </li>
+          <li>
+            <a href="#!">Link 4</a>
+          </li>
+        </ul>
 
-<!--Copyright-->
-<div class="footer-copyright py-3">
-  © 2019 Copyright:
-  <a href="https://mdbootstrap.com/education/bootstrap/" target="_blank"> MDBootstrap.com </a>
-  <h6 class="mt-1">Adaptado y personalizado por JMAD</h6>
-</div>
-<!--/.Copyright-->
-  <?php 
-    /**Librerias externas para Qr y demás */
-  
-  ?>
+      </div>
+      <!-- Grid column -->
+
+      <hr class="clearfix w-100 d-md-none">
+
+      <!-- Grid column -->
+      <div class="col-md-2 mx-auto">
+
+        <!-- Links -->
+        <h5 class="font-weight-bold text-uppercase mt-3 mb-4">Links</h5>
+
+        <ul class="list-unstyled">
+          <li>
+            <a href="#!">Link 1</a>
+          </li>
+          <li>
+            <a href="#!">Link 2</a>
+          </li>
+          <li>
+            <a href="#!">Link 3</a>
+          </li>
+          <li>
+            <a href="#!">Link 4</a>
+          </li>
+        </ul>
+
+      </div>
+      <!-- Grid column -->
+
+      <hr class="clearfix w-100 d-md-none">
+
+      <!-- Grid column -->
+      <div class="col-md-2 mx-auto">
+
+        <!-- Links -->
+        <h5 class="font-weight-bold text-uppercase mt-3 mb-4">Links</h5>
+
+        <ul class="list-unstyled">
+          <li>
+            <a href="#!">Link 1</a>
+          </li>
+          <li>
+            <a href="#!">Link 2</a>
+          </li>
+          <li>
+            <a href="#!">Link 3</a>
+          </li>
+          <li>
+            <a href="#!">Link 4</a>
+          </li>
+        </ul>
+
+      </div>
+      <!-- Grid column -->
+
+    </div>
+    <!-- Grid row -->
+
+  </div>
+  <!-- Footer Links -->
+
+  <hr>
+
+  <!-- Call to action -->
+  <ul class="list-unstyled list-inline text-center py-2">
+    <li class="list-inline-item">
+      <h5 class="mb-1">Register for free</h5>
+    </li>
+    <li class="list-inline-item">
+      <a href="#!" class="btn btn-danger btn-rounded">Sign up!</a>
+    </li>
+  </ul>
+  <!-- Call to action -->
+
+  <hr>
+
+  <!-- Social buttons -->
+  <ul class="list-unstyled list-inline text-center">
+    <li class="list-inline-item">
+      <a class="btn-floating btn-fb mx-1">
+        <i class="fab fa-facebook-f"> </i>
+      </a>
+    </li>
+    <li class="list-inline-item">
+      <a class="btn-floating btn-tw mx-1">
+        <i class="fab fa-twitter"> </i>
+      </a>
+    </li>
+    <li class="list-inline-item">
+      <a class="btn-floating btn-gplus mx-1">
+        <i class="fab fa-google-plus-g"> </i>
+      </a>
+    </li>
+    <li class="list-inline-item">
+      <a class="btn-floating btn-li mx-1">
+        <i class="fab fa-linkedin-in"> </i>
+      </a>
+    </li>
+    <li class="list-inline-item">
+      <a class="btn-floating btn-dribbble mx-1">
+        <i class="fab fa-dribbble"> </i>
+      </a>
+    </li>
+  </ul>
+  <!-- Social buttons -->
+
+  <!-- Copyright -->
+  <div class="footer-copyright text-center py-3">© 2020 Copyright:
+    <a href="https://mdbootstrap.com/"> MDBootstrap.com</a>
+  </div>
+  <!-- Copyright -->
+
 </footer>
-<!--/.Footer-->
+<!-- Footer -->

@@ -1,4 +1,4 @@
-<div class="container-fluid" style="margin-top: 100px;">
+<div class="container-fluid h-75" style="margin-top: 100px;">
 
 <?php if (isset($mensajes)) {
     foreach ($mensajes as $mensaje) : 
@@ -9,7 +9,7 @@
 
 
     <div class="row">
-        <div class="col">
+        <div class="col-9">
             <table class="table text-center">
                 <thead class="unique-color-dark white-text">
                     <tr>
@@ -87,7 +87,7 @@
 
             <!-- Message -->
             <div class="form-group">
-                <textarea class="form-control rounded-0" id="exampleFormControlTextarea2" name="txtmensaje" rows="3" placeholder="Mensaje"></textarea>
+                <textarea class="form-control rounded-0" id="exampleFormControlTextarea2" name="txtmensaje" rows="6" placeholder="Mensaje"></textarea>
             </div>
 
             <!-- Send button -->

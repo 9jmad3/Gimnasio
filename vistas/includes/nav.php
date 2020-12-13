@@ -1,5 +1,5 @@
 <!-- Navbar -->
-<nav class="navbar fixed-top navbar-expand-lg navbar-dark scrolling-navbar">
+<nav class="navbar fixed-top navbar-expand-lg navbar-dark scrolling-navbar unique-color-dark">
     <div class="container">
 
       <!-- Brand -->
@@ -18,6 +18,9 @@
 
         <!-- Left -->
         <ul class="navbar-nav mr-auto">
+          <li class="nav-item" <?php if($_SERVER['REQUEST_URI'] == "/gimnasio/index.php?controller=Login&accion=index")  echo"hidden"?>>
+            <a class="nav-link" href="#online">Clases Online</a>
+          </li>
           <li class="nav-item" <?php if($_SERVER['REQUEST_URI'] == "/gimnasio/index.php?controller=Login&accion=index")  echo"hidden"?>>
             <a class="nav-link" href="#online">Clases dirigidas</a>
           </li>

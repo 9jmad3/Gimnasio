@@ -73,6 +73,7 @@ class IndexController extends BaseController
                // Movemos el fichero de la carpeta temportal a la nuestra
                $movfichimg = move_uploaded_file($_FILES["imagen"]["tmp_name"], "fotos/" . $nombrefichimg);
                $imagen = $nombrefichimg;
+
                // Verficamos que la carga se ha realizado correctamente
                if ($movfichimg) {
                   $imagencargada = true;
@@ -143,7 +144,8 @@ class IndexController extends BaseController
                'apellido2' => $apellido2,
                'dni' => $dni,
                'direccion' => $direccion,
-               'telefono' => $telefono
+               'telefono' => $telefono,
+               'imagen' => $imagen
             ]);
 
             if ($resultModelo["correcto"]) :
@@ -151,6 +153,8 @@ class IndexController extends BaseController
                   "tipo" => "success",
                   "mensaje" => "El usuarios se registró correctamente!! :)"
                ];
+               //Cargamos la ruta de la imagen en la sesion del usuario.
+               $_SESSION['imagen'] = $imagen;
             else :
                $this->mensajes[] = [
                   "tipo" => "danger",
@@ -191,7 +195,12 @@ class IndexController extends BaseController
          $errores["nombre"] = "Error: No valido";
          $parametros = ["mensajes" => $this->mensajes];
          $_SESSION['perfilCompleto'] = true;
-         $this->view->show("paginaUsuario",$parametros);
+
+         if ($_SESSION['rol_id']==0) {
+            $this->view->show("paginaAdmin",$parametros);
+         } else {
+            $this->view->show("paginaUsuario",$parametros);
+         }
       }
       
       
@@ -359,5 +368,43 @@ class IndexController extends BaseController
 
 
       $this->listarInscripciones();
+   }
+
+   public function listarOferta()
+   {
+      // Almacenamos en el array 'parametros[]'los valores que vamos a mostrar en la vista
+      $parametros = [
+         "datos" => NULL,
+         "mensajes" => []
+      ];
+      // Realizamos la consulta y almacenamos los resultados en la variable $resultModelo
+      $resultModelo = $this->modelo->listarOferta();
+      // Si la consulta se realizó correctamente transferimos los datos obtenidos
+      // de la consulta del modelo ($resultModelo["datos"]) a nuestro array parámetros
+      // ($parametros["datos"]), que será el que le pasaremos a la vista para visualizarlos
+      if ($resultModelo["correcto"]) :
+         $parametros["datos"] = $resultModelo["datos"];
+         //Definimos el mensaje para el alert de la vista de que todo fue correctamente
+         $this->mensajes[] = [
+            "tipo" => "success",
+            "mensaje" => "El listado se realizó correctamente"
+         ];
+      else :
+         //Definimos el mensaje para el alert de la vista de que se produjeron errores al realizar el listado
+         $this->mensajes[] = [
+            "tipo" => "danger",
+            "mensaje" => "El listado no pudo realizarse correctamente!! :( <br/>({$resultModelo["error"]})"
+         ];
+      endif;
+      //Asignamos al campo 'mensajes' del array de parámetros el valor del atributo 
+      //'mensaje', que recoge cómo finalizó la operación:
+      $parametros["mensajes"] = $this->mensajes;
+      // Incluimos la vista en la que visualizaremos los datos o un mensaje de error
+
+      if ($_SESSION['rol_id']==0) {
+         $this->view->show("ListarOfertaAdmin", $parametros);
+      } else {
+         $this->view->show("ListarOfertaUsuarios", $parametros);
+      }
    }
 }
