@@ -421,9 +421,9 @@ class UserModel extends BaseModel
 
       //Realizamos la consulta...
       try {  //Definimos la instrucción SQL  
-         $sql = "SELECT clasesExistentes.idClase, clasesExistentes.id, idAlumno, horaInicio, horaFin, Dia, clasesExistentes.duracion FROM clasesExistentes 
+         $sql = "SELECT clases.nombre, clasesExistentes.idClase, clasesExistentes.id, idAlumno, horaInicio, horaFin, Dia, clasesExistentes.duracion FROM clasesExistentes 
                                                                                           JOIN asistenciaClases ON clasesExistentes.id = asistenciaClases.idClase 
-                                                                                          JOIN clases ON asistenciaClases.idClase = clases.id 
+                                                                                          JOIN clases ON clasesExistentes.idClase = clases.id 
                                                                                           WHERE idAlumno=:idAlumno";
 
 

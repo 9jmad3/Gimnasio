@@ -26,20 +26,7 @@
           <!--Mostramos cada registro en una fila de la tabla-->
           <tr>
             <td><?= $d["id"] ?></td>  
-
-            <?php if ($d["idClase"] == 1) : ?>
-              <td>BodyPump</td>
-            <?php elseif ($d["idClase"] == 2) : ?>
-              <td>BodyCombat</td>
-            <?php elseif ($d["idClase"] == 3) : ?>
-              <td>BodyAttack</td>
-            <?php elseif ($d["idClase"] == 4) : ?>
-              <td>Yoga</td>
-            <?php elseif ($d["idClase"] == 5) : ?>
-              <td>Cycling</td>
-            <?php endif; ?> 
-
-
+            <td><?= $d["nombre"]?></td>
             <td><?= $d["Dia"] ?></td>
             <td><?= $d["horaInicio"] ?></td>
             <td><?= $d["horaFin"] ?></td>
