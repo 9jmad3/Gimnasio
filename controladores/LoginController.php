@@ -93,7 +93,8 @@ class LoginController extends BaseController
                $_SESSION['telefono'] = $parametros['datos'][0]['telefono'];
                $_SESSION['direccion'] = $parametros['datos'][0]['direccion'];
                $_SESSION['imagen'] = $parametros['datos'][0]['imagen'];
-
+               $_SESSION['password'] = $parametros['datos'][0]['password'];
+               
                //Discriminamos entre roles para dar paso a una u otra parte de la pagina.
                if ($_SESSION['rol_id'] == 0) {
                   $this->view->show("paginaAdmin",$parametros);

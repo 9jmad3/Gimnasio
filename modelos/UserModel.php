@@ -444,6 +444,8 @@ class UserModel extends BaseModel
 
    /**
     * Función que permite la eliminacion de una clase determinada de un dia y hora determinados
+    * Primero busca los alumnos apuntados en la clase, les manda un mensaje informando de la cancelacion,
+    * borra las reservas de esa clase y por ultimo borramos la clase.
     * Devuelve un array asociativo con tres campos:
     * -'correcto': indica si el listado se realizó correctamente o no.
     * -'datos': almacena todos los datos obtenidos de la consulta.
@@ -452,6 +454,8 @@ class UserModel extends BaseModel
     */
    public function delCLaseExistente($id)
    {
+      $fecha = date("d/m/Y");  //Creamos la fecha de envio del mensaje
+
       $return = [
          "correcto" => FALSE,
          "datos" => NULL,
@@ -460,7 +464,36 @@ class UserModel extends BaseModel
 
       try {  
          $this->db->beginTransaction();
+         
+         //BUSCAMOS LOS ALUMNOS APUNTADOS A LA CLASE QUE SE VA A BORRAR
+         $sqlUno = "SELECT idAlumno FROM asistenciaClases WHERE idClase=:idClase";
+         $queryUno = $this->db->prepare($sqlUno);
+         $queryUno->execute(['idClase' => $id]);
+         $queryUno = $queryUno->fetchAll(PDO::FETCH_ASSOC);
 
+         foreach ($queryUno as $key => $value) {
+            foreach ($value as $key => $idUsuario) {
+
+               var_dump($idUsuario);
+               //ENVIAMOS LOS MENSAJES OPORTUNOS
+               $sqlMensaje = "INSERT INTO mensajes (idRemitente, idDestinatario, contenido, asunto, fechaCreacion)
+                                    VALUES (:idRemitente, :idDestinatario, :contenido, :asunto, :fechaCreacion)";
+               $queryMensaje = $this->db->prepare($sqlMensaje);
+               $queryMensaje->execute([
+                  'idRemitente' => 32,
+                  'idDestinatario' => $idUsuario,
+                  'contenido' => 'Se han cancelado una o mas clases en las que estaba apuntado. Disculpe las molestias',
+                  'asunto' => 'CANCELACION DE CLASES',
+                  'fechaCreacion' => $fecha]);
+            }
+         }
+         
+         //BORRAMOS LAS RESERVAS DE ESA CLASE
+         $sqlDos = "DELETE FROM asistenciaClases WHERE idClase=:idClase";
+         $queryDos = $this->db->prepare($sqlDos);
+         $queryDos->execute(['idClase' => $id]);
+        
+         //BORRAMOS LA CLASE
          $sql = "DELETE FROM clasesExistentes WHERE id=:id";
          $query = $this->db->prepare($sql);
          $query->execute(['id' => $id]);
@@ -895,7 +928,7 @@ class UserModel extends BaseModel
       ];
       
       try {
-         $sql = "UPDATE usuarios SET nif= :nif, nombre= :nombre, apellido1= :apellido1, apellido2= :apellido2, imagen= :imagen, telefono= :telefono, direccion= :direccion  WHERE usuario= :usuario";
+         $sql = "UPDATE usuarios SET nif= :nif, nombre= :nombre, apellido1= :apellido1, apellido2= :apellido2, password= :password ,imagen= :imagen, telefono= :telefono, direccion= :direccion  WHERE usuario= :usuario";
          $query = $this->db->prepare($sql);
 
          //Si no trae el nombre de usuario lo cogemos de la sesion.
@@ -905,6 +938,7 @@ class UserModel extends BaseModel
                'nombre' => $datos["nombre"],
                'apellido1'=> $datos["apellido1"],
                'apellido2'=> $datos["apellido2"],
+               'password'=> $datos['password'],
                'imagen' => $datos['imagen'],
                'telefono' => $datos['telefono'],
                'direccion' => $datos['direccion'],
@@ -916,6 +950,7 @@ class UserModel extends BaseModel
                'nombre' => $datos["nombre"],
                'apellido1'=> $datos["apellido1"],
                'apellido2'=> $datos["apellido2"],
+               'password'=> $datos['password'],
                'imagen' => $datos['imagen'],
                'telefono' => $datos['telefono'],
                'direccion' => $datos['direccion'],

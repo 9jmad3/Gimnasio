@@ -3,7 +3,7 @@
     <form class="text-center border border-light p-5" action="?controller=Index&accion=register" method="post" enctype="multipart/form-data">
 
         <p class="h4 mb-4">EDITAR PERFIL</p>
-
+        
         <!-- Nombre -->
         <input type="text" id="defaultRegisterFormFirstName" class="form-control mb-4" placeholder="Nombre" name="txtnombre" value="<?php if(isset($_SESSION['nombre'])){echo $_SESSION['nombre'] ;}?>">
         <?php if (isset($mensajes)) {
@@ -47,6 +47,15 @@
         <?php if (isset($mensajes)) {
             foreach ($mensajes as $mensaje) : 
                 if ($mensaje["campo"] == "direccion") {?>                         
+                <div class="alert alert-<?= $mensaje["tipo"] ?>"><?= $mensaje["mensaje"] ?></div>
+            <?php } endforeach;
+        }?>
+
+        <!-- Password -->
+        <input type="text" id="defaultRegisterFormEmail" class="form-control mb-4" placeholder="Contrasña" name="txtpassword" value="<?php if(isset($_SESSION['password'])){echo $_SESSION['password'] ;}?>">
+        <?php if (isset($mensajes)) {
+            foreach ($mensajes as $mensaje) : 
+                if ($mensaje["campo"] == "password") {?>                         
                 <div class="alert alert-<?= $mensaje["tipo"] ?>"><?= $mensaje["mensaje"] ?></div>
             <?php } endforeach;
         }?>

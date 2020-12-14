@@ -4,6 +4,7 @@
     
         <p class="h4 mb-4">EDITAR USUARIO</p>
 
+        
         <!-- Nombre -->
         <input type="text" id="defaultRegisterFormFirstName" class="form-control mb-4" placeholder="Nombre" name="txtnombre" value="<?php if(isset($datos['datos']['nombre'])){echo $datos['datos']['nombre'] ;}?>">
         <?php if (isset($mensajes)) {

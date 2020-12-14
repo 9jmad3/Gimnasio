@@ -47,6 +47,7 @@ class IndexController extends BaseController
          $dni = filter_var($_POST['txtdni'],FILTER_SANITIZE_STRING);
          $direccion = filter_var($_POST['txtdireccion'],FILTER_SANITIZE_STRING);
          $telefono = filter_var($_POST['txttelefono'],FILTER_SANITIZE_STRING);
+         $password = $_POST['txtpassword'];
 
          //Creamos la sesion
          $_SESSION['nombre'] = $nombre;
@@ -55,6 +56,7 @@ class IndexController extends BaseController
          $_SESSION['dni'] = $dni;
          $_SESSION['telefono'] = $telefono;
          $_SESSION['direccion'] = $direccion;
+         $_SESSION['password'] = $password;
 
 
          /* Realizamos la carga de la imagen en el servidor */
@@ -75,7 +77,7 @@ class IndexController extends BaseController
             // Ya verificado que la carpeta uploads existe movemos el fichero seleccionado a dicha carpeta
             if ($dir) {
                //Para asegurarnos que el nombre va a ser único...
-               $nombrefichimg = time() . "-" . $_FILES["imagen"]["name"];
+               $nombrefichimg = $_FILES["imagen"]["name"];
                // Movemos el fichero de la carpeta temportal a la nuestra
                $movfichimg = move_uploaded_file($_FILES["imagen"]["tmp_name"], "fotos/" . $nombrefichimg);
                $imagen = $nombrefichimg;
@@ -128,6 +130,8 @@ class IndexController extends BaseController
             $_SESSION['telefono'] = null;
          }
 
+         //TODO: poner expresion regular contraseña
+
          if (!preg_match("/[a-zA-Z0-9_]{1,100}/", $direccion)) {
             $this->mensajes[] = [
                "campo" => "direccion",
@@ -152,7 +156,8 @@ class IndexController extends BaseController
                'dni' => $dni,
                'direccion' => $direccion,
                'telefono' => $telefono,
-               'imagen' => $imagen
+               'imagen' => $imagen,
+               'password' => $password
             ]);
 
             if ($resultModelo["correcto"]){
@@ -485,6 +490,7 @@ class IndexController extends BaseController
       $resultModelo = $this->modelo->delClaseExistente($id);
       
       if ($resultModelo["correcto"]){
+         
          $parametros["datos"] = $resultModelo["datos"];
          $this->mensajes[] = [
             "tipo" => "success",
