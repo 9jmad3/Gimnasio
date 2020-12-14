@@ -207,7 +207,7 @@
       <hr class="my-5" id="ventajas">
 
       <!--Section: Not enough-->
-      <section>
+      <section id="ventajas">
 
         <h2 class="my-5 h3 text-center">Ventajas de ser un usuario registrado</h2>
 
@@ -262,8 +262,8 @@
                   <i class="fas fa-check-circle fa-2x indigo-text"></i>
                 </div>
                 <div class="col-10">
-                  <h6 class="feature-title">Historial</h6>
-                  <p class="grey-text">Accede a todas las clases a las que has asistido.</p>
+                  <h6 class="feature-title">Mensajeria</h6>
+                  <p class="grey-text">Comunicate mediante mensajes internos</p>
                   <div style="height:15px"></div>
                 </div>
               </div>
@@ -305,65 +305,6 @@
         </div>
       </section>
       <!-- Section: Location -->
-
-    <hr class="my-5" id="contact">
-
-    <!-- Section: Contacto -->
-    <section class="mb-5">
-        <h2 class="my-5 h3 text-center">Contacto</h2>
-
-        <!--Modal: Contact form-->
-        <div class=" cascading-modal" role="document">
-
-          <!--Content-->
-          <div class="modal-content">
-
-            <!--Body-->
-            <div class="modal-body">
-
-              <!-- Material input name -->
-              <div class="md-form form-sm">
-                <i class="fa fa-envelope prefix indigo-text"></i>
-                <input type="text" id="materialFormNameModalEx1" class="form-control form-control-sm">
-                <label for="materialFormNameModalEx1">Nombre</label>
-              </div>
-
-              <!-- Material input email -->
-              <div class="md-form form-sm">
-                <i class="fa fa-lock prefix indigo-text"></i>
-                <input type="password" id="materialFormEmailModalEx1" class="form-control form-control-sm">
-                <label for="materialFormEmailModalEx1">Email</label>
-              </div>
-
-              <!-- Material input subject -->
-              <div class="md-form form-sm">
-                <i class="fa fa-mail-bulk prefix indigo-text"></i>
-                <input type="text" id="materialFormSubjectModalEx1" class="form-control form-control-sm">
-                <label for="materialFormSubjectModalEx1">Asunto</label>
-              </div>
-
-              <!-- Material textarea message -->
-              <div class="md-form form-sm">
-                <i class="fa fa-pencil-alt prefix indigo-text"></i>
-                <textarea type="text" id="materialFormMessageModalEx1"
-                  class="md-textarea form-control"></textarea>
-                <label for="materialFormMessageModalEx1">Mensaje</label>
-              </div>
-
-              <div class="text-center mt-4 mb-2">
-                <button class="btn btn-indigo btn-lg">Enviar
-                  <i class="fa fa-send ml-2"></i>
-                </button>
-              </div>
-
-            </div>
-          </div>
-          <!--/.Content-->
-        </div>
-        <!--/Modal: Contact form-->
-    </section>
-    <!-- Section: Contacto -->
-
 
     </div>
   </main>

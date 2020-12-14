@@ -25,7 +25,7 @@
             <a class="nav-link" href="#location">Donde estamos</a>
           </li>
           <li class="nav-item" <?php if($_SERVER['REQUEST_URI'] == "/gimnasio/index.php?controller=Login&accion=index")  echo"hidden"?>>
-            <a class="nav-link" href="#contact">Contacto</a>
+            <a class="nav-link" href="#ventajas">Ventajas</a>
           </li>
           <li class="nav-item" <?php if($_SERVER['REQUEST_URI'] == "/gimnasio/index.php?controller=Login&accion=index")  echo"hidden"?>>
             <a class="nav-link" href="?controller=index&accion=generarpdf">Descargar horario</a>
@@ -34,11 +34,6 @@
 
         <!-- Right -->
         <ul class="navbar-nav nav-flex-icons">
-          <!-- <li class="nav-item">
-            <a href="https://twitter.com/MDBootstrap" class="nav-link" target="_blank">
-              <i class="fab fa-twitter"></i>
-            </a>
-          </li> -->
           <li class="nav-item">
             <a href="?controller=Login&accion=index" class="nav-link border border-light rounded">
               <i class="fas fa-sign-in-alt mr-2"></i>Iniciar sesion
