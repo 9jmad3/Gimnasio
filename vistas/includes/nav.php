@@ -30,6 +30,9 @@
           <li class="nav-item" <?php if($_SERVER['REQUEST_URI'] == "/gimnasio/index.php?controller=Login&accion=index")  echo"hidden"?>>
             <a class="nav-link" href="#contact">Contacto</a>
           </li>
+          <li class="nav-item" <?php if($_SERVER['REQUEST_URI'] == "/gimnasio/index.php?controller=Login&accion=index")  echo"hidden"?>>
+            <a class="nav-link" href="?controller=index&accion=generarpdf">Descargar horario</a>
+          </li>
         </ul>
 
         <!-- Right -->

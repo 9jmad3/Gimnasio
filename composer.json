@@ -8,6 +8,7 @@
         }
     ],
     "require": {
-        "endroid/qr-code": "^3.9"
+        "endroid/qr-code": "^3.9",
+        "spipu/html2pdf": "*"
     }
 }

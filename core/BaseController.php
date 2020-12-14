@@ -1,5 +1,6 @@
 <?php
 session_start();
+
 /**
  * Clase base para los controladores
  */
@@ -20,6 +21,7 @@ abstract class BaseController
     * @param array $params  Parejas clave-valor para luego añadir a la url que llama al controlador
     * @return void
     */
+
    public function redirect($controlador = DEFAULT_CONTROLLER, $accion = DEFAULT_ACTION, $params = null)
    {
       if ($params != null) {
