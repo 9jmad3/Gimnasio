@@ -106,6 +106,14 @@ class UserModel extends BaseModel
       return $return;
    }
 
+   /**
+    * Función que realiza el listado de todos mensajes de un determinado usuario
+    * Devuelve un array asociativo con tres campos:
+    * -'correcto': indica si el listado se realizó correctamente o no.
+    * -'datos': almacena todos los datos obtenidos de la consulta.
+    * -'error': almacena el mensaje asociado a una situación errónea (excepción) 
+    * @return type
+    */
    public function listadoMensajes()
    {
       $return = [
@@ -133,6 +141,14 @@ class UserModel extends BaseModel
       return $return;
    }
 
+   /**
+    * Función que realiza inserta un mensaje
+    * Devuelve un array asociativo con tres campos:
+    * -'correcto': indica si el listado se realizó correctamente o no.
+    * -'datos': almacena todos los datos obtenidos de la consulta.
+    * -'error': almacena el mensaje asociado a una situación errónea (excepción) 
+    * @return type
+    */
    public function addmensaje($datos)
    {
       $return = [
@@ -141,7 +157,7 @@ class UserModel extends BaseModel
          "inscrito" => FALSE
       ];
 
-         $fecha = date("d/m/Y");
+         $fecha = date("d/m/Y");  //Creamos la fecha de envio del mensaje
          $idUsuario = $_SESSION['id'];
          $usuarioDestino = $datos['destinatario'];
 
@@ -151,6 +167,7 @@ class UserModel extends BaseModel
 
          $queryUno->execute(['usuario' => $usuarioDestino]);
 
+         //Si el usuario exite.
          if ($queryUno) {
             try {//Inicializamos la transacción
                $resultado = $queryUno->fetch();
@@ -187,6 +204,13 @@ class UserModel extends BaseModel
       return $return;
    }
 
+   /**
+    * Función para borrar un mensaje
+    * Devuelve un array asociativo con tres campos:
+    * -'correcto': indica si el listado se realizó correctamente o no.
+    * -'error': almacena el mensaje asociado a una situación errónea (excepción) 
+    * @return type
+    */
    public function delMensaje($id)
    {
       // La función devuelve un array con dos valores:'correcto', que indica si la
@@ -221,6 +245,13 @@ class UserModel extends BaseModel
       return $return;
    }
 
+   /**
+    * Función para insertar una determinada clase
+    * Devuelve un array asociativo con tres campos:
+    * -'correcto': indica si el listado se realizó correctamente o no.
+    * -'error': almacena el mensaje asociado a una situación errónea (excepción) 
+    * @return type
+    */
    public function insertarClase($datos)
    {
       $return = [
@@ -229,11 +260,9 @@ class UserModel extends BaseModel
       ];
       
       try {
-         //Inicializamos la transacción
-         //$this->db->beginTransaction();
-         //Definimos la instrucción SQL parametrizada 
          $sql = "INSERT INTO clases(nombre,tipo,descripcion,imagen)
                          VALUES (:nombre,:tipo,:descripcion,:imagen)";
+
          $query = $this->db->prepare($sql);
 
          $query->execute([
@@ -243,13 +272,11 @@ class UserModel extends BaseModel
             'imagen'=> $datos['imagen']
          ]);   
 
-         
-
          //Supervisamos si la inserción se realizó correctamente... 
          if ($query) {
-            //$this->db->commit();  // commit() confirma los cambios realizados durante la transacción
             $return["correcto"] = TRUE;
-         } // o no :(
+         }
+
       } catch (PDOException $ex) {
          var_dump($ex->getMessage());
          //$this->db->rollback(); // rollback() se revierten los cambios realizados durante la transacción
@@ -260,6 +287,13 @@ class UserModel extends BaseModel
       return $return;
    }
 
+   /**
+    * Función que permite editar un clase
+    * Devuelve un array asociativo con tres campos:
+    * -'correcto': indica si el listado se realizó correctamente o no.
+    * -'error': almacena el mensaje asociado a una situación errónea (excepción) 
+    * @return type
+    */
    public function editarClase($datos)
    {
       $return = [
@@ -268,9 +302,6 @@ class UserModel extends BaseModel
       ];
       
       try {
-         //Inicializamos la transacción
-         //$this->db->beginTransaction();
-         //Definimos la instrucción SQL parametrizada 
          $sql = "UPDATE clases SET nombre= :nombre, tipo= :tipo, descripcion= :descripcion, imagen= :imagen  WHERE id= :id";
          $query = $this->db->prepare($sql);
 
@@ -282,27 +313,27 @@ class UserModel extends BaseModel
             'id' => $datos['id']
          ]);   
 
-         
-
          //Supervisamos si la inserción se realizó correctamente... 
          if ($query) {
-            //$this->db->commit();  // commit() confirma los cambios realizados durante la transacción
             $return["correcto"] = TRUE;
-         } // o no :(
+         }
+
       } catch (PDOException $ex) {
-         //$this->db->rollback(); // rollback() se revierten los cambios realizados durante la transacción
          $return["error"] = $ex->getMessage();
-         //die();
       }
 
       return $return;
    }
 
+   /**
+    * Función que permite eliminar una clase (bodypump, bodycombat...)
+    * Devuelve un array asociativo con tres campos:
+    * -'correcto': indica si el listado se realizó correctamente o no.
+    * -'error': almacena el mensaje asociado a una situación errónea (excepción) 
+    * @return type
+    */
    public function delClase($id)
    {
-      // La función devuelve un array con dos valores:'correcto', que indica si la
-      // operación se realizó correctamente, y 'mensaje', campo a través del cual le
-      // mandamos a la vista el mensaje indicativo del resultado de la operación
       $return = [
          "correcto" => FALSE,
          "error" => NULL
@@ -339,6 +370,14 @@ class UserModel extends BaseModel
       return $return;
    }
 
+   /**
+    * Función que realiza el listado de la oferta de clases
+    * Devuelve un array asociativo con tres campos:
+    * -'correcto': indica si el listado se realizó correctamente o no.
+    * -'datos': almacena todos los datos obtenidos de la consulta.
+    * -'error': almacena el mensaje asociado a una situación errónea (excepción) 
+    * @return type
+    */
    public function listarOferta()
    {
       $return = [
@@ -364,6 +403,14 @@ class UserModel extends BaseModel
       return $return;
    }
 
+   /**
+    * Función que realiza el listado de inscripciones
+    * Devuelve un array asociativo con tres campos:
+    * -'correcto': indica si el listado se realizó correctamente o no.
+    * -'datos': almacena todos los datos obtenidos de la consulta.
+    * -'error': almacena el mensaje asociado a una situación errónea (excepción) 
+    * @return type
+    */
    public function listadoInscripciones()
    {
       $return = [
@@ -395,6 +442,14 @@ class UserModel extends BaseModel
       return $return;
    }
 
+   /**
+    * Función que permite la eliminacion de una clase determinada de un dia y hora determinados
+    * Devuelve un array asociativo con tres campos:
+    * -'correcto': indica si el listado se realizó correctamente o no.
+    * -'datos': almacena todos los datos obtenidos de la consulta.
+    * -'error': almacena el mensaje asociado a una situación errónea (excepción) 
+    * @return type
+    */
    public function delCLaseExistente($id)
    {
       $return = [
@@ -422,6 +477,14 @@ class UserModel extends BaseModel
       return $return;
    }
 
+   /**
+    * Función que permite borrar una inscripcion de un uusairo a una clase
+    * Devuelve un array asociativo con tres campos:
+    * -'correcto': indica si el listado se realizó correctamente o no.
+    * -'datos': almacena todos los datos obtenidos de la consulta.
+    * -'error': almacena el mensaje asociado a una situación errónea (excepción) 
+    * @return type
+    */
    public function borrarInscripcion($id)
    {
       $return = [
@@ -452,6 +515,13 @@ class UserModel extends BaseModel
       return $return;
    }
 
+   /**
+    * Función que permite insertar una clase en un dia y hora determinados.
+    * Devuelve un array asociativo con dos campos:
+    * -'correcto': indica si el listado se realizó correctamente o no.
+    * -'error': almacena el mensaje asociado a una situación errónea (excepción) 
+    * @return type
+    */
    public function insertarClaseExistente($datos)
    {
       $return = [
@@ -463,7 +533,7 @@ class UserModel extends BaseModel
 
       try {
          $this->db->beginTransaction();
-         //Primero comprobamos que el usuario no esté ya inscrito en esa clase.
+         //Primero comprobamos que esas horas no esten ocupadas
          $sqlUno = "SELECT count(*) FROM clasesExistentes WHERE Dia=:dia and horaInicio<:horaFin and horaFin>:horaInicio";
          $queryUno = $this->db->prepare($sqlUno);
          
@@ -474,6 +544,7 @@ class UserModel extends BaseModel
          );
          $contador = $queryUno->fetch();
 
+         //Si la hora esta libre:
          if ($contador['count(*)'] == 0) {
             $sql = "INSERT INTO clasesExistentes (idClase, Dia, horaInicio, horaFin)
                               VALUES (:idClase,:Dia,:horaInicio,:horaFin)";
@@ -503,6 +574,14 @@ class UserModel extends BaseModel
       return $return;
    }
 
+   /**
+    * Función que realiza la insercion de un usuario a una determinada clase
+    * Devuelve un array asociativo con tres campos:
+    * -'correcto': indica si el listado se realizó correctamente o no.
+    * -'datos': almacena todos los datos obtenidos de la consulta.
+    * -'error': almacena el mensaje asociado a una situación errónea (excepción) 
+    * @return type
+    */
    public function insertarInscripcion($id)
    {
       $return = [
@@ -558,7 +637,7 @@ class UserModel extends BaseModel
    }
 
    /**
-    * Función que realiza el listado de todos los usuarios registrados
+    * Función que realiza el listado dde todas las clases
     * Devuelve un array asociativo con tres campos:
     * -'correcto': indica si el listado se realizó correctamente o no.
     * -'datos': almacena todos los datos obtenidos de la consulta.
@@ -593,7 +672,7 @@ class UserModel extends BaseModel
 
 
    /**
-    * Función que realiza el listado de todos los usuarios registrados
+    * Función que realiza el listado de todos los usuarios no validados
     * Devuelve un array asociativo con tres campos:
     * -'correcto': indica si el listado se realizó correctamente o no.
     * -'datos': almacena todos los datos obtenidos de la consulta.
@@ -624,6 +703,13 @@ class UserModel extends BaseModel
        return $return;
     }
 
+    /**
+    * Función que actualizar el rol_id de un usuario al administrador
+    * Devuelve un array asociativo con dos campos:
+    * -'correcto': indica si el listado se realizó correctamente o no.
+    * -'error': almacena el mensaje asociado a una situación errónea (excepción) 
+    * @return type
+    */
     public function actualizaruser($datos)
     {
          $return = [
@@ -656,6 +742,13 @@ class UserModel extends BaseModel
       
     }
 
+    /**
+    * Función que lista todos los usuarios pendientes de activacion
+    * Devuelve un array asociativo con dos campos:
+    * -'correcto': indica si el listado se realizó correctamente o no.
+    * -'error': almacena el mensaje asociado a una situación errónea (excepción) 
+    * @return type
+    */
     public function pendientesActivacion()
     {
        //Realizamos la consulta...
@@ -710,13 +803,13 @@ class UserModel extends BaseModel
    /**
     * Método que elimina el usuario cuyo id es el que se le pasa como parámetro 
     * @param $id es un valor numérico. Es el campo clave de la tabla
-    * @return boolean
+    * Devuelve un array asociativo con dos campos:
+    * -'correcto': indica si el listado se realizó correctamente o no.
+    * -'error': almacena el mensaje asociado a una situación errónea (excepción) 
+    * @return type
     */
    public function deluser($id)
    {
-      // La función devuelve un array con dos valores:'correcto', que indica si la
-      // operación se realizó correctamente, y 'mensaje', campo a través del cual le
-      // mandamos a la vista el mensaje indicativo del resultado de la operación
       $return = [
          "correcto" => FALSE,
          "error" => NULL
@@ -747,8 +840,10 @@ class UserModel extends BaseModel
    }
 
    /**
-    * 
-    * @param type $datos
+    * Función que permite añadir un usuario a la bbdd.
+    * Devuelve un array asociativo con dos campos:
+    * -'correcto': indica si el listado se realizó correctamente o no.
+    * -'error': almacena el mensaje asociado a una situación errónea (excepción) 
     * @return type
     */
    public function adduser($datos)
@@ -785,6 +880,13 @@ class UserModel extends BaseModel
       return $return;
    }
 
+   /**
+    * Función que actualizar la informacion de un usuario
+    * Devuelve un array asociativo con dos campos:
+    * -'correcto': indica si el listado se realizó correctamente o no.
+    * -'error': almacena el mensaje asociado a una situación errónea (excepción) 
+    * @return type
+    */
    public function actuser($datos)
    {
       $return = [
@@ -793,12 +895,10 @@ class UserModel extends BaseModel
       ];
       
       try {
-         //Inicializamos la transacción
-         //$this->db->beginTransaction();
-         //Definimos la instrucción SQL parametrizada 
          $sql = "UPDATE usuarios SET nif= :nif, nombre= :nombre, apellido1= :apellido1, apellido2= :apellido2, imagen= :imagen, telefono= :telefono, direccion= :direccion  WHERE usuario= :usuario";
          $query = $this->db->prepare($sql);
 
+         //Si no trae el nombre de usuario lo cogemos de la sesion.
          if (!is_null($datos['usuario'])) {
             $query->execute([
                'nif' => $datos['dni'],
@@ -823,23 +923,25 @@ class UserModel extends BaseModel
             ]);
          }
          
-
          
-
-         //Supervisamos si la inserción se realizó correctamente... 
          if ($query) {
-            //$this->db->commit();  // commit() confirma los cambios realizados durante la transacción
             $return["correcto"] = TRUE;
-         } // o no :(
+         }
       } catch (PDOException $ex) {
-         //$this->db->rollback(); // rollback() se revierten los cambios realizados durante la transacción
          $return["error"] = $ex->getMessage();
-         //die();
       }
 
       return $return;
    }
 
+   /**
+    * Función que listar toda la informacion de un determinado usuario mediante id
+    * Devuelve un array asociativo con tres campos:
+    * -'correcto': indica si el listado se realizó correctamente o no.
+    * -'datos': almacena todos los datos obtenidos de la consulta.
+    * -'error': almacena el mensaje asociado a una situación errónea (excepción) 
+    * @return type
+    */
    public function listausuario($id)
    {
       $return = [
@@ -867,6 +969,14 @@ class UserModel extends BaseModel
       return $return;
    }
 
+   /**
+    * Función que listar toda la informacion de un determinado usuario mediante el usuario
+    * Devuelve un array asociativo con tres campos:
+    * -'correcto': indica si el listado se realizó correctamente o no.
+    * -'datos': almacena todos los datos obtenidos de la consulta.
+    * -'error': almacena el mensaje asociado a una situación errónea (excepción) 
+    * @return type
+    */
    public function perfilCompleto($usuario)
    {
       $return = [
@@ -900,6 +1010,14 @@ class UserModel extends BaseModel
       return $return;
    }
 
+   /**
+    * Función que permite listar el rol_id y el id de un usuario mediante su usuario.
+    * Devuelve un array asociativo con tres campos:
+    * -'correcto': indica si el listado se realizó correctamente o no.
+    * -'datos': almacena todos los datos obtenidos de la consulta.
+    * -'error': almacena el mensaje asociado a una situación errónea (excepción) 
+    * @return type
+    */
    public function userValidado($usuario)
    {
       $return = [
