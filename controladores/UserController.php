@@ -466,62 +466,71 @@ class UserController extends BaseController
    /**
     * Funcion para listar todos los usuarios al administrador.
     */
-   public function listaUsuarios()
-   {
-       // Almacenamos en el array 'parametros[]'los valores que vamos a mostrar en la vista
-       $parametros = [
-         "datos" => NULL,
-         "mensajes" => []
-      ];
+   public function listaUsuarios(){
 
-      $resultModelo = $this->modelo->listado();
-   
-      if ($resultModelo["correcto"]){
-         $parametros["datos"] = $resultModelo["datos"];
-         
-         $this->mensajes[] = [
-            "tipo" => "success",
-            "mensaje" => "El listado se realizó correctamente"
+      if (isset($_SESSION['rol_id'])) {
+         // Almacenamos en el array 'parametros[]'los valores que vamos a mostrar en la vista
+         $parametros = [
+            "datos" => NULL,
+            "mensajes" => []
          ];
-      }else{
-         
-         $this->mensajes[] = [
-            "tipo" => "danger",
-            "mensaje" => "El listado no pudo realizarse correctamente!! :( <br/>({$resultModelo["error"]})"
-         ];
-      }
+
+         $resultModelo = $this->modelo->listado();
       
-      $parametros["mensajes"] = $this->mensajes;
-      $this->view->show("ListarUsuarios", $parametros);
+         if ($resultModelo["correcto"]){
+            $parametros["datos"] = $resultModelo["datos"];
+            
+            $this->mensajes[] = [
+               "tipo" => "success",
+               "mensaje" => "El listado se realizó correctamente"
+            ];
+         }else{
+            
+            $this->mensajes[] = [
+               "tipo" => "danger",
+               "mensaje" => "El listado no pudo realizarse correctamente!! :( <br/>({$resultModelo["error"]})"
+            ];
+         }
+         
+         $parametros["mensajes"] = $this->mensajes;
+         $this->view->show("ListarUsuarios", $parametros);
+      }else{
+         $this->view->show("inicio");
+      }
    }
 
    /**
     * Funcion para listar al administrador los usuarios no validados.
     */
-   public function listaUsuariosNoValidados()
-   {
-      $parametros = [
-         "datos" => NULL,
-         "mensajes" => []
-      ];
+   public function listaUsuariosNoValidados(){
 
-      $resultModelo = $this->modelo->listadoNoValidados();
+      if (isset($_SESSION['rol_id'])) {
 
-      if ($resultModelo["correcto"]){
-         $parametros["datos"] = $resultModelo["datos"];
-         $this->mensajes[] = [
-            "tipo" => "success",
-            "mensaje" => "Operación realizada correctamente"
+         $parametros = [
+            "datos" => NULL,
+            "mensajes" => []
          ];
+
+         $resultModelo = $this->modelo->listadoNoValidados();
+
+         if ($resultModelo["correcto"]){
+            $parametros["datos"] = $resultModelo["datos"];
+            $this->mensajes[] = [
+               "tipo" => "success",
+               "mensaje" => "Operación realizada correctamente"
+            ];
+         }else{
+            $this->mensajes[] = [
+               "tipo" => "danger",
+               "mensaje" => "El listado no pudo realizarse correctamente!! :( <br/>({$resultModelo["error"]})"
+            ];
+         }
+         
+         $parametros["mensajes"] = $this->mensajes;
+         $this->view->show("ListarUsuariosNoValidados", $parametros);
       }else{
-         $this->mensajes[] = [
-            "tipo" => "danger",
-            "mensaje" => "El listado no pudo realizarse correctamente!! :( <br/>({$resultModelo["error"]})"
-         ];
+         $this->view->show("inicio");
       }
-      
-      $parametros["mensajes"] = $this->mensajes;
-      $this->view->show("ListarUsuariosNoValidados", $parametros);
    }
    
    /**
@@ -534,11 +543,15 @@ class UserController extends BaseController
    }
 
    /**
-    * Funcion para completar perfil.
+    * Funcion para completar perfil. Discrimina en funcion del rol.
     */
    public function completarPerfil()
    {
-      $this->view->show("completarPerfil");
+      if ($_SESSION['rol_id']==0) {
+         $this->view->show("completarPerfilAdmin");
+      } else {
+         $this->view->show("completarPerfil");
+      }
    }
 
    /**
@@ -562,35 +575,40 @@ class UserController extends BaseController
      */
    public function mensajes($parametros = null)
    {
-       $parametros = [
-         "datos" => NULL,
-         "mensajes" => []
-      ];
-      // Realizamos la consulta y almacenamos los resultados en la variable $resultModelo
-      $resultModelo = $this->modelo->listadoMensajes();
-      
-      if ($resultModelo["correcto"]){
-         $parametros["datos"] = $resultModelo["datos"];
-         
-         $this->mensajes[] = [
-            "tipo" => "success",
-            "mensaje" => "El listado se realizó correctamente"
+      if (isset($_SESSION['rol_id'])) {
+         $parametros = [
+            "datos" => NULL,
+            "mensajes" => []
          ];
+         // Realizamos la consulta y almacenamos los resultados en la variable $resultModelo
+         $resultModelo = $this->modelo->listadoMensajes();
+         
+         if ($resultModelo["correcto"]){
+            $parametros["datos"] = $resultModelo["datos"];
+            
+            $this->mensajes[] = [
+               "tipo" => "success",
+               "mensaje" => "El listado se realizó correctamente"
+            ];
+
+         }else{
+            $this->mensajes[] = [
+               "tipo" => "danger",
+               "mensaje" => "El listado no pudo realizarse correctamente!! :( <br/>({$resultModelo["error"]})"
+            ];
+         }
+
+         $parametros["mensajes"] = $this->mensajes;
+
+         //Discriminamos entre roles para abrir la vista que corresponda.
+         if ($_SESSION['rol_id']==0) {
+            $this->view->show("paginaMensajesAdmin", $parametros);  
+         } else {
+            $this->view->show("paginaMensajes", $parametros);  
+         }
 
       }else{
-         $this->mensajes[] = [
-            "tipo" => "danger",
-            "mensaje" => "El listado no pudo realizarse correctamente!! :( <br/>({$resultModelo["error"]})"
-         ];
-      }
-
-      $parametros["mensajes"] = $this->mensajes;
-
-      //Discriminamos entre roles para abrir la vista que corresponda.
-      if ($_SESSION['rol_id']==0) {
-         $this->view->show("paginaMensajesAdmin", $parametros);  
-      } else {
-         $this->view->show("paginaMensajes", $parametros);  
+         $this->view->show("inicio");
       }
    }
 }

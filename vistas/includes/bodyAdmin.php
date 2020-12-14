@@ -1,47 +1,37 @@
-<div class="container my-5" style="height: 60vh;">
+<div class="container my-5 py-5 z-depth-1" style="margin-top: 100px !important;">
 
 
-  <!-- Section: Block Content -->
-  <section style="margin-top: 10% !important;">
-    <h6 class="font-weight-bold text-center grey-text text-uppercase small mb-4">Admin</h6>
-    <h3 class="font-weight-bold text-center dark-grey-text pb-2">Bienvenido</h3>
-    <hr class="w-header my-4">
-    <p class="lead text-center text-muted pt-2 mb-5">Recuerda modificar el horario si es necesario.</p>
+  <!--Section: Content-->
+  <section class="dark-grey-text text-center">
+    
+    <h3 class="font-weight-bold pt-5 pb-2 mb-5">Recuerda comprobar asiduamente si hay usuarios por validar</h3>
 
-    <div class="row white-text">
+    <div class="row mx-3">
+      <div class="col-md-4 px-4 mb-4">
 
-      <!-- Grid column -->
-      <div class="col-xl-3 col-md-6 mb-4">
-      </div>
-      <!-- Grid column -->
-
-      <!-- Grid column -->
-      <div class="col-xl-6 col-md-12 mb-8">
-
-        <!-- Card Blue -->
-        <div class="card classic-admin-card light-blue lighten-1">
-          <div class="card-body py-3">
-            <i class="fas fa-chart-pie"></i>
-            <p class="small">Usuarios pendientes de validacion</p>
-            
-            <h4><?php /*var_dump($pendientesActivacion);*/ 
-            if($pendientesActivacion){echo"".$pendientesActivacion["count(*)"]."";}?></h4>
-          </div>
-         
+        <div class="view">
+          <img src="https://lh3.googleusercontent.com/proxy/O8mRLsuGTrMKcVsIBizaNOnAW5FknN6Tw0vBxwB7J6PCLgFWcLmWeey1QfC4nRWbmrjDIo_u-lV5-j8sT9p1UKp38YdIWYwkLYF3LRiJMcEKRoHJeeAskXGX3nY" class="img-fluid" alt="smaple image">
         </div>
-        <!-- Card Blue -->
 
       </div>
-      <!-- Grid column -->
-       <!-- Grid column -->
-       <div class="col-xl-3 col-md-6 mb-4">
-        </div>
-        <!-- Grid column -->
+     <div class="col-md-4 px-4 mb-4">
 
+        <div class="view">
+          <img src="https://userscontent2.emaze.com/images/d6ee99a9-6a2c-47e3-bf8d-b3a92fbb7c24/78d50eedb1112cd05d66d992e9151d6e.png" class="img-fluid" alt="smaple image">
+        </div>
+
+      </div>
+      <div class="col-md-4 px-4 mb-4">
+
+        <div class="view">
+          <img src="https://cdn.shopify.com/s/files/1/1050/9418/products/HS-Gym_G2-hero_c0c06d77-eabf-4724-a36d-de2537547a16_grande.png?v=1450555505" class="img-fluid" alt="smaple image">
+        </div>
+        
+      </div>
     </div>
 
   </section>
-  <!-- Section: Block Content -->
-  
+  <!--Section: Content-->
+
 
 </div>

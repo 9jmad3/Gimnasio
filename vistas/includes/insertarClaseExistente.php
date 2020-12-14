@@ -1,9 +1,9 @@
 <div class="container" style="margin-top: 100px !important;">
 
-    <?php if (isset($mensajes)) {?> 
-            <div class="alert alert-danger"><?= $mensajes ?></div>
-        <?php } ?>
-
+    <?php if (isset($mensajes)) {foreach ($mensajes as $mensaje) : ?> 
+        <div class="alert alert-<?= $mensaje["tipo"] ?>"><?= $mensaje["mensaje"] ?></div>
+    <?php endforeach;
+    }?>
     <!-- Default form register -->
     <form class="text-center border border-light p-5" action="?controller=index&accion=insertarClaseExistente" method="post" enctype="multipart/form-data">
 

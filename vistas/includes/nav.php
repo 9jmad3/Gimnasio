@@ -22,9 +22,6 @@
             <a class="nav-link" href="#online">Clases Online</a>
           </li>
           <li class="nav-item" <?php if($_SERVER['REQUEST_URI'] == "/gimnasio/index.php?controller=Login&accion=index")  echo"hidden"?>>
-            <a class="nav-link" href="#online">Clases dirigidas</a>
-          </li>
-          <li class="nav-item" <?php if($_SERVER['REQUEST_URI'] == "/gimnasio/index.php?controller=Login&accion=index")  echo"hidden"?>>
             <a class="nav-link" href="#location">Donde estamos</a>
           </li>
           <li class="nav-item" <?php if($_SERVER['REQUEST_URI'] == "/gimnasio/index.php?controller=Login&accion=index")  echo"hidden"?>>

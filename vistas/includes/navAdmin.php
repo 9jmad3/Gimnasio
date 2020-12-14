@@ -3,7 +3,7 @@
     <div class="container">
 
       <!-- Brand -->
-      <a class="navbar-brand" href="?controller=Index&accion=index">
+      <a class="navbar-brand" href="?controller=index&accion=bodyUsuario">
         <strong>ADMINISTRACION</strong>
       </a>
 

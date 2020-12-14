@@ -3,7 +3,7 @@
     <div class="container">
 
       <!-- Brand -->
-      <a class="navbar-brand" href="?controller=Login&accion=inUser">
+      <a class="navbar-brand" href="?controller=index&accion=bodyUsuario">
         <strong>Bienvenido</strong>
       </a>
 
