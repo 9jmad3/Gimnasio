@@ -15,10 +15,8 @@ class HomeController extends BaseController
    public function index()
    {
       $parametros = [
-         "tituloventana" => "Login a la aplicación"
       ];
       $this->view->show("inicio", $parametros);
    }
 
-   
 }

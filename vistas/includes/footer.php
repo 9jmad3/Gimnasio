@@ -11,10 +11,9 @@
       <div class="col-md-4 mx-auto">
 
         <!-- Content -->
-        <h5 class="font-weight-bold text-uppercase mt-3 mb-4">Footer Content</h5>
-        <p>Here you can use rows and columns to organize your footer content. Lorem ipsum dolor sit amet,
-          consectetur
-          adipisicing elit.</p>
+        <h5 class="font-weight-bold text-uppercase mt-3 mb-4">FitGym</h5>
+        <p>En FitGym encontrarás una gran variedad de profesionales a tu servicio. Pregunta, aprende y aplica los conocimientos para
+         mejorar dia a dia.</p>
 
       </div>
       <!-- Grid column -->
@@ -25,20 +24,20 @@
       <div class="col-md-2 mx-auto">
 
         <!-- Links -->
-        <h5 class="font-weight-bold text-uppercase mt-3 mb-4">Links</h5>
+        <h5 class="font-weight-bold text-uppercase mt-3 mb-4">Patrocinadores</h5>
 
         <ul class="list-unstyled">
           <li>
-            <a href="#!">Link 1</a>
+            <h6>Adidas</h6>
           </li>
           <li>
-            <a href="#!">Link 2</a>
+            <h6>Recreativo de Huelva</h6>
           </li>
           <li>
-            <a href="#!">Link 3</a>
+            <h6>Huelva salud</h6>
           </li>
           <li>
-            <a href="#!">Link 4</a>
+            <h6>Moodle</h6>
           </li>
         </ul>
 
@@ -50,23 +49,6 @@
       <!-- Grid column -->
       <div class="col-md-2 mx-auto">
 
-        <!-- Links -->
-        <h5 class="font-weight-bold text-uppercase mt-3 mb-4">Links</h5>
-
-        <ul class="list-unstyled">
-          <li>
-            <a href="#!">Link 1</a>
-          </li>
-          <li>
-            <a href="#!">Link 2</a>
-          </li>
-          <li>
-            <a href="#!">Link 3</a>
-          </li>
-          <li>
-            <a href="#!">Link 4</a>
-          </li>
-        </ul>
 
       </div>
       <!-- Grid column -->
@@ -77,20 +59,20 @@
       <div class="col-md-2 mx-auto">
 
         <!-- Links -->
-        <h5 class="font-weight-bold text-uppercase mt-3 mb-4">Links</h5>
+        <h5 class="font-weight-bold text-uppercase mt-3 mb-4">Colaboradores</h5>
 
         <ul class="list-unstyled">
           <li>
-            <a href="#!">Link 1</a>
+            <h6>IES san sebastian</h6>
           </li>
           <li>
-            <a href="#!">Link 2</a>
+            <h6>Junta de Andalucia</h6>
           </li>
           <li>
-            <a href="#!">Link 3</a>
+            <h6>Ayuntamiento de Huelva</h6>
           </li>
           <li>
-            <a href="#!">Link 4</a>
+            <h6>Andalucia Emprende</h6>
           </li>
         </ul>
 
@@ -105,52 +87,39 @@
 
   <hr>
 
-  <!-- Call to action -->
-  <ul class="list-unstyled list-inline text-center py-2">
-    <li class="list-inline-item">
-      <h5 class="mb-1">Register for free</h5>
-    </li>
-    <li class="list-inline-item">
-      <a href="#!" class="btn btn-danger btn-rounded">Sign up!</a>
-    </li>
-  </ul>
-  <!-- Call to action -->
-
-  <hr>
-
   <!-- Social buttons -->
   <ul class="list-unstyled list-inline text-center">
     <li class="list-inline-item">
       <a class="btn-floating btn-fb mx-1">
         <i class="fab fa-facebook-f"> </i>
-      </a>
+      </h6>
     </li>
     <li class="list-inline-item">
       <a class="btn-floating btn-tw mx-1">
         <i class="fab fa-twitter"> </i>
-      </a>
+      </h6>
     </li>
     <li class="list-inline-item">
       <a class="btn-floating btn-gplus mx-1">
         <i class="fab fa-google-plus-g"> </i>
-      </a>
+      </h6>
     </li>
     <li class="list-inline-item">
       <a class="btn-floating btn-li mx-1">
         <i class="fab fa-linkedin-in"> </i>
-      </a>
+      </h6>
     </li>
     <li class="list-inline-item">
       <a class="btn-floating btn-dribbble mx-1">
         <i class="fab fa-dribbble"> </i>
-      </a>
+      </h6>
     </li>
   </ul>
   <!-- Social buttons -->
 
   <!-- Copyright -->
   <div class="footer-copyright text-center py-3">© 2020 Copyright:
-    <a href="https://mdbootstrap.com/"> MDBootstrap.com</a>
+    <a href="https://mdbootstrap.com/"> MDBootstrap.com</h6>
   </div>
   <!-- Copyright -->
 

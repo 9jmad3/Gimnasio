@@ -21,14 +21,13 @@ class IndexController extends BaseController
    public function index()
    {
       $parametros = [
-         "tituloventana" => "Login a la aplicación"
       ];
       $this->view->show("Inicio",$parametros);
    }
 
    /**
-    * Podemos implementar la acción registro de usuarios
-    *
+    * Función que nos sirve para completar el perfil del usuario una vez ya esta registrado en la base de datos.
+    * Con esta funcion actualizamos los datos de un usuario ya existente.
     * @return void
     */
    public function register()
@@ -36,26 +35,32 @@ class IndexController extends BaseController
 
       // Array asociativo que almacenará los mensajes de error que se generen por cada campo
       $errores = array();
-      // Si se ha pulsado el botón guardar...
-      if (isset($_POST) && !empty($_POST) && isset($_POST['submit'])) { // y hemos recibido las variables del formulario y éstas no están vacías...
+
+      // Si se ha pulsado el botón guardar y no hay variables post vacias:
+      if (isset($_POST) && !empty($_POST) && isset($_POST['submit'])) { 
+
+         //Sanitizamos los valores que nos llegan
          $nombre = filter_var($_POST['txtnombre'],FILTER_SANITIZE_STRING);
-         $apellido1 = filter_var($_POST['txtapellido1'],FILTER_SANITIZE_STRING); //sha1();
+         $apellido1 = filter_var($_POST['txtapellido1'],FILTER_SANITIZE_STRING);
          $apellido2 = filter_var($_POST['txtapellido2'],FILTER_SANITIZE_STRING);
          $dni = filter_var($_POST['txtdni'],FILTER_SANITIZE_STRING);
          $direccion = filter_var($_POST['txtdireccion'],FILTER_SANITIZE_STRING);
          $telefono = filter_var($_POST['txttelefono'],FILTER_SANITIZE_STRING);
 
+         //Creamos la sesion
          $_SESSION['nombre'] = $nombre;
          $_SESSION['apellido1'] = $apellido1;
          $_SESSION['apellido2'] = $apellido2;
          $_SESSION['dni'] = $dni;
          $_SESSION['telefono'] = $telefono;
          $_SESSION['direccion'] = $direccion;
+
+
          /* Realizamos la carga de la imagen en el servidor */
-         //       Comprobamos que el campo tmp_name tiene un valor asignado para asegurar que hemos
-         //       recibido la imagen correctamente
-         //       Definimos la variable $imagen que almacenará el nombre de imagen 
-         //       que almacenará la Base de Datos inicializada a NULL
+         // Comprobamos que el campo tmp_name tiene un valor asignado para asegurar que hemos
+         // recibido la imagen correctamente
+         // Definimos la variable $imagen que almacenará el nombre de imagen 
+         // que almacenará la Base de Datos inicializada a NULL
          $imagen = NULL;
 
          if (isset($_FILES["imagen"]) && (!empty($_FILES["imagen"]["tmp_name"]))) {
@@ -133,6 +138,7 @@ class IndexController extends BaseController
             $_SESSION['direccion'] = null;
          }
          
+         //Si hay errores quiere decir que un parametro no ha superado la restricción de la expresión regular.
          if (count($errores) > 0) {$this->view->show("completarPerfil",$parametros);}
  
 
@@ -148,19 +154,19 @@ class IndexController extends BaseController
                'imagen' => $imagen
             ]);
 
-            if ($resultModelo["correcto"]) :
+            if ($resultModelo["correcto"]){
                $this->mensajes[] = [
                   "tipo" => "success",
                   "mensaje" => "El usuarios se registró correctamente!! :)"
                ];
                //Cargamos la ruta de la imagen en la sesion del usuario.
                $_SESSION['imagen'] = $imagen;
-            else :
+            }else{
                $this->mensajes[] = [
                   "tipo" => "danger",
                   "mensaje" => "El usuario no pudo registrarse!! :( <br />({$resultModelo["error"]})"
                ];
-            endif;
+            }
          } else {
             $this->mensajes[] = [
                "tipo" => "danger",
@@ -169,167 +175,130 @@ class IndexController extends BaseController
          }
       }
 
-      $parametros = [
-         "tituloventana" => "Base de Datos con PHP y PDO",
-         "datos" => [
-            "txtnombre" => isset($nombre) ? $nombre : "",
-            "txtpass" => isset($password) ? $password : "",
-            "txtemail" => isset($email) ? $email : "",
-            "imagen" => isset($imagen) ? $imagen : ""
-         ],
-         "mensajes" => $this->mensajes
-      ];
-      //Visualizamos la vista asociada al registro de usuarios
-      $nulo = null;
-      $perfilCompleto = $this->modelo->perfilCompleto($nulo);
-
-      if (is_null($perfilCompleto['datos']['nif']) || is_null($perfilCompleto['datos']['nombre']) || is_null($perfilCompleto['datos']['apellido1']) || is_null($perfilCompleto['datos']['apellido2']) || is_null($perfilCompleto['datos']['telefono']) || is_null($perfilCompleto['datos']['direccion'])) {
-         $_SESSION['perfilCompleto'] = false;
-         $this->view->show("completarPerfil",$parametros);
-      }else{
-         $this->mensajes[] = [
-            "campo" => "nuevoUsuario",
-            "tipo" => "warning",
-            "mensaje" => "Un administrador validará tu perfil."
-         ];
-         $errores["nombre"] = "Error: No valido";
-         $parametros = ["mensajes" => $this->mensajes];
-         $_SESSION['perfilCompleto'] = true;
-
-         if ($_SESSION['rol_id']==0) {
-            $this->view->show("paginaAdmin",$parametros);
-         } else {
-            $this->view->show("paginaUsuario",$parametros);
-         }
-      }
-      
-      
+      $this->view->show("paginaUsuario",$parametros);
+   
    }
 
    /**
-    * Otras acciones que puedan ser necesarias
+    * Función que nos permite listar el horario en pantalla.
+    * Recupera los datos, los ordena segun la hora de inicio de las clases y manda los datos a la vista.
     */
 
     public function listarHorario()
    {
       // Almacenamos en el array 'parametros[]'los valores que vamos a mostrar en la vista
       $parametros = [
-         "tituloventana" => "Base de Datos con PHP y PDO",
          "datos" => NULL,
          "mensajes" => [],
          "horario" => ["07:00", "07:15", "07:30", "07:45", "08:00", "08:15", "08:30", "08:45", "09:00", "09:15", "09:30","09:45", "10:00", "10:30", "10:45", "11:00", "11:15","11:30" , "11:45", "12:00", "12:15", "12:30" , "12:45", "13:00", "13:15", "13:30", "13:45", "14:00", "14:15", "14:30", "14:45", "15:00", "15:15", "15:30", "15:45", "16:00", "16:15", "16:30", "16:45", "17:00", "17:15","17:30", "17:45", "18:00", "18:15","18:30", "18:45", "19:00", "19:15","19:30", "19:45","20:00", "20:15","20:30","20:45", "21:00", "21:15", "21:30", "21:45", "22:00", "22:15", "22:30", "22:45", "23:00"]
       ];
       // Realizamos la consulta y almacenamos los resultados en la variable $resultModelo
       $resultModelo = $this->modelo->listadoClases();
-      // Si la consulta se realizó correctamente transferimos los datos obtenidos
-      // de la consulta del modelo ($resultModelo["datos"]) a nuestro array parámetros
-      // ($parametros["datos"]), que será el que le pasaremos a la vista para visualizarlos
-      if ($resultModelo["correcto"]) :
-
+            
+      if ($resultModelo["correcto"]){
+         //Creamos un nuevo array asociativo metiendo en el la clave y como valor, la hora de inicio de la clase de turno.
          foreach ($resultModelo["datos"] as $key => $value) {
             $horas[$key] = $value['horaInicio'];
          }
-
+         //Usamos el array de horas que hemos ordenado para ordenar el array donde estan todos los datos.
          array_multisort($horas, SORT_ASC, $resultModelo["datos"]);
 
          $parametros["datos"] = $resultModelo["datos"];
-         //Definimos el mensaje para el alert de la vista de que todo fue correctamente
+         
          $this->mensajes[] = [
             "tipo" => "success",
             "mensaje" => "El listado se realizó correctamente"
          ];
-      else :
-         //Definimos el mensaje para el alert de la vista de que se produjeron errores al realizar el listado
+      }else{
          $this->mensajes[] = [
             "tipo" => "danger",
             "mensaje" => "El listado no pudo realizarse correctamente!! :( <br/>({$resultModelo["error"]})"
          ];
-      endif;
-      //Asignamos al campo 'mensajes' del array de parámetros el valor del atributo 
-      //'mensaje', que recoge cómo finalizó la operación:
+      }
+      
       $parametros["mensajes"] = $this->mensajes;
-      // Incluimos la vista en la que visualizaremos los datos o un mensaje de error
       $this->view->show("ListarClases", $parametros);
    }
 
+   /**
+    * Funcion que nos permite listar el horario para su edicion.
+    * Funciona igual que la funcion anterior.
+    */
    public function editarHorario()
    {
       // Almacenamos en el array 'parametros[]'los valores que vamos a mostrar en la vista
       $parametros = [
-         "tituloventana" => "Base de Datos con PHP y PDO",
          "datos" => NULL,
          "mensajes" => [],
          "horario" => ["07:00", "07:15", "07:30", "07:45", "08:00", "08:15", "08:30", "08:45", "09:00", "09:15", "09:30","09:45", "10:00", "10:30", "10:45", "11:00", "11:15","11:30" , "11:45", "12:00", "12:15", "12:30" , "12:45", "13:00", "13:15", "13:30", "13:45", "14:00", "14:15", "14:30", "14:45", "15:00", "15:15", "15:30", "15:45", "16:00", "16:15", "16:30", "16:45", "17:00", "17:15","17:30", "17:45", "18:00", "18:15","18:30", "18:45", "19:00", "19:15","19:30", "19:45","20:00", "20:15","20:30","20:45", "21:00", "21:15", "21:30", "21:45", "22:00", "22:15", "22:30", "22:45", "23:00"]
       ];
+
       // Realizamos la consulta y almacenamos los resultados en la variable $resultModelo
       $resultModelo = $this->modelo->listadoClases();
-      // Si la consulta se realizó correctamente transferimos los datos obtenidos
-      // de la consulta del modelo ($resultModelo["datos"]) a nuestro array parámetros
-      // ($parametros["datos"]), que será el que le pasaremos a la vista para visualizarlos
-      if ($resultModelo["correcto"]) :
 
+      if ($resultModelo["correcto"]){
+         //Creamos un nuevo array asociativo metiendo en el la clave y como valor, la hora de inicio de la clase de turno.
          foreach ($resultModelo["datos"] as $key => $value) {
             $horas[$key] = $value['horaInicio'];
          }
-
+          //Usamos el array de horas que hemos ordenado para ordenar el array donde estan todos los datos.
          array_multisort($horas, SORT_ASC, $resultModelo["datos"]);
 
          $parametros["datos"] = $resultModelo["datos"];
-         //Definimos el mensaje para el alert de la vista de que todo fue correctamente
          $this->mensajes[] = [
             "tipo" => "success",
             "mensaje" => "El listado se realizó correctamente"
          ];
-      else :
-         //Definimos el mensaje para el alert de la vista de que se produjeron errores al realizar el listado
+      }else{
          $this->mensajes[] = [
             "tipo" => "danger",
             "mensaje" => "El listado no pudo realizarse correctamente!! :( <br/>({$resultModelo["error"]})"
          ];
-      endif;
-      //Asignamos al campo 'mensajes' del array de parámetros el valor del atributo 
-      //'mensaje', que recoge cómo finalizó la operación:
+      }
+      
       $parametros["mensajes"] = $this->mensajes;
-      // Incluimos la vista en la que visualizaremos los datos o un mensaje de error
       $this->view->show("editarHorario", $parametros);
    }
 
+   /**
+    * Funcion que nos permite listar las clases a las que esta apuntado un determinado usuario.
+    * Recoge los datos devueltos pro la base de datos y se los manda a la vista correspondiente.
+    */
    public function listarInscripciones()
    {
       // Almacenamos en el array 'parametros[]'los valores que vamos a mostrar en la vista
       $parametros = [
-         "tituloventana" => "Base de Datos con PHP y PDO",
          "datos" => NULL,
          "mensajes" => []
       ];
       // Realizamos la consulta y almacenamos los resultados en la variable $resultModelo
       $resultModelo = $this->modelo->listadoInscripciones();
-      // Si la consulta se realizó correctamente transferimos los datos obtenidos
-      // de la consulta del modelo ($resultModelo["datos"]) a nuestro array parámetros
-      // ($parametros["datos"]), que será el que le pasaremos a la vista para visualizarlos
-      if ($resultModelo["correcto"]) :
+      
+      if ($resultModelo["correcto"]){
          $parametros["datos"] = $resultModelo["datos"];
-         //Definimos el mensaje para el alert de la vista de que todo fue correctamente
+
          $this->mensajes[] = [
             "tipo" => "success",
             "mensaje" => "El listado se realizó correctamente"
          ];
-      else :
-         //Definimos el mensaje para el alert de la vista de que se produjeron errores al realizar el listado
+
+      }else{
          $this->mensajes[] = [
             "tipo" => "danger",
             "mensaje" => "El listado no pudo realizarse correctamente!! :( <br/>({$resultModelo["error"]})"
          ];
-      endif;
-      //Asignamos al campo 'mensajes' del array de parámetros el valor del atributo 
-      //'mensaje', que recoge cómo finalizó la operación:
+      }
+      
       $parametros["mensajes"] = $this->mensajes;
-      // Incluimos la vista en la que visualizaremos los datos o un mensaje de error
-
-
       $this->view->show("ListarClasesInscritas", $parametros);
    }
 
+   /**
+    * Funcion que enseña en pantalla todo lo necesario para poder insertar una nueva clase en un dia de la semana en 
+    * una hora especifica.
+    * Esta funcion puede ser llamada por otras y a su vez, recibir parametros.
+    * @param resultadoModelo: Nulo por defecto. Puede traer errores o mensajes arrastrados de otra funcion para mostrar al usuario.
+    */
    public function insertClaseExistente($resutadoModelo = null)
    {
       $parametros = [
@@ -338,6 +307,7 @@ class IndexController extends BaseController
          "horario" => ["07:00", "07:15", "07:30", "07:45", "08:00", "08:15", "08:30", "08:45", "09:00", "09:15", "09:30","09:45", "10:00", "10:30", "10:45", "11:00", "11:15","11:30" , "11:45", "12:00", "12:15", "12:30" , "12:45", "13:00", "13:15", "13:30", "13:45", "14:00", "14:15", "14:30", "14:45", "15:00", "15:15", "15:30", "15:45", "16:00", "16:15", "16:30", "16:45", "17:00", "17:15","17:30", "17:45", "18:00", "18:15","18:30", "18:45", "19:00", "19:15","19:30", "19:45","20:00", "20:15","20:30","20:45", "21:00", "21:15", "21:30", "21:45", "22:00", "22:15", "22:30", "22:45", "23:00"]
       ];
 
+      //Añadimos los mensajes si es que existen.
       $parametros['mensajes']=$resutadoModelo['error'];
       //Metemos la oferta de clases para que el administrador pueda elegir
       $resultModelo = $this->modelo->listarOferta();
@@ -346,6 +316,9 @@ class IndexController extends BaseController
       $this->view->show("insertarClaseExistente",$parametros);
    }
 
+   /**
+    * Funcion que nos permite insertar una clase en un determinado dia y hora.
+    */
    public function insertarClaseExistente()
    {
       //TODO Controlar que la hora de inicio sea menor que la hora de fin.
@@ -359,48 +332,47 @@ class IndexController extends BaseController
          'horaFin' => $_POST['txtHoraFin']
       ]);
       
-      
-
+      //Pasamos el resultado, con los mensajes de error si es que existen al metodo especifico parsa mostrar por pantalla.
       $this->insertClaseExistente($resultModelo);
    }
    
-
+   /**
+    * Funcion que nos permite inscribir a un usuario en una determinada clase.
+    */
    public function insertarInscripcion()
    {
-      // Almacenamos en el array 'parametros[]'los valores que vamos a mostrar en la vista
       $parametros = [
-         "tituloventana" => "Base de Datos con PHP y PDO",
          "datos" => NULL,
          "mensajes" => []
       ];
 
-      // Realizamos la consulta y almacenamos los resultados en la variable $resultModelo
+      // Realizamos la consulta pasando el id de clase a la que se quiere inscribir. Esto lo hacemos para comprobar
+      // que no se inscriba dos veces en la misma clase.
       $resultModelo = $this->modelo->insertarInscripcion($_GET['idCl']);
-      // Si la consulta se realizó correctamente transferimos los datos obtenidos
-      // de la consulta del modelo ($resultModelo["datos"]) a nuestro array parámetros
-      // ($parametros["datos"]), que será el que le pasaremos a la vista para visualizarlos
+      
+      //Si no esta inscrito en la clase:
       if ($resultModelo['inscrito'] == false) {
 
-         if ($resultModelo["correcto"]) :
+         //Y si el inster no ha fallado:
+         if ($resultModelo["correcto"]){
             $parametros["datos"] = $resultModelo["datos"];
-            //Definimos el mensaje para el alert de la vista de que todo fue correctamente
             $this->mensajes[] = [
                "tipo" => "success",
                "mensaje" => "Se te ha inscrito en la clase seleccionada"
             ];
-         else :
-            //Definimos el mensaje para el alert de la vista de que se produjeron errores al realizar el listado
+
+         }else{
             $this->mensajes[] = [
                "tipo" => "danger",
                "mensaje" => "Error inesperado!! :( <br/>({$resultModelo["error"]})"
             ];
-         endif;
-         //Asignamos al campo 'mensajes' del array de parámetros el valor del atributo 
-         //'mensaje', que recoge cómo finalizó la operación:
+         }
+         
+         //Metemos el mensaje de error o exito.
          $parametros["mensajes"] = $this->mensajes;
-         // Incluimos la vista en la que visualizaremos los datos o un mensaje de error
 
       } else {
+         //Si inscrito es true:
          $this->mensajes[] = [
                "tipo" => "warning",
                "mensaje" => "Usted ya esta inscrito en esa clase."
@@ -409,44 +381,43 @@ class IndexController extends BaseController
       $this->listarHorario($parametros["mensajes"]);
    }
 
+   /**
+    * Funcion que nos permite borrar una inscripcion de un usuario a una determinada clase.
+    */
    public function borrarInscripcion()
    {
       // Almacenamos en el array 'parametros[]'los valores que vamos a mostrar en la vista
       $parametros = [
-         "tituloventana" => "Base de Datos con PHP y PDO",
          "datos" => NULL,
          "mensajes" => []
       ];
       $id = $_GET['id'];
   
-      // Realizamos la consulta y almacenamos los resultados en la variable $resultModelo
+      // Realizamos la eliminacion pasandole el id del usuario.
       $resultModelo = $this->modelo->borrarInscripcion($id);
-      // Si la consulta se realizó correctamente transferimos los datos obtenidos
-      // de la consulta del modelo ($resultModelo["datos"]) a nuestro array parámetros
-      // ($parametros["datos"]), que será el que le pasaremos a la vista para visualizarlos
-      if ($resultModelo["correcto"]) :
+      
+      if ($resultModelo["correcto"]){
          $parametros["datos"] = $resultModelo["datos"];
-         //Definimos el mensaje para el alert de la vista de que todo fue correctamente
          $this->mensajes[] = [
             "tipo" => "success",
             "mensaje" => "Operacion realizada correctamente"
          ];
-      else :
-         //Definimos el mensaje para el alert de la vista de que se produjeron errores al realizar el listado
+      }else{
          $this->mensajes[] = [
             "tipo" => "danger",
             "mensaje" => "No se ha podido borrar!! :( <br/>({$resultModelo["error"]})"
          ];
-      endif;
-      //Asignamos al campo 'mensajes' del array de parámetros el valor del atributo 
-      //'mensaje', que recoge cómo finalizó la operación:
+      }
+   
       $parametros["mensajes"] = $this->mensajes;
-      // Incluimos la vista en la que visualizaremos los datos o un mensaje de error
-
-
+      
+      //Llamamos al metodo que lista las inscripciones del usuario.
       $this->listarInscripciones();
    }
 
+   /**
+    * Funcion que nos permite eliminar una clase de un dia y hora concretos.
+    */
    public function delClaseExistente()
    {
       // Almacenamos en el array 'parametros[]'los valores que vamos a mostrar en la vista
@@ -456,77 +427,79 @@ class IndexController extends BaseController
       ];
       $id = $_GET['id'];
   
-      // Realizamos la consulta y almacenamos los resultados en la variable $resultModelo
+      // Realizamos el borrado pasando el id de la clase.
       $resultModelo = $this->modelo->delClaseExistente($id);
-      // Si la consulta se realizó correctamente transferimos los datos obtenidos
-      // de la consulta del modelo ($resultModelo["datos"]) a nuestro array parámetros
-      // ($parametros["datos"]), que será el que le pasaremos a la vista para visualizarlos
-      if ($resultModelo["correcto"]) :
+      
+      if ($resultModelo["correcto"]){
          $parametros["datos"] = $resultModelo["datos"];
-         //Definimos el mensaje para el alert de la vista de que todo fue correctamente
          $this->mensajes[] = [
             "tipo" => "success",
             "mensaje" => "Operacion realizada correctamente"
          ];
-      else :
-         //Definimos el mensaje para el alert de la vista de que se produjeron errores al realizar el listado
+      }else{
          $this->mensajes[] = [
             "tipo" => "danger",
             "mensaje" => "No se ha podido borrar!! :( <br/>({$resultModelo["error"]})"
          ];
-      endif;
-      //Asignamos al campo 'mensajes' del array de parámetros el valor del atributo 
-      //'mensaje', que recoge cómo finalizó la operación:
+      }
+      
       $parametros["mensajes"] = $this->mensajes;
-      // Incluimos la vista en la que visualizaremos los datos o un mensaje de error
 
+      //Llamamos a la funcion para listar el horario al administrador.
       $this->editarHorario();
    }
 
+   /**
+    * Funcion que nos permite listar los tipos de clases existentes al administrador para que pueda eliminar
+    * o editar datos.
+    */
    public function listarClasesEditarBorrar()
    {
-      // Almacenamos en el array 'parametros[]'los valores que vamos a mostrar en la vista
       $parametros = [
          "datos" => NULL,
          "mensajes" => []
       ];
-      // Realizamos la consulta y almacenamos los resultados en la variable $resultModelo
+      
       $resultModelo = $this->modelo->listarOferta();
-      // Si la consulta se realizó correctamente transferimos los datos obtenidos
-      // de la consulta del modelo ($resultModelo["datos"]) a nuestro array parámetros
-      // ($parametros["datos"]), que será el que le pasaremos a la vista para visualizarlos
-      if ($resultModelo["correcto"]) :
+      
+      if ($resultModelo["correcto"]){
          $parametros["datos"] = $resultModelo["datos"];
-         //Definimos el mensaje para el alert de la vista de que todo fue correctamente
          $this->mensajes[] = [
             "tipo" => "success",
             "mensaje" => "El listado se realizó correctamente"
          ];
-      else :
-         //Definimos el mensaje para el alert de la vista de que se produjeron errores al realizar el listado
+      }else{
          $this->mensajes[] = [
             "tipo" => "danger",
             "mensaje" => "El listado no pudo realizarse correctamente!! :( <br/>({$resultModelo["error"]})"
          ];
-      endif;
-      //Asignamos al campo 'mensajes' del array de parámetros el valor del atributo 
-      //'mensaje', que recoge cómo finalizó la operación:
-      $parametros["mensajes"] = $this->mensajes;
-      // Incluimos la vista en la que visualizaremos los datos o un mensaje de error
-
-         $this->view->show("ListarClasesEditarBorrar",$parametros);
+      }
+      
+      $parametros["mensajes"] = $this->mensajes;   
+      $this->view->show("ListarClasesEditarBorrar",$parametros);
    }
 
+   /**
+    * Funcion que nos permite llamar a la vista en la que se encuentra el formulario para editar un tipo de clase
+    * @param parametros: Puede traer contenido si se llama desde otra funcion.
+    */
    public function editClase($parametros=null)
    {
       $this->view->show("editarClase", $parametros);
    }
 
+   /**
+    * Funcion que nos permite llamar a la vista en la que se encuentra el formulario para insertar un tipo de clase
+    * @param parametros: Puede traer contenido si se llama desde otra funcion.
+    */
    public function insertClase($parametros = null)
    {
       $this->view->show("insertarClase",$parametros);
    }
 
+   /**
+    * Funcion que nos permite insertar un nuevo tipo de clase en el sistema (bodypump, bodycombat...)
+    */
    public function insertarClase()
    {
       // Almacenamos en el array 'parametros[]'los valores que vamos a mostrar en la vista
@@ -536,8 +509,11 @@ class IndexController extends BaseController
       ];
 
       $imagen = NULL;
+
+      //Si el nombre y descripcion existe:
       if (!empty($_POST['txtnombre']) || !empty($_POST['txtdescripcion'])) {
 
+         //Todo lo relacionado con la carga de la foto.
          if (isset($_FILES["imagen"]) && (!empty($_FILES["imagen"]["tmp_name"]))) {
             // Verificamos la carga de la imagen
             // Comprobamos si existe el directorio fotos, y si no, lo creamos
@@ -567,6 +543,7 @@ class IndexController extends BaseController
             }
          }
    
+         //Insertamos la clase
          $resultModelo = $this->modelo->insertarClase([
             'nombre' => $_POST['txtnombre'],
             'tipo' => $_POST['txttipo'],
@@ -587,6 +564,7 @@ class IndexController extends BaseController
             ];
          }
       $parametros["mensajes"] = $this->mensajes;
+
       }else{
          $this->mensajes[] = [
             "tipo" => "danger",
@@ -595,14 +573,15 @@ class IndexController extends BaseController
          $parametros["mensajes"] = $this->mensajes;
       }
 
-      
-
+   //Llamamos al metodo que llama a la vista pasandole los mensajes / datos oportunos.   
    $this->insertClase($parametros);
    }
 
+   /**
+    * Funcion que nos permite editar una clase de un determinado tipo en el sistema.
+    */
    public function editarClase()
    {
-      // Almacenamos en el array 'parametros[]'los valores que vamos a mostrar en la vista
       $parametros = [
          "datos" => NULL,
          "mensajes" => []
@@ -610,8 +589,9 @@ class IndexController extends BaseController
 
       $imagen = NULL;
 
+      //Si el nombre y descripcion no esta vacios:
       if (!empty($_POST['txtnombre']) || !empty($_POST['txtdescripcion'])) {
-
+         //Todo lo relacionado con la carga de la foto.
          if (isset($_FILES["imagen"]) && (!empty($_FILES["imagen"]["tmp_name"]))) {
             // Verificamos la carga de la imagen
             // Comprobamos si existe el directorio fotos, y si no, lo creamos
@@ -641,7 +621,7 @@ class IndexController extends BaseController
             }
          }
 
-
+         //Editamos la imagen
          $resultModelo = $this->modelo->editarClase([
                'nombre' => $_POST['txtnombre'],
                'tipo' => $_POST['txttipo'],
@@ -650,26 +630,22 @@ class IndexController extends BaseController
                'imagen' => $imagen
          ]);
          
-         if ($resultModelo["correcto"]) :
+         if ($resultModelo["correcto"]){
             $parametros["datos"] = $resultModelo["datos"];
-            //Definimos el mensaje para el alert de la vista de que todo fue correctamente
             $this->mensajes[] = [
                "tipo" => "success",
                "mensaje" => "Operacion realizada correctamente"
             ];
 
-
-         else :
-            //Definimos el mensaje para el alert de la vista de que se produjeron errores al realizar el listado
+         }else{
             $this->mensajes[] = [
                "tipo" => "danger",
                "mensaje" => "No se ha podido borrar!! :( <br/>({$resultModelo["error"]})"
             ];
-         endif;
-         //Asignamos al campo 'mensajes' del array de parámetros el valor del atributo 
-         //'mensaje', que recoge cómo finalizó la operación:
+         }
+         
          $parametros["mensajes"] = $this->mensajes;
-         // Incluimos la vista en la que visualizaremos los datos o un mensaje de error
+
       }else{
          $this->mensajes[] = [
             "tipo" => "danger",
@@ -678,77 +654,73 @@ class IndexController extends BaseController
          $parametros["mensajes"] = $this->mensajes;
       }
       
+      //Llamamos al metodo oportuno pasandole la informacion de mensajes/datos oportuna.
       $this->editClase($parametros);
-   
    }
 
+   /**
+    * Metodo que nos permite eliminar una determinada clase del sistema (bodypump, bodycombat...)
+    */
    public function delClase()
    {
-      // Almacenamos en el array 'parametros[]'los valores que vamos a mostrar en la vista
       $parametros = [
          "datos" => NULL,
          "mensajes" => []
       ];
       $id = $_GET['id'];
   
+      //Borramos la clase pasandole el id de esta.
       $resultModelo = $this->modelo->delClase($id);
       
-      if ($resultModelo["correcto"]) :
+      if ($resultModelo["correcto"]){
          $parametros["datos"] = $resultModelo["datos"];
-         //Definimos el mensaje para el alert de la vista de que todo fue correctamente
          $this->mensajes[] = [
             "tipo" => "success",
             "mensaje" => "Operacion realizada correctamente"
          ];
 
-
-      else :
-         //Definimos el mensaje para el alert de la vista de que se produjeron errores al realizar el listado
+      }else{
          $this->mensajes[] = [
             "tipo" => "danger",
             "mensaje" => "No se ha podido borrar!! :( <br/>({$resultModelo["error"]})"
          ];
-      endif;
-      //Asignamos al campo 'mensajes' del array de parámetros el valor del atributo 
-      //'mensaje', que recoge cómo finalizó la operación:
+      }
+    
       $parametros["mensajes"] = $this->mensajes;
-      // Incluimos la vista en la que visualizaremos los datos o un mensaje de error
-
-
+ 
+      //Lamamos al metodo que lista por pantalla las clases existentes y que da opcion a borrar o eliminar.
       $this->listarClasesEditarBorrar();
    }
 
+   /**
+    * Funcion que nos permite listar por pantalla toda la oferta de clases (bodypump, bodycombat..)
+    */
    public function listarOferta()
    {
-      // Almacenamos en el array 'parametros[]'los valores que vamos a mostrar en la vista
       $parametros = [
          "datos" => NULL,
          "mensajes" => []
       ];
       // Realizamos la consulta y almacenamos los resultados en la variable $resultModelo
       $resultModelo = $this->modelo->listarOferta();
-      // Si la consulta se realizó correctamente transferimos los datos obtenidos
-      // de la consulta del modelo ($resultModelo["datos"]) a nuestro array parámetros
-      // ($parametros["datos"]), que será el que le pasaremos a la vista para visualizarlos
-      if ($resultModelo["correcto"]) :
+      
+      if ($resultModelo["correcto"]){
          $parametros["datos"] = $resultModelo["datos"];
-         //Definimos el mensaje para el alert de la vista de que todo fue correctamente
          $this->mensajes[] = [
             "tipo" => "success",
             "mensaje" => "El listado se realizó correctamente"
          ];
-      else :
-         //Definimos el mensaje para el alert de la vista de que se produjeron errores al realizar el listado
+
+      }else{
          $this->mensajes[] = [
             "tipo" => "danger",
             "mensaje" => "El listado no pudo realizarse correctamente!! :( <br/>({$resultModelo["error"]})"
          ];
-      endif;
-      //Asignamos al campo 'mensajes' del array de parámetros el valor del atributo 
-      //'mensaje', que recoge cómo finalizó la operación:
+      }
+      
       $parametros["mensajes"] = $this->mensajes;
-      // Incluimos la vista en la que visualizaremos los datos o un mensaje de error
-
+      
+      //Segregamos entre administradores y usuarios normales a la hora de cargar la vista.
       if ($_SESSION['rol_id']==0) {
          $this->view->show("ListarOfertaAdmin", $parametros);
       } else {

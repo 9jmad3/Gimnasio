@@ -19,17 +19,22 @@ class LoginController extends BaseController
    public function index()
    {
       $parametros = [
-         "tituloventana" => "Login a la aplicación"
       ];
       $this->view->show("Login", $parametros);
    }
 
+   /**
+    * Funcion que nos permite hacer login en la bbdd con un determinado usuario y asi darle paso a su pagina personal.
+    */
    public function inUser()
    {
       // Array asociativo que almacenará los mensajes de error que se generen por cada campo
       $errores = array();
 
+      //Si se ha pulsado el boton de enviar:
       if (isset($_POST['submit'])) {
+
+         //Si usuario o password estan vacios:
          if (empty( $_POST['txtusuario']) || empty($_POST['txtpassword'])) {
             
             $this->mensajes[] = [
@@ -44,22 +49,27 @@ class LoginController extends BaseController
          $usuario = $_POST['txtusuario'];
          $password = $_POST['txtpassword'];
 
-         if (count($errores) == 0) {
-            $resultado = $this->modelo->inUser([
-               'usuario' => $usuario,
-               'password' => $password
-            ]);
-         }
+         //Preguntamos por el usuario y contraseña a la bbdd
+         $resultado = $this->modelo->inUser([
+            'usuario' => $usuario,
+            'password' => $password
+         ]);
+         
+         //Creamos la sesion de usuario ya que al llegar hasta aqui, la consulta ha salido bien.
          $_SESSION['usuario'] = $usuario;
 
+         //Preguntamos si el usuario esta validado pasando su nombre de usuario.
          $datos = $this->modelo->userValidado($usuario);
+
+         //Guardamos su id y rol.
          $_SESSION['id'] = $datos['datos']['id'];
          $_SESSION['rol_id'] = $datos['datos']['rol_id'];
 
          
-         
+         //Si es distinto de 2 y por tanto esta validado:
          if ($_SESSION['rol_id']!=2) {
             
+            //Si el usuario y contraseña son correctos:
             if ($resultado['correcto'] == TRUE) {
 
                //Implementación de la funcion recuerdame que guarda en usuario y contraseña en cookies. 
@@ -75,7 +85,7 @@ class LoginController extends BaseController
                }
 
                $parametros['datos'] = $resultado['datos'];
-
+               //Actualizamos las variables de sesion con toda la informacion del usuario.
                $_SESSION['nombre'] = $parametros['datos'][0]['nombre'];
                $_SESSION['apellido1'] = $parametros['datos'][0]['apellido1'];
                $_SESSION['apellido2'] = $parametros['datos'][0]['apellido2'];
@@ -84,13 +94,15 @@ class LoginController extends BaseController
                $_SESSION['direccion'] = $parametros['datos'][0]['direccion'];
                $_SESSION['imagen'] = $parametros['datos'][0]['imagen'];
 
+               //Discriminamos entre roles para dar paso a una u otra parte de la pagina.
                if ($_SESSION['rol_id'] == 0) {
                   $this->view->show("paginaAdmin",$parametros);
                } 
                if($_SESSION['rol_id'] == 1){
                   $this->view->show("paginaUsuario",$parametros);
                }
-              
+            
+            //Si el usuario y contraseña NO son correctos:
             } else {
                $this->mensajes[] = [
                   "tipo" => "danger",
@@ -100,7 +112,7 @@ class LoginController extends BaseController
 
                $this->view->show("Login",$parametros);
             }
-         
+         //Si el usuario no esta validado.
          }else{
             $this->mensajes[] = [
                "tipo" => "warning",
@@ -110,7 +122,8 @@ class LoginController extends BaseController
 
             $this->view->show("Login",$parametros);
          }
-
+      
+      //Si no se ha pulsado dl boton de submit:   
       }else {
          $this->view->show("Login");
       }    
