@@ -94,8 +94,11 @@
                             <?php endif;?> 
                         <?php endforeach;?>   
                     </td>
+
                 </tr>
-            <?php $contador++; endforeach;?>  
+
+            <?php $contador++; endforeach;?>
+  
         </tbody>
     </table>
 </div>

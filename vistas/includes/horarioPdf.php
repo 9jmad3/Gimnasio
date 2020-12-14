@@ -1,5 +1,6 @@
 <!-- <div class="container-fluid" style="margin-top: 100px !important;"> -->
-    <h2 style="text-align: center;">HORARIO</h2>
+    <h1 style="text-align: center;">FITGYM </h1>
+    <h3 style="text-align: center;">HORARIO</h3>
     
     <table class="table table-striped table-responsive-md btn-table" style="margin-left: 20px;">
 
@@ -79,9 +80,11 @@
                 </tr>
 
             <?php $contador++; endforeach;?>
-                    
+              
+            
         </tbody>
 
     </table>
-    
+    <h3 style="margin-top: 50px; text-align: center;">Entra en nuestra web!</h3>
+    <img src="img/qr.png" alt="http://localhost/gimnasio/index.php?c" style="width: 300px; margin-left: 220px">
 <!-- </div> -->
