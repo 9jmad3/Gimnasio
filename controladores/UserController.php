@@ -36,35 +36,28 @@ class UserController extends BaseController
     */
    public function listado()
    {
-      // Almacenamos en el array 'parametros[]'los valores que vamos a mostrar en la vista
       $parametros = [
-         "tituloventana" => "Base de Datos con PHP y PDO",
          "datos" => NULL,
          "mensajes" => []
       ];
-      // Realizamos la consulta y almacenamos los resultados en la variable $resultModelo
       $resultModelo = $this->modelo->listado();
-      // Si la consulta se realizó correctamente transferimos los datos obtenidos
-      // de la consulta del modelo ($resultModelo["datos"]) a nuestro array parámetros
-      // ($parametros["datos"]), que será el que le pasaremos a la vista para visualizarlos
-      if ($resultModelo["correcto"]) :
+      
+      if ($resultModelo["correcto"]){
          $parametros["datos"] = $resultModelo["datos"];
-         //Definimos el mensaje para el alert de la vista de que todo fue correctamente
+         
          $this->mensajes[] = [
             "tipo" => "success",
             "mensaje" => "El listado se realizó correctamente"
          ];
-      else :
-         //Definimos el mensaje para el alert de la vista de que se produjeron errores al realizar el listado
+
+      }else{
          $this->mensajes[] = [
             "tipo" => "danger",
             "mensaje" => "El listado no pudo realizarse correctamente!! :( <br/>({$resultModelo["error"]})"
          ];
-      endif;
-      //Asignamos al campo 'mensajes' del array de parámetros el valor del atributo 
-      //'mensaje', que recoge cómo finalizó la operación:
+      }
+
       $parametros["mensajes"] = $this->mensajes;
-      // Incluimos la vista en la que visualizaremos los datos o un mensaje de error
       $this->view->show("ListadoUser", $parametros);
    }
 
@@ -73,20 +66,14 @@ class UserController extends BaseController
     */
    public function editarUsuario()
    {  
-      // Array asociativo que almacenará los mensajes de error que se generen por cada campo
-      $errores = array();
-      // Inicializamos valores de los campos de texto
-      $valnombre = "";
-      $valemail = "";
-      $valimagen = "";
-
+      //Cargamos todos los datos del usuario pasandole el id.
       $parametros['datos'] = $this->modelo->perfilCompleto($_GET['usuario']);     
       $this->view->show("editarUsuario",$parametros);
    }
 
    /**
     * Método de la clase controlador que realiza la eliminación de un usuario a 
-    * través del campo id
+    * través del campo id.
     */
    public function deluser()
    {
@@ -95,26 +82,28 @@ class UserController extends BaseController
          $id = $_GET["id"];
          //Realizamos la operación de suprimir el usuario con el id=$id
          $resultModelo = $this->modelo->deluser($id);
-         //Analizamos el valor devuelto por el modelo para definir el mensaje a 
-         //mostrar en la vista listado
-         if ($resultModelo["correcto"]) :
+        
+         if ($resultModelo["correcto"]){
             $this->mensajes[] = [
                "tipo" => "success",
                "mensaje" => "Se eliminó correctamente el usuario $id"
             ];
-         else :
+         }else {
             $this->mensajes[] = [
                "tipo" => "danger",
                "mensaje" => "La eliminación del usuario no se realizó correctamente!! :( <br/>({$resultModelo["error"]})"
             ];
-         endif;
-      } else { //Si no recibimos el valor del parámetro $id generamos el mensaje indicativo:
+         }
+      }else { 
          $this->mensajes[] = [
             "tipo" => "danger",
             "mensaje" => "No se pudo acceder al id del usuario a eliminar!! :("
          ];
       }
 
+      //Si la variable vista es 1, quiere decir que hemos llamando al metodo desde la vista de listar usuario y llamaremos al metodo
+      //para mostrar esa vista cargando los datos.
+      //Si no es asi, cargamos la vista de usuarios no validados mediante la funcion especifica.
       if ($_GET['vista'] == 1) {
          $this->listaUsuarios();
       } else {
@@ -123,6 +112,9 @@ class UserController extends BaseController
       
    }
 
+   /**
+    * Metodo para eliminar un mensaje de un determinado usuario.
+    */
    public function delMensaje()
    {
       // verificamos que hemos recibido los parámetros desde la vista de listado 
@@ -131,7 +123,7 @@ class UserController extends BaseController
          //Realizamos la operación de suprimir el mensaje con el id=$id
          $resultModelo = $this->modelo->delMensaje($id);
              
-      } else { //Si no recibimos el valor del parámetro $id generamos el mensaje indicativo:
+      } else { 
          $this->mensajes[] = [
             "tipo" => "danger",
             "mensaje" => "ERROR al borrar."
@@ -142,76 +134,76 @@ class UserController extends BaseController
       $this->mensajes();
    }
 
+   /**
+    * Funcion para añadir un nuevo mensaje
+    */
    public function addmensaje()
    {
 
       $errores = array();
       $parametros = [];          
-            // Si se ha pulsado el botón guardar...
+            
+      // Si no hay variables vacias a excepcion del asunto del mensaje:
+      if (isset($_POST) && !empty($_POST['txtusuario'] && !empty($_POST['txtmensaje'])) && isset($_POST['submit'])) { 
+         $usuario = filter_var($_POST['txtusuario'],FILTER_SANITIZE_STRING);
+         $asunto = filter_var($_POST['txtasunto'],FILTER_SANITIZE_STRING);
+         $mensaje = filter_var($_POST['txtmensaje'],FILTER_SANITIZE_STRING);
 
-            if (isset($_POST) && !empty($_POST['txtusuario'] && !empty($_POST['txtmensaje'])) && isset($_POST['submit'])) { // y hemos recibido las variables del formulario y éstas no están vacías...
-               $usuario = filter_var($_POST['txtusuario'],FILTER_SANITIZE_STRING);
-               $asunto = filter_var($_POST['txtasunto'],FILTER_SANITIZE_STRING);
-               $mensaje = filter_var($_POST['txtmensaje'],FILTER_SANITIZE_STRING);
+         //Si no se cumple la expresión regular se genera un error especifico.
+         if (!preg_match("/^[a-z0-9ü_]{3,15}$/", $usuario)) {
+            $this->mensajes[] = [
+               "campo" => "usuario",
+               "tipo" => "danger",
+               "mensaje" => "Usuario no valido."
+            ];
+            $errores["usuario"] = "Error: No valido";
+            $parametros = ["mensajes" => $this->mensajes];
+         }
+                        
+         //Si se ha generado algún error se retorna al inicio pasando el/los errores pertinentes.
+         if (count($errores) > 0) { $this->mensajes($parametros); }
 
-               //Si no se cumple la expresión regular se genera un error especifico.
-               if (!preg_match("/^[a-z0-9ü_]{3,15}$/", $usuario)) {
+         // Si no se han producido errores realizamos el registro del usuario
+         if (count($errores) == 0) {
+            $resultModelo = $this->modelo->addmensaje([
+               'idRemitente' => $_SESSION['id'],
+               'destinatario' => $usuario,
+               'contenido' => $mensaje,
+               'asunto' => $asunto
+            ]);
+               //Puede ser porque el usuario de destino no exista.
+               if ($resultModelo["correcto"]){
                   $this->mensajes[] = [
-                     "campo" => "usuario",
-                     "tipo" => "danger",
-                     "mensaje" => "Usuario no valido."
+                     "campo" => "informacion",
+                     "tipo" => "success",
+                     "mensaje" => "Mensaje enviado"
                   ];
-                  $errores["usuario"] = "Error: No valido";
+                  
                   $parametros = ["mensajes" => $this->mensajes];
-               }
-                              
-               //Si se ha generado algún error se retorna al inicio pasando el/los errores pertinentes.
-               if (count($errores) > 0) { $this->mensajes($parametros); }
+                  $this->mensajes($parametros);
 
-               // Si no se han producido errores realizamos el registro del usuario
-               if (count($errores) == 0) {
-                  $resultModelo = $this->modelo->addmensaje([
-                     'idRemitente' => $_SESSION['id'],
-                     'destinatario' => $usuario,
-                     'contenido' => $mensaje,
-                     'asunto' => $asunto
-                  ]);
+               }else{
+                  $this->mensajes[] = [
+                     "campo" => "informacion",
+                     "tipo" => "danger",
+                     "mensaje" => "ERROR: mensaje no enviado."
+                  ];  
 
-                     if ($resultModelo["correcto"]){
-                        $this->mensajes[] = [
-                           "campo" => "informacion",
-                           "tipo" => "success",
-                           "mensaje" => "Mensaje enviado"
-                        ];
-                        
-                        
-                        $parametros = ["mensajes" => $this->mensajes];
-                        $this->mensajes($parametros);
-                     }else{
-                        $this->mensajes[] = [
-                           "campo" => "informacion",
-                           "tipo" => "danger",
-                           "mensaje" => "ERROR: mensaje no enviado."
-                        ];  
-                        $parametros = ["mensajes" => $this->mensajes];
-                           
-                        $this->mensajes($parametros);
-                     };
-               } 
-            }else {
-               $this->mensajes[] = [
-                  "campo" => "vacio",
-                  "tipo" => "warning",
-                  "mensaje" => "Usuario de destino y mensaje no pueden estar vacios."
-               ];  
+                  $parametros = ["mensajes" => $this->mensajes];
+                  $this->mensajes($parametros);
+               };
+         } 
+      }else {
+         $this->mensajes[] = [
+            "campo" => "vacio",
+            "tipo" => "warning",
+            "mensaje" => "Usuario de destino y mensaje no pueden estar vacios."
+         ];  
 
-               $parametros = ["mensajes" => $this->mensajes];
-                  //Retornamos errores a la vista principal.
-              
-               $this->mensajes($parametros);
-            };
-   
 
+         $parametros = ["mensajes" => $this->mensajes];
+         $this->mensajes($parametros);
+      };
    }
 
    /**
@@ -320,16 +312,6 @@ class UserController extends BaseController
             if (count($errores) == 0){
                $_SESSION['usuario'] = $usuario;
 
-               // $parametros = [
-               //    "tituloventana" => "Base de Datos con PHP y PDO",
-               //    "datos" => [
-               //       "txtusuario" => isset($usuario) ? $usuario : "",
-               //       "txtpass" => isset($password) ? $password : "",
-               //       "txtemail" => isset($email) ? $email : ""
-               //    ],
-               //    "mensajes" => $this->mensajes
-               // ];
-               //Visualizamos la vista asociada al registro de usuarios
                $this->mensajes[] = [
                   "campo" => "nuevoUsuario",
                   "tipo" => "warning",
@@ -371,11 +353,6 @@ class UserController extends BaseController
          $direccion = filter_var($_POST['txtdireccion'],FILTER_SANITIZE_STRING);
          $telefono = filter_var($_POST['txttelefono'],FILTER_SANITIZE_STRING);
 
-         /* Realizamos la carga de la imagen en el servidor */
-         //       Comprobamos que el campo tmp_name tiene un valor asignado para asegurar que hemos
-         //       recibido la imagen correctamente
-         //       Definimos la variable $imagen que almacenará el nombre de imagen 
-         //       que almacenará la Base de Datos inicializada a NULL
          $imagen = NULL;
 
          if (isset($_FILES["imagen"]) && (!empty($_FILES["imagen"]["tmp_name"]))) {
@@ -481,153 +458,135 @@ class UserController extends BaseController
             ];
          }
 
-         //$this->view->show("editarUsuario",$parametros);
+         //Llamamos de nuevo al metodo que lista todos los usuarios al administrador.
          $this->listaUsuarios();
       }
    }
 
+   /**
+    * Funcion para listar todos los usuarios al administrador.
+    */
    public function listaUsuarios()
    {
        // Almacenamos en el array 'parametros[]'los valores que vamos a mostrar en la vista
        $parametros = [
-         "tituloventana" => "Base de Datos con PHP y PDO",
          "datos" => NULL,
          "mensajes" => []
       ];
-      // Realizamos la consulta y almacenamos los resultados en la variable $resultModelo
+
       $resultModelo = $this->modelo->listado();
-      // Si la consulta se realizó correctamente transferimos los datos obtenidos
-      // de la consulta del modelo ($resultModelo["datos"]) a nuestro array parámetros
-      // ($parametros["datos"]), que será el que le pasaremos a la vista para visualizarlos
-      if ($resultModelo["correcto"]) :
+   
+      if ($resultModelo["correcto"]){
          $parametros["datos"] = $resultModelo["datos"];
-         //Definimos el mensaje para el alert de la vista de que todo fue correctamente
+         
          $this->mensajes[] = [
             "tipo" => "success",
             "mensaje" => "El listado se realizó correctamente"
          ];
-      else :
-         //Definimos el mensaje para el alert de la vista de que se produjeron errores al realizar el listado
+      }else{
+         
          $this->mensajes[] = [
             "tipo" => "danger",
             "mensaje" => "El listado no pudo realizarse correctamente!! :( <br/>({$resultModelo["error"]})"
          ];
-      endif;
-      //Asignamos al campo 'mensajes' del array de parámetros el valor del atributo 
-      //'mensaje', que recoge cómo finalizó la operación:
+      }
+      
       $parametros["mensajes"] = $this->mensajes;
-      // Incluimos la vista en la que visualizaremos los datos o un mensaje de error
       $this->view->show("ListarUsuarios", $parametros);
    }
 
+   /**
+    * Funcion para listar al administrador los usuarios no validados.
+    */
    public function listaUsuariosNoValidados()
    {
-      // Almacenamos en el array 'parametros[]'los valores que vamos a mostrar en la vista
       $parametros = [
-         "tituloventana" => "Base de Datos con PHP y PDO",
          "datos" => NULL,
          "mensajes" => []
       ];
-      // Realizamos la consulta y almacenamos los resultados en la variable $resultModelo
+
       $resultModelo = $this->modelo->listadoNoValidados();
-      // Si la consulta se realizó correctamente transferimos los datos obtenidos
-      // de la consulta del modelo ($resultModelo["datos"]) a nuestro array parámetros
-      // ($parametros["datos"]), que será el que le pasaremos a la vista para visualizarlos
-      if ($resultModelo["correcto"]) :
+
+      if ($resultModelo["correcto"]){
          $parametros["datos"] = $resultModelo["datos"];
-         //Definimos el mensaje para el alert de la vista de que todo fue correctamente
          $this->mensajes[] = [
             "tipo" => "success",
             "mensaje" => "Operación realizada correctamente"
          ];
-      else :
-         //Definimos el mensaje para el alert de la vista de que se produjeron errores al realizar el listado
+      }else{
          $this->mensajes[] = [
             "tipo" => "danger",
             "mensaje" => "El listado no pudo realizarse correctamente!! :( <br/>({$resultModelo["error"]})"
          ];
-      endif;
-      //Asignamos al campo 'mensajes' del array de parámetros el valor del atributo 
-      //'mensaje', que recoge cómo finalizó la operación:
+      }
+      
       $parametros["mensajes"] = $this->mensajes;
-      // Incluimos la vista en la que visualizaremos los datos o un mensaje de error
       $this->view->show("ListarUsuariosNoValidados", $parametros);
    }
-
-   public function editPerfilAdmin()
-   {
-      // Almacenamos en el array 'parametros[]'los valores que vamos a mostrar en la vista
-      $parametros = [
-         "tituloventana" => "Base de Datos con PHP y PDO",
-         "datos" => NULL,
-         "mensajes" => []
-      ];
-
-      $this->view->show("EditarPerfilAdmin", $parametros);
-   }
    
+   /**
+    * Funcion para cerrar sesion y devolver al inicio
+    */
    public function cerrarSesion()
    {
       session_destroy();
       $this->view->show("inicio");
    }
 
+   /**
+    * Funcion para completar perfil.
+    */
    public function completarPerfil()
    {
       $this->view->show("completarPerfil");
    }
 
+   /**
+    * Metodo que permite al administrador cambiar el id a un usuario no validado.
+    */
    public function actualizaruser()
    {
-      $parametros = [
-         "tituloventana" => "Base de Datos con PHP y PDO",
-         "datos" => NULL,
-         "mensajes" => []
-      ];
-
       $datos = [];
+      //id del usuario a cambiar
       $datos['id'] = $_GET['id'];
+      //id a poner.
       $datos['rol_id'] = $_GET['rol_id'];
 
-      
+      //Llamamos en el modelo al metodo para cambiarle el tipo de id.
       $this->modelo->actualizaruser($datos);
-
-      
       $this->listaUsuariosNoValidados();
    }
 
+    /**
+     * Metodo que muestra los mensajes de un usuario por pantalla.
+     */
    public function mensajes($parametros = null)
    {
-       // Almacenamos en el array 'parametros[]'los valores que vamos a mostrar en la vista
        $parametros = [
-         "tituloventana" => "Base de Datos con PHP y PDO",
          "datos" => NULL,
          "mensajes" => []
       ];
       // Realizamos la consulta y almacenamos los resultados en la variable $resultModelo
       $resultModelo = $this->modelo->listadoMensajes();
-      // Si la consulta se realizó correctamente transferimos los datos obtenidos
-      // de la consulta del modelo ($resultModelo["datos"]) a nuestro array parámetros
-      // ($parametros["datos"]), que será el que le pasaremos a la vista para visualizarlos
-      if ($resultModelo["correcto"]) :
+      
+      if ($resultModelo["correcto"]){
          $parametros["datos"] = $resultModelo["datos"];
-         //Definimos el mensaje para el alert de la vista de que todo fue correctamente
+         
          $this->mensajes[] = [
             "tipo" => "success",
             "mensaje" => "El listado se realizó correctamente"
          ];
-      else :
-         //Definimos el mensaje para el alert de la vista de que se produjeron errores al realizar el listado
+
+      }else{
          $this->mensajes[] = [
             "tipo" => "danger",
             "mensaje" => "El listado no pudo realizarse correctamente!! :( <br/>({$resultModelo["error"]})"
          ];
-      endif;
-      //Asignamos al campo 'mensajes' del array de parámetros el valor del atributo 
-      //'mensaje', que recoge cómo finalizó la operación:
+      }
+
       $parametros["mensajes"] = $this->mensajes;
-      // Incluimos la vista en la que visualizaremos los datos o un mensaje de error
-      
+
+      //Discriminamos entre roles para abrir la vista que corresponda.
       if ($_SESSION['rol_id']==0) {
          $this->view->show("paginaMensajesAdmin", $parametros);  
       } else {
