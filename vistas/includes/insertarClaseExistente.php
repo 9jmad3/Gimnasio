@@ -1,9 +1,10 @@
 <div class="container" style="margin-top: 100px !important;">
 
-    <?php if (isset($mensajes)) {foreach ($mensajes as $mensaje) : ?> 
-        <div class="alert alert-<?= $mensaje["tipo"] ?>"><?= $mensaje["mensaje"] ?></div>
-    <?php endforeach;
-    }?>
+    
+    <?php if (isset($mensajes)){?> 
+        <div class="alert alert-info"><?= $mensajes ?></div>
+    <?php };?>
+
     <!-- Default form register -->
     <form class="text-center border border-light p-5" action="?controller=index&accion=insertarClaseExistente" method="post" enctype="multipart/form-data">
 
@@ -53,4 +54,5 @@
 
     </form>
     <!-- Default form register -->
+
 </div>

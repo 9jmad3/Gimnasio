@@ -625,6 +625,7 @@ class UserModel extends BaseModel
                if ($query) {
                   $this->db->commit(); // commit() confirma los cambios realizados durante la transacción
                   $return["correcto"] = TRUE;
+                  $return["error"] = "Clase programada correctamente.";
                } // o no :(
          } else {
             $return["error"] = "Horario no disponible. Consulte el horario para ver horas libres.";

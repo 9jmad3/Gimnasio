@@ -339,7 +339,7 @@ class IndexController extends BaseController
          //Metemos la oferta de clases para que el administrador pueda elegir
          $resultModelo = $this->modelo->listarOferta();
          $parametros["clases"] = $resultModelo['datos'];
-         $parametros["mensajes"] = $this->mensajes;
+         //$parametros["mensajes"] = $this->mensajes;
          $this->view->show("insertarClaseExistente",$parametros);
 
       } else {
@@ -552,7 +552,7 @@ class IndexController extends BaseController
       $resultModelo = $this->modelo->infoClase([
          'id' => $_GET['id']
       ]);
-
+      
       $this->view->show("editarClase", $resultModelo);
    }
 
