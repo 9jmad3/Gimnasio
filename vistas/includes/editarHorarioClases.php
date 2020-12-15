@@ -36,10 +36,11 @@
                         
                         <?php foreach ($datos as $clase) :?>                    
                             <?php if ($clase["Dia"] == 'Lunes' && $clase['horaInicio'] == $d || $clase["Dia"] == 'Lunes' &&  $clase['horaFin'] > $d && $clase['horaInicio'] < $d || $clase["Dia"] == 'Lunes' &&  $clase['horaFin'] == $d) : ?>
-                                <h5 class="m-0 mb-1 mt-1 bg-dark text-white"><?= $clase['nombre'] ?></h5>
+                                <button class="btn <?= $clase['color'] ?>"><h5 class="m-0 mb-1 mt-1"><?= $clase['nombre'] ?></h5></button><br>
                                 <a href="?controller=index&accion=delClaseExistente&id=<?= $clase['id'] ?>">
                                     <i class="fas fa-trash-alt"></i> Eliminar
-                                </a>
+                                </a><br>
+                                
                             <?php  endif;?> 
                         <?php endforeach;?> 
                     </td>
@@ -48,10 +49,10 @@
                     <td>
                         <?php foreach ($datos as $clase) :?>
                             <?php if ($clase["Dia"] == 'Martes' && $clase['horaInicio'] == $d || $clase["Dia"] == 'Martes' &&  $clase['horaFin'] > $d && $clase['horaInicio'] < $d || $clase["Dia"] == 'Martes' &&  $clase['horaFin'] == $d): ?>
-                                <h5 class="m-0 mb-1 mt-1 bg-dark text-white"><?= $clase['nombre'] ?></h5>
+                                <button class="btn <?= $clase['color'] ?>"><h5 class="m-0 mb-1 mt-1"><?= $clase['nombre'] ?></h5></button><br>
                                 <a href="?controller=index&accion=delClaseExistente&id=<?= $clase['id'] ?>">
                                     <i class="fas fa-trash-alt"></i> Eliminar
-                                </a>
+                                </a><br>
                             <?php endif;?> 
                         <?php endforeach;?>   
                     </td>
@@ -60,10 +61,10 @@
                     <td>
                         <?php foreach ($datos as $clase) :?>
                             <?php if ($clase["Dia"] == 'Miercoles' && $clase['horaInicio'] == $d || $clase["Dia"] == 'Miercoles' &&  $clase['horaFin'] > $d && $clase['horaInicio'] < $d || $clase["Dia"] == 'Miercoles' &&  $clase['horaFin'] == $d) : ?>
-                                <h5 class="m-0 mb-1 mt-1 bg-dark text-white"><?= $clase['nombre'] ?></h5>
+                                <button class="btn <?= $clase['color'] ?>"><h5 class="m-0 mb-1 mt-1"><?= $clase['nombre'] ?></h5></button><br>
                                 <a href="?controller=index&accion=delClaseExistente&id=<?= $clase['id'] ?>">
                                     <i class="fas fa-trash-alt"></i> Eliminar
-                                </a>
+                                </a><br>
                             <?php endif;?> 
                         <?php endforeach;?>   
                     </td>
@@ -71,10 +72,10 @@
                     <td>
                         <?php foreach ($datos as $clase) :?>
                             <?php if ($clase["Dia"] == 'Jueves' && $clase['horaInicio'] == $d || $clase["Dia"] == 'Jueves' &&  $clase['horaFin'] > $d && $clase['horaInicio'] < $d || $clase["Dia"] == 'Jueves' &&  $clase['horaFin'] == $d) : ?>
-                                <h5 class="m-0 mb-1 mt-1 bg-dark text-white"><?= $clase['nombre'] ?></h5>
+                                <button class="btn <?= $clase['color'] ?>"><h5 class="m-0 mb-1 mt-1"><?= $clase['nombre'] ?></h5></button><br>
                                 <a href="?controller=index&accion=delClaseExistente&id=<?= $clase['id'] ?>">
                                     <i class="fas fa-trash-alt"></i> Eliminar
-                                </a>
+                                </a><br>
                             <?php endif;?> 
                         <?php endforeach;?>   
                     </td>
@@ -82,10 +83,10 @@
                     <td>
                         <?php foreach ($datos as $clase) :?>
                             <?php if ($clase["Dia"] == 'Viernes' && $clase['horaInicio'] == $d || $clase["Dia"] == 'Viernes' &&  $clase['horaFin'] > $d && $clase['horaInicio'] < $d || $clase["Dia"] == 'Viernes' &&  $clase['horaFin'] == $d) : ?>
-                                <h5 class="m-0 mb-1 mt-1 bg-dark text-white"><?= $clase['nombre'] ?></h5>
+                                <button class="btn <?= $clase['color'] ?>"><h5 class="m-0 mb-1 mt-1"><?= $clase['nombre'] ?></h5></button><br>
                                 <a href="?controller=index&accion=delClaseExistente&id=<?= $clase['id'] ?>">
                                     <i class="fas fa-trash-alt"></i> Eliminar
-                                </a>
+                                </a><br>
                             <?php endif;?> 
                         <?php endforeach;?>   
                     </td>
@@ -93,10 +94,10 @@
                     <td>
                         <?php foreach ($datos as $clase) :?>
                             <?php if ($clase["Dia"] == 'Sabado' && $clase['horaInicio'] == $d || $clase["Dia"] == 'Sabado' &&  $clase['horaFin'] > $d && $clase['horaInicio'] < $d || $clase["Dia"] == 'Sabado' &&  $clase['horaFin'] == $d) : ?>
-                                <h5 class="m-0 mb-1 mt-1 bg-dark text-white"><?= $clase['nombre'] ?></h5>
+                                <button class="btn <?= $clase['color'] ?>"><h5 class="m-0 mb-1 mt-1"><?= $clase['nombre'] ?></h5></button><br>
                                 <a href="?controller=index&accion=delClaseExistente&id=<?= $clase['id'] ?>">
                                     <i class="fas fa-trash-alt"></i> Eliminar
-                                </a>
+                                </a><br>
                             <?php endif;?> 
                         <?php endforeach;?>   
                     </td>

@@ -7,7 +7,7 @@
 
 <body>
   <?php require 'includes/navAdmin.php';?>
-  <?php require 'includes/listarOferta.php';?>
+  <?php require 'includes/listarOfertaEditable.php';?>
   <?php require 'includes/scriptsBody.php';?>
   <?php require 'includes/footer.php';?>
   
