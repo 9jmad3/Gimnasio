@@ -37,7 +37,7 @@
                         <?php foreach ($datos as $clase) :?>                      
                             <?php if ($clase["Dia"] == 'Lunes' && $clase['horaInicio'] == $d || $clase["Dia"] == 'Lunes' &&  $clase['horaFin'] > $d && $clase['horaInicio'] < $d || $clase["Dia"] == 'Lunes' &&  $clase['horaFin'] == $d) : ?>
                                     <a href="?controller=index&accion=insertarInscripcion&idCl=<?= $clase['id'] ?>">
-                                        <button type="button" class="btn btn-indigo btn-sm m-0 mb-1 mt-1"><?= $clase['nombre'] ?></button><br>
+                                        <button type="button" class="btn <?= $clase['color']?> btn-sm m-0 mb-1 mt-1"><?= $clase['nombre'] ?></button><br>
                                     </a>
                             <?php  endif;?> 
                         <?php endforeach;?> 
@@ -48,7 +48,7 @@
                         <?php foreach ($datos as $clase) :?>
                             <?php if ($clase["Dia"] == 'Martes' && $clase['horaInicio'] == $d || $clase["Dia"] == 'Martes' &&  $clase['horaFin'] > $d && $clase['horaInicio'] < $d || $clase["Dia"] == 'Martes' &&  $clase['horaFin'] == $d): ?>
                                 <a href="?controller=index&accion=insertarInscripcion&idCl=<?= $clase['id'] ?>">
-                                    <button type="button" class="btn btn-indigo btn-sm m-0 mb-1 mt-1"><?= $clase['nombre'] ?></button>
+                                    <button type="button" class="btn <?= $clase['color']?> btn-sm m-0 mb-1 mt-1"><?= $clase['nombre'] ?></button>
                                 </a>
                             <?php endif;?> 
                         <?php endforeach;?>   
@@ -59,7 +59,7 @@
                         <?php foreach ($datos as $clase) :?>
                             <?php if ($clase["Dia"] == 'Miercoles' && $clase['horaInicio'] == $d || $clase["Dia"] == 'Miercoles' &&  $clase['horaFin'] > $d && $clase['horaInicio'] < $d || $clase["Dia"] == 'Miercoles' &&  $clase['horaFin'] == $d) : ?>
                                 <a href="?controller=index&accion=insertarInscripcion&idCl=<?= $clase['id'] ?>">
-                                    <button type="button" class="btn btn-indigo btn-sm m-0 mb-1 mt-1"><?= $clase['nombre'] ?></button>
+                                    <button type="button" class="btn <?= $clase['color']?> btn-sm m-0 mb-1 mt-1"><?= $clase['nombre'] ?></button>
                                 </a>
                             <?php endif;?> 
                         <?php endforeach;?>   
@@ -69,7 +69,7 @@
                         <?php foreach ($datos as $clase) :?>
                             <?php if ($clase["Dia"] == 'Jueves' && $clase['horaInicio'] == $d || $clase["Dia"] == 'Jueves' &&  $clase['horaFin'] > $d && $clase['horaInicio'] < $d || $clase["Dia"] == 'Jueves' &&  $clase['horaFin'] == $d) : ?>
                                 <a href="?controller=index&accion=insertarInscripcion&idCl=<?= $clase['id'] ?>">
-                                    <button type="button" class="btn btn-indigo btn-sm m-0 mb-1 mt-1"><?= $clase['nombre'] ?></button>
+                                    <button type="button" class="btn <?= $clase['color']?> btn-sm m-0 mb-1 mt-1"><?= $clase['nombre'] ?></button>
                                 </a>
                             <?php endif;?> 
                         <?php endforeach;?>
@@ -79,7 +79,7 @@
                         <?php foreach ($datos as $clase) :?>
                             <?php if ($clase["Dia"] == 'Viernes' && $clase['horaInicio'] == $d || $clase["Dia"] == 'Viernes' &&  $clase['horaFin'] > $d && $clase['horaInicio'] < $d || $clase["Dia"] == 'Viernes' &&  $clase['horaFin'] == $d) : ?>
                                 <a href="?controller=index&accion=insertarInscripcion&idCl=<?= $clase['id'] ?>">
-                                    <button type="button" class="btn btn-indigo btn-sm m-0 mb-1 mt-1"><?= $clase['nombre'] ?></button>
+                                    <button type="button" class="btn <?= $clase['color']?> btn-sm m-0 mb-1 mt-1"><?= $clase['nombre'] ?></button>
                                 </a>
                             <?php endif;?> 
                         <?php endforeach;?>   
@@ -89,7 +89,7 @@
                         <?php foreach ($datos as $clase) :?>
                             <?php if ($clase["Dia"] == 'Sabado' && $clase['horaInicio'] == $d || $clase["Dia"] == 'Sabado' &&  $clase['horaFin'] > $d && $clase['horaInicio'] < $d || $clase["Dia"] == 'Sabado' &&  $clase['horaFin'] == $d) : ?>
                                 <a href="?controller=index&accion=insertarInscripcion&idCl=<?= $clase['id'] ?>">
-                                    <button type="button" class="btn btn-indigo btn-sm m-0 mb-1 mt-1"><?= $clase['nombre'] ?></button>
+                                    <button type="button" class="btn <?= $clase['color']?> btn-sm m-0 mb-1 mt-1"><?= $clase['nombre'] ?></button>
                                 </a>
                             <?php endif;?> 
                         <?php endforeach;?>   

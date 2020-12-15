@@ -549,7 +549,11 @@ class IndexController extends BaseController
     */
    public function editClase($parametros=null)
    {
-      $this->view->show("editarClase", $parametros);
+      $resultModelo = $this->modelo->infoClase([
+         'id' => $_GET['id']
+      ]);
+
+      $this->view->show("editarClase", $resultModelo);
    }
 
    /**
@@ -576,7 +580,7 @@ class IndexController extends BaseController
          "mensajes" => []
       ];
 
-      $imagen = NULL;
+      $imagen = "porDefecto.jpg";
 
       //Si el nombre y descripcion existe:
       if (!empty($_POST['txtnombre']) || !empty($_POST['txtdescripcion'])) {
@@ -616,7 +620,8 @@ class IndexController extends BaseController
             'nombre' => $_POST['txtnombre'],
             'tipo' => $_POST['txttipo'],
             'descripcion' => $_POST['txtdescripcion'],
-            'imagen' => $imagen
+            'imagen' => $imagen,
+            'color' => $_POST['txtcolor']
          ]);
       
          if ($resultModelo["correcto"]){
@@ -655,7 +660,7 @@ class IndexController extends BaseController
          "mensajes" => []
       ];
 
-      $imagen = NULL;
+      $imagen = "porDefecto.jpg";
 
       //Si el nombre y descripcion no esta vacios:
       if (!empty($_POST['txtnombre']) || !empty($_POST['txtdescripcion'])) {

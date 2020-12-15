@@ -260,8 +260,8 @@ class UserModel extends BaseModel
       ];
       
       try {
-         $sql = "INSERT INTO clases(nombre,tipo,descripcion,imagen)
-                         VALUES (:nombre,:tipo,:descripcion,:imagen)";
+         $sql = "INSERT INTO clases(nombre,tipo,descripcion,imagen,color)
+                         VALUES (:nombre,:tipo,:descripcion,:imagen,:color)";
 
          $query = $this->db->prepare($sql);
 
@@ -269,7 +269,8 @@ class UserModel extends BaseModel
             'nombre' => $datos["nombre"],
             'tipo'=> $datos['tipo'],
             'descripcion'=> $datos['descripcion'],
-            'imagen'=> $datos['imagen']
+            'imagen'=> $datos['imagen'],
+            'color' => $datos['color']
          ]);   
 
          //Supervisamos si la inserción se realizó correctamente... 
@@ -439,6 +440,36 @@ class UserModel extends BaseModel
          $return["error"] = $ex->getMessage();
       }
 
+      return $return;
+   }
+
+   /**
+    * Funcion para retornar toda la informaciond de una clase en concreto, esta seusará para listarla en un formulario y que el usuario edite lo que
+    * vea oportuno.
+    * @param id id de la clase
+    */
+   public function infoClase($id)
+   {
+      $return = [
+         "correcto" => FALSE,
+         "datos" => NULL,
+         "error" => NULL
+      ];
+
+      try{
+         $this->db->beginTransaction();
+
+         $sql = "SELECT * FROM clases WHERE id=:id";
+         $query = $this->db->prepare($sql);
+         $query->execute(['id' => $id['id']]);
+         $resultado = $query->fetchAll(PDO::FETCH_ASSOC);
+         $return['datos'] = $resultado;
+
+         $this->db->commit();  
+      } catch (PDOException $ex) {
+         $this->db->rollback(); 
+         $return["error"] = $ex->getMessage();
+      }
       return $return;
    }
 
@@ -687,7 +718,7 @@ class UserModel extends BaseModel
 
        //Realizamos la consulta...
        try {  //Definimos la instrucción SQL  
-          $sql = "SELECT clasesExistentes.id, clasesExistentes.idClase, clasesExistentes.duracion ,clasesExistentes.Dia, clasesExistentes.horaInicio, clasesExistentes.horaFin, clases.nombre FROM clasesExistentes
+          $sql = "SELECT clasesExistentes.id, clasesExistentes.idClase, clasesExistentes.duracion ,clasesExistentes.Dia, clasesExistentes.horaInicio, clasesExistentes.horaFin, clases.nombre, clases.color FROM clasesExistentes
                                                                                                                                                                                JOIN clases ON clasesExistentes.idClase = clases.id;";
           // Hacemos directamente la consulta al no tener parámetros
           $resultsquery = $this->db->query($sql);

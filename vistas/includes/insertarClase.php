@@ -22,13 +22,28 @@
             <option value="Resistenca-Fuerza">Resistenca-Fuerza</option>
         </select>
 
+        <!-- Color -->
+        <select class="browser-default custom-select form-control mb-4" name="txtcolor">
+            <option value="btn-primary" selected>Azul</option>
+            <option value="btn-default">Cian</option>
+            <option value="btn-secondary">Lila</option>
+            <option value="btn-success">Verde</option>
+            <option value="btn-info">Celeste</option>
+            <option value="btn-warnig">Amarillo</option>
+            <option value="btn-danger">Rojo</option>
+            <option value="btn-unique">Rojo Carmesí</option>
+            <option value="btn-pink">Rosa</option>
+            <option value="btn-deep-orange">Naranja</option>
+            <option value="btn-elegant">Negro</option>
+            <option value="btn-blue-grey">Gris</option>
+            <option value="btn-amber">Ambar</option>
+        </select>
+
         <!-- Descripcion -->
         <div class="form-group">
             <textarea class="form-control rounded-0" id="exampleFormControlTextarea2" name="txtdescripcion" rows="6" placeholder="Descripcion"></textarea>
         </div>   
         
-
-        <P>IMPORTANTE: El archivo tiene que ser .jpg y tener el mismo nombre que la clase. Mayusculas incluidas.</P>
         <!-- Imagen -->
         <div class="custom-file">
             <input type="file" class="custom-file-input" id="customFileLang" lang="es" name="imagen">
