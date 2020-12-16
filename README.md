@@ -5,7 +5,7 @@
 
 
     📋 PRIMEROS PASOS AL DESCARGAR.
-        - Ejecutar Composer init para cargar todo lo relacionado con generar pfd.
+        - Ejecutar Composer init para cargar todo lo relacionado con generar pfd. (vendor)
         - Cambiar las variables que se encuentran en config/database por las que se tenga en phpMyAdmin
 
     📦 EXPLICACION
