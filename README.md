@@ -8,7 +8,7 @@
         - Ejecutar Composer init para cargar todo lo relacionado con generar pfd.
         - Cambiar las variables que se encuentran en config/database por las que se tenga en phpMyAdmin
 
-    📦 EXPLICACIO
+    📦 EXPLICACION
 
         En la carpeta config se encuentran los dos ficheros que contienen 
         variables que se usan en el programa para llamar vista, bbdd y demás.
@@ -25,7 +25,7 @@
         Con el se comunican los controladores y el se comunica con la base de datos.
 
         En la carpeta documentacion se encuentra toda la documentación generado con phpdocumentor. 
-        (iniciar index)
+        (iniciar index). También se encuentra una breve guía de usuario de la aplicación.
 
         En la carpeta fotos se guardan las fotos de perfil que suben los usuarios a sus cuentas.
 
@@ -43,3 +43,4 @@
         Requiere una modificación de código para su utilización.
 
         El archivo index.php ejecuta la aplicación.
+
