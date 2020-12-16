@@ -52,7 +52,7 @@
         }?>
 
         <!-- Password -->
-        <input type="text" id="defaultRegisterFormEmail" class="form-control mb-4" placeholder="Contrasña" name="txtpassword" value="<?php if(isset($_SESSION['password'])){echo $_SESSION['password'] ;}?>">
+        <input type="text" id="defaultRegisterFormEmail" class="form-control mb-4" placeholder="Contrasña" name="txtpassword" value="<?php if(isset($_COOKIE['password'])){echo $_COOKIE['password'] ;}?>">
         <?php if (isset($mensajes)) {
             foreach ($mensajes as $mensaje) : 
                 if ($mensaje["campo"] == "password") {?>                         

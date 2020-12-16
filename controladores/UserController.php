@@ -274,7 +274,7 @@ class UserController extends BaseController
                if (count($errores) == 0) {
                   $resultModelo = $this->modelo->adduser([
                      'usuario' => $usuario,
-                     "password" => $password,
+                     "password" => sha1($password),
                      'email' => $email
                   ]);
                      if ($resultModelo["correcto"]){

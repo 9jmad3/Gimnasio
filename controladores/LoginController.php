@@ -47,7 +47,7 @@ class LoginController extends BaseController
          }
 
          $usuario = $_POST['txtusuario'];
-         $password = $_POST['txtpassword'];
+         $password = sha1($_POST['txtpassword']);
 
          //Preguntamos por el usuario y contraseña a la bbdd
          $resultado = $this->modelo->inUser([
@@ -75,7 +75,7 @@ class LoginController extends BaseController
                //Implementación de la funcion recuerdame que guarda en usuario y contraseña en cookies. 
                if(isset($_POST['recuerdo']) && ($_POST['recuerdo']=="on")){ // Creamos las cookies para ambas variables
                   setcookie('usuario',$usuario,time() + (15 * 24 * 60 * 60));
-                  setcookie('password',$password,time() + (15 * 24 * 60 * 60));
+                  setcookie('password',$_POST['txtpassword'],time() + (15 * 24 * 60 * 60));
                   setcookie('recuerdo',$_POST['recuerdo'],time() + (15 * 24 * 60 * 60));
 
                } else{ // Eliminamos las cookies vaciandolas

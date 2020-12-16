@@ -10,7 +10,7 @@
       <div class="col-md-4 px-4 mb-4">
 
         <div class="view">
-          <img src="https://lh3.googleusercontent.com/proxy/O8mRLsuGTrMKcVsIBizaNOnAW5FknN6Tw0vBxwB7J6PCLgFWcLmWeey1QfC4nRWbmrjDIo_u-lV5-j8sT9p1UKp38YdIWYwkLYF3LRiJMcEKRoHJeeAskXGX3nY" class="img-fluid" alt="smaple image">
+          <img src="https://lh3.googleusercontent.com/proxy/tR6OhIKJhaoN7tSi_A7jmmqV1bVryTPcNYsVkzI9KzZJbYimH030cOdTNpYz9-yZnfgL6TjXeTdqRvANn0hCTY37kavZDgyENb65bw37VW6TWMPOPr2yd8Ve75qFzdGezQ" class="img-fluid" alt="smaple image">
         </div>
 
       </div>

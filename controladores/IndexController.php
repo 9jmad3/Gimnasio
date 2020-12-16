@@ -38,7 +38,7 @@ class IndexController extends BaseController
       $errores = array();
 
       // Si se ha pulsado el botón guardar y no hay variables post vacias:
-      if (isset($_POST) && !empty($_POST) && isset($_POST['submit'])) { 
+      if (isset($_POST) && !empty($_POST) && isset($_POST['submit']) && !empty($_POST['txtpassword'])) { 
 
          //Sanitizamos los valores que nos llegan
          $nombre = filter_var($_POST['txtnombre'],FILTER_SANITIZE_STRING);
@@ -47,7 +47,7 @@ class IndexController extends BaseController
          $dni = filter_var($_POST['txtdni'],FILTER_SANITIZE_STRING);
          $direccion = filter_var($_POST['txtdireccion'],FILTER_SANITIZE_STRING);
          $telefono = filter_var($_POST['txttelefono'],FILTER_SANITIZE_STRING);
-         $password = $_POST['txtpassword'];
+         $password = sha1($_POST['txtpassword']);
 
          //Creamos la sesion
          $_SESSION['nombre'] = $nombre;
