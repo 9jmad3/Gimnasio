@@ -130,7 +130,6 @@ class IndexController extends BaseController
             $_SESSION['telefono'] = null;
          }
 
-         //TODO: poner expresion regular contraseña
 
          if (!preg_match("/[a-zA-Z0-9_]{1,100}/", $direccion)) {
             $this->mensajes[] = [
