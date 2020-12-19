@@ -1,5 +1,7 @@
 # Gimnasio
  Practica final de la primera evaluación PHP.
+ 
+   [![Demo](https://media.giphy.com/media/1p80hw559Km8fpbcS3/giphy.gif)]
     
     CONTRASEÑA DE TODOS LOS USUARIOS DE LA BASE DE DATOS: 0aRaprueba
 
